@@ -10,13 +10,14 @@ formato da resposta
 	}
 </pre>
 ### centralidade
-`GET` /centralidades :
+`GET` "/centralidades" :
 
 	- status: 200
 	- message: null;
 	- data: `Array<Centralidade>`
 	
-`POST` /centralidades:
+`POST` /centralidades :
+
 	- status: 201
 	- message: "centralidade criada com sucesso"
 	- data: null
