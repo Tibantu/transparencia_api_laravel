@@ -13,3 +13,6 @@ Route::get('/blocos', [BlocoController::class,'getAll']);
 // CENTRALIDADES
 Route::get('/centralidades', [CentralidadeController::class,'index']);
 Route::post('/centralidades', [CentralidadeController::class,'create']);
+Route::delete('/centralidades/{id}', [CentralidadeController::class,'delete']);
+Route::put('/centralidades/{id}', [CentralidadeController::class,'update']);
+Route::get('/centralidades/{id}', [CentralidadeController::class,'getOne']);

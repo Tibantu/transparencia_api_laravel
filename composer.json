@@ -1,5 +1,5 @@
 {
-    "name": "Transparencia",
+    "name": "api/transparencia",
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
