@@ -21,4 +21,5 @@ formato da resposta
 	- status: 201
 	- message: "centralidade criada com sucesso"
 	- data: null
-	
+issuis;
+// Esta cadastrar um centralidade em um endereco que não existe;

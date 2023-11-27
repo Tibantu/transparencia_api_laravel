@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Validator;
 
 class CentralidadeController extends Controller
 {
-    public function index()
+    public function getAll()
     {
         try {
             return Centralidade::all();
-        } catch (\Illuminate\Database\QueryException $th) {
-            return response()->json(['message' => 'Erro ao lista as Centralidade'], 500);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
     public function create(Request $req, Response $res)
@@ -30,49 +30,45 @@ class CentralidadeController extends Controller
             "n_codiadmin" => 'integer'
         ]);
         if ($isValidData->fails())
-            return response()->json(['erros' => $isValidData->errors(), 'status' => 400], 400);
+            return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
 
         try {
             Centralidade::create($req->all());
-            return response()->json(['message' => "centralidade criada com sucesso!"], 201);;
+            return response()->json(['message' => "centralidade criada com sucesso!"], 201);
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' =>"Erro ao criar Centralidade"], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-    public function delete($id){
+    public function delete($id)
+    {
         try {
-            $centralidade = Centralidade::find($id);
-            if(!$centralidade){
-                return response()->json(['message', "A Centralidade não existe."]);
-            }
+            $centralidade = Centralidade::findOrFail($id);
             $centralidade->delete();
-        } catch (\Throwable $th) {
-            return response()->json(['message' =>"Erro ao deletar Centralidade, possivelmente há blocos nesta centralidade."], 500);
+            return response()->json(['message' => "centralidade deletada com sucesso!"], 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-    public function update(Request $req, $id){
+    public function update(Request $req, $id)
+    {
         try {
-            $centralidade = Centralidade::find($id);
-            if(!$centralidade){
-                return response()->json(['message', "Centralidade não encontrada."]);
-            }
+            $centralidade = Centralidade::findOrFail($id);
+
             $centralidade->update($req->all());
 
             return response()->json($req->all());
-        } catch (\Throwable $th) {
-            return response()->json(['message' =>"Erro ao atualizar Centralidade"], 500);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-    public function getOne($id){
-        try {
-            $centralidade = Centralidade::find($id);
-            if(!$centralidade){
-                return response()->json(['message', "Centralidade não encontrada!"], 404);
-            }
-            return response()->json($centralidade, 200);
-        } catch (\Throwable $th) {
-            return response()->json(['message' =>"Erro ao atualizar Centralidade"], 500);
-        }
 
+    public function getOne($id)
+    {
+        try {
+            $centralidade = Centralidade::findOrFail($id);
+            return response()->json($centralidade, 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }

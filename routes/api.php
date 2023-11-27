@@ -5,14 +5,47 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TodoController;
 use App\Http\Controllers\BlocoController;
 use App\Http\Controllers\CentralidadeController;
+use App\Http\Controllers\EnderecoController;
+use App\Http\Controllers\PredioController;
 
-Route::get('/todos', [TodoController::class, 'getAll']);
-Route::post('/todos', [TodoController::class, 'save']);
-Route::get('/blocos', [BlocoController::class,'getAll']);
+//ENDERECO
+Route::prefix('/enderecos')->group(function () {
+    Route::get('/', [EnderecoController::class, 'getAll']);
+    Route::post('/', [EnderecoController::class, 'create']);
+    Route::get('/{id}', [EnderecoController::class, 'getOne']);
+    Route::put('/{id}', [EnderecoController::class, 'update']);
+    Route::delete('/{id}', [EnderecoController::class, 'delete']);
+});
 
 // CENTRALIDADES
-Route::get('/centralidades', [CentralidadeController::class,'index']);
-Route::post('/centralidades', [CentralidadeController::class,'create']);
-Route::delete('/centralidades/{id}', [CentralidadeController::class,'delete']);
-Route::put('/centralidades/{id}', [CentralidadeController::class,'update']);
-Route::get('/centralidades/{id}', [CentralidadeController::class,'getOne']);
+Route::prefix('centralidades')->group(function () {
+    Route::get('/', [CentralidadeController::class, 'getAll']);
+    Route::post('/', [CentralidadeController::class, 'create']);
+    Route::delete('/{id}', [CentralidadeController::class, 'delete']);
+    Route::put('/{id}', [CentralidadeController::class, 'update']);
+    Route::get('/{id}', [CentralidadeController::class, 'getOne']);
+});
+
+// BLOCOS
+Route::prefix('blocos')->group(function () {
+    Route::get('/', [BlocoController::class, 'getAll']);
+    /**[cria] um bloco dentro de uma centralidade - id da centralidade e fornecida na url */
+    Route::post('/centr/{idCentralidade}', [BlocoController::class, 'create']);
+    /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
+    Route::get('/centr/{idCentralidade}', [BlocoController::class, 'getAllByCentr']);
+    Route::get('/{id}', [BlocoController::class, 'getOne']);
+    Route::put('/{id}', [BlocoController::class, 'update']);
+    Route::delete('/{id}', [BlocoController::class, 'delete']);
+});
+
+// PREDIOS
+Route::prefix('predios')->group(function () {
+    Route::get('/', [PredioController::class, 'getAll']);
+    /**[cria] um bloco dentro de uma centralidade - id da centralidade e fornecida na url */
+    Route::post('/bloco/{idCentralidade}', [PredioController::class, 'create']);
+    /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
+    Route::get('/bloco/{idBloco}', [PredioController::class, 'getAllByBloco']);
+    Route::get('/{id}', [PredioController::class, 'getOne']);
+    Route::put('/{id}', [PredioController::class, 'update']);
+    Route::delete('/{id}', [PredioController::class, 'delete']);
+});

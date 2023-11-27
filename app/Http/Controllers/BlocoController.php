@@ -3,51 +3,73 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bloco;
+use App\Models\Centralidade;
 use App\Models\Todo;
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use \Illuminate\Database\QueryException;
 
 class BlocoController extends Controller
 {
 
-    public function index()
+    public function getAll()
     {
         try {
             return Bloco::all();
-        } catch (\Illuminate\Database\QueryException $th) {
-            return response()->json(['message' => 'Erro ao lista as Bloco'], 500);
+        } catch (QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-    public function create(Request $req, Response $res)
+
+    public function getAllByCentr($idCentralidade)
     {
+        try {
+            Centralidade::findOrFail($idCentralidade);
+            return Bloco::where('n_codicentr', '=', $idCentralidade)->get();
+        } catch (QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+    public function create(Request $req, $idCentralidade)
+    {
+
         $isValidData = Validator::make($req->all(), [
-            "c_descbloc" => 'required|string|max:50',
+            "c_descbloco" => 'required|string|max:50',
             "n_nblocentr" => 'integer',
             "n_codicoord" => 'integer',
-            "n_codicentr" => 'integer',
+            "n_codicaixa" => 'required|integer',
+            "c_ruablco" => 'string',
         ]);
+        $centralidadde = Centralidade::find($idCentralidade);
+        if (!$centralidadde)
+            return response()->json(['message' => "Centralidade não encontrada!"], 404);
+
         if ($isValidData->fails())
-            return response()->json(['erros' => $isValidData->errors(), 'status' => 400], 400);
+            return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
+
+        $data = $req->all();
+
+        $data['n_codicentr'] = (int) $idCentralidade;
 
         try {
-            Bloco::create($req->all());
+            Bloco::create($data);
             return response()->json(['message' => "Bloco criada com sucesso!"], 201);;
-        } catch (\Illuminate\Database\QueryException $e) {
-            // var_dump($e);
-            return response()->json(['message' => "Erro ao criar Bloco"], 500);
+        } catch (QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
     public function delete($id)
     {
         try {
-            $Bloco = Bloco::find($id);
-            if (!$Bloco) {
-                return response()->json(['message', "A Bloco não existe."]);
-            }
-            $Bloco->delete();
-        } catch (\Throwable $th) {
-            return response()->json(['message' => "Erro ao deletar Bloco, possivelmente há blocos nesta Bloco."], 500);
+            $bloco = Bloco::find($id);
+            if (!$bloco)
+                return response()->json(['message' => "bloco não encontrado"], 404);
+            $bloco->delete();
+            return response()->json(['message' => "bloco deletado com sucesso!"], 200);
+        } catch (QueryException $e) {
+            return response()->json(['message' => "Hello " . $e->getMessage()], 500);
         }
     }
     public function update(Request $req, $id)
@@ -55,25 +77,25 @@ class BlocoController extends Controller
         try {
             $Bloco = Bloco::find($id);
             if (!$Bloco) {
-                return response()->json(['message', "Bloco não encontrada."]);
+                return response()->json(['message' => "Bloco não encontrada."]);
             }
             $Bloco->update($req->all());
 
             return response()->json($req->all());
-        } catch (\Throwable $th) {
-            return response()->json(['message' => "Erro ao atualizar Bloco"], 500);
+        } catch (QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
     public function getOne($id)
     {
         try {
-            $Bloco = Bloco::find($id);
-            if (!$Bloco) {
-                return response()->json(['message', "Bloco não encontrada!"], 404);
+            $bloco = Bloco::find($id);
+            if (!$bloco) {
+                return response()->json(['message' => "Bloco não encontrada!"], 404);
             }
-            return response()->json($Bloco, 200);
-        } catch (\Throwable $th) {
-            return response()->json(['message' => "Erro ao atualizar Bloco"], 500);
+            return response()->json($bloco, 200);
+        } catch (QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }
