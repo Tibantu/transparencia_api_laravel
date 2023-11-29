@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApartamentoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TodoController;
@@ -48,4 +49,16 @@ Route::prefix('predios')->group(function () {
     Route::get('/{id}', [PredioController::class, 'getOne']);
     Route::put('/{id}', [PredioController::class, 'update']);
     Route::delete('/{id}', [PredioController::class, 'delete']);
+});
+
+// APARTAMENTOS
+Route::prefix('apartamentos')->group(function () {
+    Route::get('/', [ApartamentoController::class, 'getAll']);
+    /**[cria] um bloco dentro de uma centralidade - id da centralidade e fornecida na url */
+    Route::post('/predio/{idPredio}', [ApartamentoController::class, 'create']);
+    /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
+    Route::get('/predio/{idPredio}', [ApartamentoController::class, 'getAllByPredio']);
+    Route::get('/{id}', [ApartamentoController::class, 'getOne']);
+    Route::put('/{id}', [ApartamentoController::class, 'update']);
+    Route::delete('/{id}', [ApartamentoController::class, 'delete']);
 });
