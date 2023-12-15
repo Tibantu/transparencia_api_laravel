@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\TodoController;
 use App\Http\Controllers\BlocoController;
 use App\Http\Controllers\CentralidadeController;
 use App\Http\Controllers\EnderecoController;
+use App\Http\Controllers\MoradorController;
 use App\Http\Controllers\PredioController;
 
 //ENDERECO
@@ -43,7 +44,7 @@ Route::prefix('blocos')->group(function () {
 Route::prefix('predios')->group(function () {
     Route::get('/', [PredioController::class, 'getAll']);
     /**[cria] um bloco dentro de uma centralidade - id da centralidade e fornecida na url */
-    Route::post('/bloco/{idCentralidade}', [PredioController::class, 'create']);
+    Route::post('/bloco/{idBloco}', [PredioController::class, 'create']);
     /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
     Route::get('/bloco/{idBloco}', [PredioController::class, 'getAllByBloco']);
     Route::get('/{id}', [PredioController::class, 'getOne']);
@@ -61,4 +62,17 @@ Route::prefix('apartamentos')->group(function () {
     Route::get('/{id}', [ApartamentoController::class, 'getOne']);
     Route::put('/{id}', [ApartamentoController::class, 'update']);
     Route::delete('/{id}', [ApartamentoController::class, 'delete']);
+});
+    /*Manuel Alfredo*/
+
+//MORADOR
+Route::prefix('moradores')->group(function () {
+    Route::get('/', [MoradorController::class, 'getAll']);
+    /**[cria] um morador */
+    Route::post('/', [MoradorController::class, 'create']);
+    /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
+    //Route::get('/predio/{idPredio}', [MoradorController::class, 'getAllByPredio']);
+    Route::get('/{id}', [MoradorController::class, 'getOne']);
+    Route::put('/{id}', [MoradorController::class, 'update']);
+    Route::delete('/{id}', [MoradorController::class, 'delete']);
 });
