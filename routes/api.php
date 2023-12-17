@@ -7,10 +7,12 @@ use App\Http\Controllers\Api\TodoController;
 use App\Http\Controllers\BlocoController;
 use App\Http\Controllers\CentralidadeController;
 use App\Http\Controllers\CoordenadorController;
+use App\Http\Controllers\DividaController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\MoradorController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PredioController;
+use App\Http\Controllers\TaxaController;
 
 //ENDERECO
 Route::prefix('/enderecos')->group(function () {
@@ -92,6 +94,18 @@ Route::prefix('coordenadores')->group(function () {
     Route::delete('/{id}', [CoordenadorController::class, 'delete']);
 });
 
+//TAXA
+Route::prefix('taxas')->group(function () {
+    Route::get('/', [TaxaController::class, 'getAll']);
+    /**[cria] um morador */
+    Route::post('/', [TaxaController::class, 'create']);
+    /**[pega] todas as taxas de um predio  - id do predio e fornecida na url */
+    Route::get('/predio/{idCoordenador}', [TaxaController::class, 'getAllByPredio']);
+    Route::get('/{id}', [TaxaController::class, 'getOne']);
+    Route::put('/{id}', [TaxaController::class, 'update']);
+    Route::delete('/{id}', [TaxaController::class, 'delete']);
+});
+
 //PAGAMENTO
 Route::prefix('pagamentos')->group(function () {
     Route::get('/', [PagamentoController::class, 'getAll']);
@@ -102,4 +116,16 @@ Route::prefix('pagamentos')->group(function () {
     Route::get('/{id}', [PagamentoController::class, 'getOne']);
     Route::put('/{id}', [PagamentoController::class, 'update']);
     Route::delete('/{id}', [PagamentoController::class, 'delete']);
+});
+
+//DIVIDA
+Route::prefix('dividas')->group(function () {
+    Route::get('/', [DividaController::class, 'getAll']);
+    /**[cria] um morador */
+    Route::post('/', [DividaController::class, 'create']);
+    /**[pega] todas as dividas de uma conta de apartamento  - id da conta e fornecida na url */
+    Route::get('/conta/{idConta}', [DividaController::class, 'getAllByConta']);
+    Route::get('/{id}', [DividaController::class, 'getOne']);
+    Route::put('/{id}', [DividaController::class, 'update']);
+    Route::delete('/{id}', [DividaController::class, 'delete']);
 });
