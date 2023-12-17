@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TodoController;
 use App\Http\Controllers\BlocoController;
 use App\Http\Controllers\CentralidadeController;
+use App\Http\Controllers\CoordenadorController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\MoradorController;
+use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PredioController;
 
 //ENDERECO
@@ -75,4 +77,29 @@ Route::prefix('moradores')->group(function () {
     Route::get('/{id}', [MoradorController::class, 'getOne']);
     Route::put('/{id}', [MoradorController::class, 'update']);
     Route::delete('/{id}', [MoradorController::class, 'delete']);
+});
+
+
+//COORDENADOR
+Route::prefix('coordenadores')->group(function () {
+    Route::get('/', [CoordenadorController::class, 'getAll']);
+    /**[cria] um morador */
+    Route::post('/', [CoordenadorController::class, 'create']);
+    /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
+    //Route::get('/predio/{idPredio}', [CoordenadorController::class, 'getAllByPredio']);
+    Route::get('/{id}', [CoordenadorController::class, 'getOne']);
+    Route::put('/{id}', [CoordenadorController::class, 'update']);
+    Route::delete('/{id}', [CoordenadorController::class, 'delete']);
+});
+
+//PAGAMENTO
+Route::prefix('pagamentos')->group(function () {
+    Route::get('/', [PagamentoController::class, 'getAll']);
+    /**[cria] um morador */
+    Route::post('/', [PagamentoController::class, 'create']);
+    /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
+    //Route::get('/predio/{idPredio}', [PagamentoController::class, 'getAllByPredio']);
+    Route::get('/{id}', [PagamentoController::class, 'getOne']);
+    Route::put('/{id}', [PagamentoController::class, 'update']);
+    Route::delete('/{id}', [PagamentoController::class, 'delete']);
 });
