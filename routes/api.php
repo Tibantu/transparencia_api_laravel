@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\TodoController;
 use App\Http\Controllers\BlocoController;
 use App\Http\Controllers\CentralidadeController;
 use App\Http\Controllers\CoordenadorController;
+use App\Http\Controllers\DespesaController;
 use App\Http\Controllers\DividaController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\MoradorController;
@@ -128,4 +129,15 @@ Route::prefix('dividas')->group(function () {
     Route::get('/{id}', [DividaController::class, 'getOne']);
     Route::put('/{id}', [DividaController::class, 'update']);
     Route::delete('/{id}', [DividaController::class, 'delete']);
+});
+//DIVIDA
+Route::prefix('despesas')->group(function () {
+    Route::get('/', [DespesaController::class, 'getAll']);
+    /**[cria] um morador */
+    Route::post('/', [DespesaController::class, 'create']);
+    /**[pega] todas as dividas de uma conta de apartamento  - id da conta e fornecida na url */
+   //Route::get('/conta/{idConta}', [DespesaController::class, 'getAllByConta']);
+    Route::get('/{id}', [DespesaController::class, 'getOne']);
+    Route::put('/{id}', [DespesaController::class, 'update']);
+    Route::delete('/{id}', [DespesaController::class, 'delete']);
 });

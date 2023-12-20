@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Divida extends Model
 {
+
     protected $table = 'tradivid';
     protected $primaryKey = 'n_codidivid';
     public $timestamps = false;
