@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bloco;
+use App\Models\Caixa;
 use App\Models\Centralidade;
 use App\Models\Predio;
 use Illuminate\Support\Facades\Validator;
@@ -40,7 +41,7 @@ class PredioController extends Controller
             "n_napapredi" => 'integer',
             "n_napopredi" => 'integer',
             "d_dacrpredi" => 'string',
-            "n_codicaixa" => 'required|integer',
+            "n_codicaixa" => 'integer',
             'n_codicoord' => 'integer'
         ]);
         try {
@@ -52,12 +53,21 @@ class PredioController extends Controller
                 return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
 
 
+            /*Criar um caixa para o bloco*/
+            $dataCaixa = [
+                'c_nomeentid'=>'trapredi'
+            ];
+            $caixa = Caixa::create($dataCaixa);
+
             $data = $req->all();
 
             $data['n_codibloco'] = (int) $idBloco;
+            $data['n_codicaixa'] = (int) $caixa->n_codicaixa;
 
 
-            Predio::create($data);
+            $predio = Predio::create($data);
+            $dataCaixa['n_codientid'] = (int) $predio->n_codipredi;
+            $caixa->update($dataCaixa);
             return response()->json(['message' => "Predio criada com sucesso!"], 201);;
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);

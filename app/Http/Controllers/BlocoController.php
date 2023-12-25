@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bloco;
+use App\Models\Caixa;
 use App\Models\Centralidade;
 use App\Models\Todo;
 use Illuminate\Database\Events\QueryExecuted;
@@ -39,7 +40,7 @@ class BlocoController extends Controller
             "c_descbloco" => 'required|string|max:50',
             "n_nblocentr" => 'integer',
             "n_codicoord" => 'integer',
-            "n_codicaixa" => 'required|integer',
+            "n_codicaixa" => 'integer',
             "c_ruablco" => 'string',
         ]);
         $centralidadde = Centralidade::find($idCentralidade);
@@ -49,12 +50,22 @@ class BlocoController extends Controller
         if ($isValidData->fails())
             return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
 
+        /*Criar um caixa para o bloco*/
+        $dataCaixa = [
+            'c_nomeentid'=>'trabloco'
+        ];
+        $caixa = Caixa::create($dataCaixa);
+        
+
         $data = $req->all();
 
         $data['n_codicentr'] = (int) $idCentralidade;
+        $data['n_codicaixa'] = (int) $caixa->n_codicaixa;
 
         try {
-            Bloco::create($data);
+            $bloco = Bloco::create($data);
+            $dataCaixa['n_codientid'] = (int) $bloco->n_codibloco;
+            $caixa->update($dataCaixa);
             return response()->json(['message' => "Bloco criada com sucesso!"], 201);;
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);

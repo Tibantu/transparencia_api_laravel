@@ -28,6 +28,8 @@ Route::prefix('/enderecos')->group(function () {
 Route::prefix('centralidades')->group(function () {
     Route::get('/', [CentralidadeController::class, 'getAll']);
     Route::post('/', [CentralidadeController::class, 'create']);
+    /**[pega] todos as centralidades de uma provoncia  - provincia, fornecida na url */
+    Route::get('/provincia/{denominacao}', [CentralidadeController::class, 'getAllByProvincia']);
     Route::delete('/{id}', [CentralidadeController::class, 'delete']);
     Route::put('/{id}', [CentralidadeController::class, 'update']);
     Route::get('/{id}', [CentralidadeController::class, 'getOne']);
@@ -37,9 +39,9 @@ Route::prefix('centralidades')->group(function () {
 Route::prefix('blocos')->group(function () {
     Route::get('/', [BlocoController::class, 'getAll']);
     /**[cria] um bloco dentro de uma centralidade - id da centralidade e fornecida na url */
-    Route::post('/centr/{idCentralidade}', [BlocoController::class, 'create']);
+    Route::post('/centralidade/{idCentralidade}', [BlocoController::class, 'create']);
     /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
-    Route::get('/centr/{idCentralidade}', [BlocoController::class, 'getAllByCentr']);
+    Route::get('/centralidade/{idCentralidade}', [BlocoController::class, 'getAllByCentr']);
     Route::get('/{id}', [BlocoController::class, 'getOne']);
     Route::put('/{id}', [BlocoController::class, 'update']);
     Route::delete('/{id}', [BlocoController::class, 'delete']);
@@ -89,7 +91,7 @@ Route::prefix('coordenadores')->group(function () {
     /**[cria] um morador */
     Route::post('/', [CoordenadorController::class, 'create']);
     /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
-    //Route::get('/predio/{idPredio}', [CoordenadorController::class, 'getAllByPredio']);
+    //Route::get('/bloco/{idbloco}', [CoordenadorController::class, 'getAllByBloco']);
     Route::get('/{id}', [CoordenadorController::class, 'getOne']);
     Route::put('/{id}', [CoordenadorController::class, 'update']);
     Route::delete('/{id}', [CoordenadorController::class, 'delete']);
@@ -130,13 +132,13 @@ Route::prefix('dividas')->group(function () {
     Route::put('/{id}', [DividaController::class, 'update']);
     Route::delete('/{id}', [DividaController::class, 'delete']);
 });
-//DIVIDA
+//DESPESA
 Route::prefix('despesas')->group(function () {
     Route::get('/', [DespesaController::class, 'getAll']);
     /**[cria] um morador */
     Route::post('/', [DespesaController::class, 'create']);
     /**[pega] todas as dividas de uma conta de apartamento  - id da conta e fornecida na url */
-   //Route::get('/conta/{idConta}', [DespesaController::class, 'getAllByConta']);
+    Route::get('/coord/{idCoordPredio}', [DespesaController::class, 'getAllByPredio']);
     Route::get('/{id}', [DespesaController::class, 'getOne']);
     Route::put('/{id}', [DespesaController::class, 'update']);
     Route::delete('/{id}', [DespesaController::class, 'delete']);

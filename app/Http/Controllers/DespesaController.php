@@ -6,6 +6,7 @@ use App\Models\Despesa;
 use App\Models\Divida;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DespesaController extends Controller
 {
@@ -17,44 +18,38 @@ class DespesaController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-/*
-    public function getAllByMoradores($idPredio)
+
+    public function getAllByPredio($idCoordPredio)
     {
         try {
-            Apartamento::findOrFail($idBloco);
+            Despesa::findOrFail($idCoordPredio);
 
-            return Apartamento::where('n_codibloco', '=', $idBloco)->get();
+            return Despesa::where('n_codicoord', '=', $idCoordPredio)->get();
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-*/
+
     public function create(Request $req)
     {
         $isValidData = Validator::make($req->all(), [
-            'n_valopagam'  => 'required',
-            'n_vadipagam',
-            'c_descpagam'  => 'required|string',
-            'c_formpagam'  => 'required|string',
-            'd_datapagam'  => 'required',
-            'd_dacrpagam',
-            'create_at',
-            'updated_at',
-            'd_dacopagam',
-            'c_bancpagam',
-            'n_codibanco',
-            'n_estapagam',
-            'n_codicoord',
-            'n_codidivid'  => 'required',
-            'n_codiapart'  => 'required'
+        'c_objedespe'=> 'required',
+        'n_codicoord'=> 'required',
+        'n_valodespe'=> 'required',
+        'create_at',
+        'updated_at',
+        'c_objedespe',
+        'c_fontdespe'=> 'required',
+        'd_dacrdespe',
+        'd_dasadespe'=> 'required',            
         ]);
         if ($isValidData->fails())
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
 
     try {
-        Pagamento::create($req->all());
+        Despesa::create($req->all());
         // dd($data);
-        return response()->json(['message' => "Pagamento criado com sucesso!"], 201);;
+        return response()->json(['message' => "Despesa criada com sucesso!"], 201);;
     } catch (\Illuminate\Database\QueryException $e) {
         return response()->json(['message' => $e->getMessage()], 500);
     }
@@ -63,11 +58,11 @@ class DespesaController extends Controller
     public function delete($id)
     {
         try {
-            $Pagamento = Pagamento::find($id);
-            if (!$Pagamento)
-                return response()->json(['message' => "Pagamento não encontrado"], 404);
-            $Pagamento->delete();
-            return response()->json(['message' => "Pagamento deletado com sucesso!"], 200);
+            $Despesa = Despesa::find($id);
+            if (!$Despesa)
+                return response()->json(['message' => "Despesa não encontrado"], 404);
+            $Despesa->delete();
+            return response()->json(['message' => "Despesa deletado com sucesso!"], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => "Hello " . $e->getMessage()], 500);
         }

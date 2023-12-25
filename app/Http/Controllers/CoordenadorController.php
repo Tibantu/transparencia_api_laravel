@@ -18,8 +18,8 @@ class CoordenadorController extends Controller
         }
     }
 /*
-    public function getAllByMoradores($idPredio)
-    {
+    public function getAllByBloco($idBloco)
+    {//trazer todos os coordenadores de predios do bloco
         try {
             Apartamento::findOrFail($idBloco);
 

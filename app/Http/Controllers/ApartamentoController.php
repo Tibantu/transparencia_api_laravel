@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bloco;
 use App\Models\Centralidade;
 use App\Models\Apartamento;
+use App\Models\Conta;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use \Illuminate\Database\QueryException;
@@ -21,40 +22,46 @@ class ApartamentoController extends Controller
         }
     }
 
-    public function getAllByPredio($idBloco)
+    public function getAllByPredio($idPredio)
     {
         try {
-            Apartamento::findOrFail($idBloco);
+            Apartamento::findOrFail($idPredio);
 
-            return Apartamento::where('n_codibloco', '=', $idBloco)->get();
+            return Apartamento::where('n_codipredi', '=', $idPredio)->get();
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-    public function create(Request $req, $idBloco)
+    public function create(Request $req, $idPredio)
     {
 
         $isValidData = Validator::make($req->all(), [
-            "c_descpredi" => 'required|string|max:5',
-            "c_entrpredi" => 'required|string|max:2',
-            "n_napapredi" => 'integer',
-            "n_napopredi" => 'integer',
-            "d_dacrpredi" => 'string',
-            "n_codicaixa" => 'required|integer',
-            'n_codicoord' => 'integer'
+            'c_portapart'=> 'required',
+            'c_tipoapart'=> 'required', 
+            'n_nandapart', 
+            'd_dacrapart', 
+            'n_codiconta', 
+            'n_codipredi', 
+            'n_codimorad'
+
         ]);
         try {
-            $bloco = Bloco::find($idBloco);
+            $bloco = Bloco::find($idPredio);
             if (!$bloco)
                 return response()->json(['message' => "Bloco não encontrada!"], 404);
 
             if ($isValidData->fails())
                 return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
-
+                /*criar conta do apartamento*/
+                $dataConta = [
+                    'n_saldconta'=> 0
+                ];
+                $conta = Conta::create($dataConta);
 
             $data = $req->all();
 
-            $data['n_codibloco'] = (int) $idBloco;
+            $data['n_codipredi'] = (int) $idPredio;
+            $data['n_codiconta'] = (int) $conta->n_codiconta;
 
 
             Apartamento::create($data);

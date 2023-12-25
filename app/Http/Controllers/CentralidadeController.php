@@ -39,6 +39,18 @@ class CentralidadeController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+    public function getAllByProvincia($denominacao){
+
+        /* select que faz isso
+          select * from tracentr, traender where tracentr.n_codiender = traender.n_codiender and traender.c_provender = 'Luanda';
+        */
+        try {
+            Centralidade::findOrFail($idCentralidade);
+            return Bloco::where('n_codicentr', '=', $idCentralidade)->get();
+        } catch (QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
     public function delete($id)
     {
         try {
