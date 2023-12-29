@@ -2,31 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Apartamento;
-use App\Models\Divida;
+use App\Models\Banco;
+use App\Models\Coordenador;
+use App\Models\Predio;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class DividaController extends Controller
+class BancoController extends Controller
 {
     public function getAll()
     {
         try {
-            return Divida::all();
+            return Banco::all();
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
-    public function getAllByApartamento($idApartamento)
+    public function getAllByCoordenador($idPredi)
     {
         try {
-            $apartamento = Apartamento::find($idApartamento);
-            if (!$apartamento)
-                return response()->json(['message' => "Apartamento não encontrado!"], 404);
+            //$coordenador = Coordenador::find($idCoordenador);
+            $predio = Predio::find($idPredi);
+            if (!$predio)
+                return response()->json(['message' => "Predio não encontrado!"], 404);
             
-            return Divida::where('n_codiconta', '=', $apartamento->n_codiconta)->get();
+            return Banco::where('n_codicoord', '=', $predio->n_codicoord)->get();
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -36,33 +38,29 @@ class DividaController extends Controller
     {
         $isValidData = Validator::make($req->all(), 
         [
-            'c_estadivid',
-            'c_descdivid' => 'required|string',
-            'n_muaddivid',
-            'n_valtdivid',
-            'n_valodivid' => 'required|string',
-            'n_vapedivid',
-            'n_vapadivid',
-            'n_prazdivid',
-            'd_dcomdivid',
-            'd_dapadivid',
-            'd_dacodivid',
-            'd_dappdivid',
-            'n_vmuldivid',
-            'n_cododivid',
-            'n_codicoord' => 'required|string',
-            'n_codiconta' => 'required|string',
+            'c_entibanco' => 'required|string',
+            'c_descbanco',
+            'n_saldbanco',
+            'd_dacrbanco',
+            'n_codicoord',
+            'n_codientid',
+            'c_nomeentid',
             'create_at',
-            'updated_at',
-            'd_dacrdivid',
+            'updated_at'
         ]);
         if ($isValidData->fails())
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
 
     try {
-        Divida::create($req->all());
+        $predio = Predio::find($req->input('n_codipredi'));
+        $data = $req->all();
+        $data['n_codientid'] = (int) $predio->n_codipredi;
+        $data['n_codicoord'] = (int) $predio->n_codicoord;
+        $data['c_nomeentid'] = 'trapredi';
+
+        Banco::create($data);
         // dd($data);
-        return response()->json(['message' => "Divida criada com sucesso!"], 201);;
+        return response()->json(['message' => "Banco criado com sucesso!"], 201);;
     } catch (\Illuminate\Database\QueryException $e) {
         return response()->json(['message' => $e->getMessage()], 500);
     }
@@ -97,11 +95,11 @@ class DividaController extends Controller
     public function getOne($id)
     {
         try {
-            $Divida = Divida::find($id);
-            if (!$Divida) {
-                return response()->json(['message' => "Divida não encontrada!"], 404);
+            $Banco = Banco::find($id);
+            if (!$Banco) {
+                return response()->json(['message' => "Banco não encontrado!"], 404);
             }
-            return response()->json($Divida, 200);
+            return response()->json($Banco, 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

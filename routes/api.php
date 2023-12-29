@@ -4,7 +4,9 @@ use App\Http\Controllers\ApartamentoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TodoController;
+use App\Http\Controllers\BancoController;
 use App\Http\Controllers\BlocoController;
+use App\Http\Controllers\CaixaController;
 use App\Http\Controllers\CentralidadeController;
 use App\Http\Controllers\CoordenadorController;
 use App\Http\Controllers\DespesaController;
@@ -103,7 +105,7 @@ Route::prefix('taxas')->group(function () {
     /**[cria] um morador */
     Route::post('/', [TaxaController::class, 'create']);
     /**[pega] todas as taxas de um predio  - id do predio e fornecida na url */
-    Route::get('/predio/{idCoordenador}', [TaxaController::class, 'getAllByPredio']);
+    Route::get('/predio/coord/{idCoordenador}', [TaxaController::class, 'getAllByPredio']);
     Route::get('/{id}', [TaxaController::class, 'getOne']);
     Route::put('/{id}', [TaxaController::class, 'update']);
     Route::delete('/{id}', [TaxaController::class, 'delete']);
@@ -127,7 +129,7 @@ Route::prefix('dividas')->group(function () {
     /**[cria] um morador */
     Route::post('/', [DividaController::class, 'create']);
     /**[pega] todas as dividas de uma conta de apartamento  - id da conta e fornecida na url */
-    Route::get('/conta/{idConta}', [DividaController::class, 'getAllByConta']);
+    Route::get('/apartamento/{idapartamento}', [DividaController::class, 'getAllByApartamento']);
     Route::get('/{id}', [DividaController::class, 'getOne']);
     Route::put('/{id}', [DividaController::class, 'update']);
     Route::delete('/{id}', [DividaController::class, 'delete']);
@@ -142,4 +144,23 @@ Route::prefix('despesas')->group(function () {
     Route::get('/{id}', [DespesaController::class, 'getOne']);
     Route::put('/{id}', [DespesaController::class, 'update']);
     Route::delete('/{id}', [DespesaController::class, 'delete']);
+});
+//CAIXA
+Route::prefix('caixas')->group(function () {
+    Route::get('/', [CaixaController::class, 'getAll']);
+    /**[pega] todas as dividas de uma conta de apartamento  - id da conta e fornecida na url */
+    Route::get('/coord/{idCoordPredio}', [CaixaController::class, 'getAllByPredio']);
+    Route::get('/{id}', [CaixaController::class, 'getOne']);
+    Route::put('/{id}', [CaixaController::class, 'update']);
+    Route::delete('/{id}', [CaixaController::class, 'delete']);
+});
+//BANCO
+Route::prefix('bancos')->group(function () {
+    Route::get('/', [BancoController::class, 'getAll']);
+    Route::post('/', [BancoController::class, 'create']);
+    /**[pega] todas as dividas de uma conta de apartamento  - id da conta e fornecida na url */
+    Route::get('/predio/{idPredio}', [BancoController::class, 'getAllByCoordenador']);
+    Route::get('/{id}', [BancoController::class, 'getOne']);
+    Route::put('/{id}', [BancoController::class, 'update']);
+    Route::delete('/{id}', [BancoController::class, 'delete']);
 });

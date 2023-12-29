@@ -27,7 +27,11 @@ class BlocoController extends Controller
     public function getAllByCentr($idCentralidade)
     {
         try {
-            Centralidade::findOrFail($idCentralidade);
+            
+            $centralidade = Centralidade::find($idCentralidade);
+            if (!$centralidade) {
+                return response()->json(['message' => "Centralidade não encontrado."], 404);
+            }
             return Bloco::where('n_codicentr', '=', $idCentralidade)->get();
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);

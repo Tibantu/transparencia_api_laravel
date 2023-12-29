@@ -21,7 +21,9 @@ class TaxaController extends Controller
     public function getAllByPredio($idCoordenador)
     {
         try {
-            Taxa::findOrFail($idCoordenador);
+            $taxa = taxa::find($idCoordenador);
+            if (!$taxa)
+                return response()->json(['message' => "Taxa não encontrada"], 404);
 
             return Taxa::where('n_codicoord', '=', $idCoordenador)->get();
         } catch (QueryException $e) {

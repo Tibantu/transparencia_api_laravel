@@ -11,6 +11,7 @@ class Caixa extends Model
     public $timestamps = false;
     protected $primaryKey = 'n_codicaixa';
     protected $fillable = [
+        'n_codicaixa' ,
         'n_saldcaixa',
         'n_limicaixa',
         'create_at',
