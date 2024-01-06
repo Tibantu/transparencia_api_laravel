@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use OpenApi\Annotations as OA;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,6 +12,20 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+/**
+ * @OA\Info(
+ *    title="Swagger with Laravel",
+ *    version="1.0.0",
+ * )
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     securityScheme="bearerAuth",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
+
+ */
 
 Route::get('/', function () {
     return view('welcome');

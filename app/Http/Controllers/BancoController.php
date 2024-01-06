@@ -69,11 +69,11 @@ class BancoController extends Controller
     public function delete($id)
     {
         try {
-            $Divida = Divida::find($id);
-            if (!$Divida)
-                return response()->json(['message' => "Divida não encontrada"], 404);
-            $Divida->delete();
-            return response()->json(['message' => "Divida deletada com sucesso!"], 200);
+            $Banco = Banco::find($id);
+            if (!$Banco)
+                return response()->json(['message' => "Banco não encontrada"], 404);
+            $Banco->delete();
+            return response()->json(['message' => "Banco deletado com sucesso!"], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => "Hello " . $e->getMessage()], 500);
         }
@@ -81,11 +81,11 @@ class BancoController extends Controller
     public function update(Request $req, $id)
     {
         try {
-            $Divida = Divida::find($id);
-            if (!$Divida) {
-                return response()->json(['message' => "Divida não encontrada."], 404);
+            $Banco = Banco::find($id);
+            if (!$Banco) {
+                return response()->json(['message' => "Banco não encontrado."], 404);
             }
-            $Divida->update($req->all());
+            $Banco->update($req->all());
 
             return response()->json($req->all());
         } catch (QueryException $e) {

@@ -8,10 +8,54 @@ use GuzzleHttp\Psr7\Response;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use OpenApi\Annotations as OA;
 
 class CentralidadeController extends Controller
 {
+    /**
+ * @OA\Info(
+ *    title="Swagger with Laravel",
+ *    version="1.0.0",
+ * )
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     securityScheme="bearerAuth",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
+
+ */
+
+
+    /**
+* @OA\Post(
+     *     path="/api/centralidades",
+     *     summary="Cadastra uma nova centralidade",
+     *     @OA\Parameter(
+     *         name="c_desccentr",
+     *         in="query",
+     *         description="Denominação da centralidade",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="n_codicoord",
+     *         in="query",
+     *         description="id do coordenador ou da adminstração da centelidade",
+     *         required=false,
+     *         @OA\Schema(type="int")
+     *     ),
+     *     @OA\Parameter(
+     *         name="n_codiender",
+     *         in="query",
+     *         description="id do endereço",
+     *         required=true,
+     *         @OA\Schema(type="int")
+     *     ),
+     *     @OA\Response(response="201", description="Centralidade cadastrada successfully"),
+     *     @OA\Response(response="422", description="Validation errors")
+     * )
+     */
     public function getAll()
     {
         try {

@@ -1,0 +1,52 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My First API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/centralidades": {
+            "post": {
+                "summary": "Cadastra uma nova centralidade",
+                "operationId": "08cec20a3d8ded581d6fc34a42a1e3f5",
+                "parameters": [
+                    {
+                        "name": "c_desccentr",
+                        "in": "query",
+                        "description": "Denominação da centralidade",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "n_codicoord",
+                        "in": "query",
+                        "description": "id do coordenador ou da adminstração da centelidade",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    },
+                    {
+                        "name": "n_codiender",
+                        "in": "query",
+                        "description": "id do endereço",
+                        "required": true,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Centralidade cadastrada successfully"
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    }
+                }
+            }
+        }
+    }
+}

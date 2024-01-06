@@ -16,6 +16,21 @@ use App\Http\Controllers\MoradorController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PredioController;
 use App\Http\Controllers\TaxaController;
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Info(
+ *    title="Swagger with Laravel",
+ *    version="1.0.0",
+ * )
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     securityScheme="bearerAuth",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
+
+ */
 
 //ENDERECO
 Route::prefix('/enderecos')->group(function () {
