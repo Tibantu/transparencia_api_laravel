@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Validator;
 
 class BancoController extends Controller
 {
+    /**
+    * @OA\Get(
+        *     tags={"/bancos"},
+        *     path="/api/bancos",
+        *     summary="listar bancos",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function getAll()
     {
         try {
@@ -34,6 +44,29 @@ class BancoController extends Controller
         }
     }
 
+    /**
+    * @OA\Post(
+        *     tags={"/bancos"},
+        *     path="/api/bancos",
+        *     summary="Cadastrar bancos",
+        *     description="cadastrar bancos normalmente pertence a um coordenador",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\RequestBody(
+        *       required=true,
+        *       @OA\JsonContent(
+        *          type="object",
+        *          @OA\Property(property="c_entibanco",type="string",default="BAI",description="entidade bancária a simular"),
+        *          @OA\Property(property="n_codicoord",type="int",description="id do coordenador"),
+        *          @OA\Property(property="n_codientid",type="int",default=null,description="id da entidade proprietario do banco se não for um coordenador"),
+        *          @OA\Property(property="c_nomeentid",type="string",default=null,description="nome da entidade proprietario do banco se não for um coordenador")
+        *       )
+        *     ),
+        *     
+        *     @OA\Response(response="201", description="Banco cadastrado com sucesso"),
+        *     @OA\Response(response="412", description="Erro ao validar os dados"),
+        *     @OA\Response(response="500", description="Validation errors")
+        * )
+     */
     public function create(Request $req)
     {
         $isValidData = Validator::make($req->all(), 
@@ -49,7 +82,7 @@ class BancoController extends Controller
             'updated_at'
         ]);
         if ($isValidData->fails())
-        return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
+        return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
 
     try {
         $predio = Predio::find($req->input('n_codipredi'));
@@ -66,6 +99,24 @@ class BancoController extends Controller
     }
 }
 
+    /**
+    * @OA\Delete(
+        *     tags={"/bancos"},
+        *     path="/api/bancos/{banco}",
+        *     summary="apagar um banco",
+        *     security={{"bearerAuth": {} }},
+        *       @OA\Parameter(
+        *         name="banco",
+        *         in="path",
+        *         description="id do bancos",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="banco deletado com sucesso!"),
+        *     @OA\Response(response="404", description="banco não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function delete($id)
     {
         try {
@@ -92,6 +143,24 @@ class BancoController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+        /**
+    * @OA\Get(
+        *     tags={"/bancos"},
+        *     path="/api/bancos/{banco}",
+        *     summary="mostrar um banco",
+        *     security={{ "bearerAuth": {}}},   
+        *     @OA\Parameter(
+        *         name="banco",
+        *         in="path",
+        *         description="id do banco",
+        *         required=true,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="banco não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function getOne($id)
     {
         try {

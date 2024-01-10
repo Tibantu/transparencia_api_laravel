@@ -1,0 +1,95 @@
+[33mcommit 3facc758e04444082c51a56234c734eb7ea6a6db[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Manuel Alfredo <948manuel@gmail.com>
+Date:   Sat Jan 6 23:12:37 2024 +0100
+
+    swagger adicionado
+
+[33mcommit c05c308d8ce886ba08c4a133e9d7fed5cbe8d9c2[m
+Author: Manuel Alfredo <948manuel@gmail.com>
+Date:   Fri Dec 29 15:19:35 2023 +0100
+
+    rotas da tesouraria
+
+[33mcommit ee580c384afb037ac38326974d19436d5657d5dc[m
+Author: Manuel Alfredo <948manuel@gmail.com>
+Date:   Mon Dec 25 10:16:11 2023 +0100
+
+    caixa e conta do apartamento
+
+[33mcommit 76f97c2c844008bbd49d6cce1a7030a4c352348f[m
+Author: Manuel Alfredo <948manuel@gmail.com>
+Date:   Wed Dec 20 11:29:17 2023 +0100
+
+    +..
+
+[33mcommit 0e51bf2ed6e3bd7f5f87c198ed325025a8e50d73[m
+Author: Manuel Alfredo <948manuel@gmail.com>
+Date:   Sun Dec 17 23:31:29 2023 +0100
+
+    taxa-pagamento
+
+[33mcommit c5ff1233c97f3a0a67533fd5022b0fe0e5e264d2[m
+Author: Manuel Alfredo <948manuel@gmail.com>
+Date:   Sun Dec 17 10:06:41 2023 +0100
+
+    cord morad pagam add
+
+[33mcommit ae382d25fd45b1a178e96afd0b9ebae667d4575d[m
+Author: Manuel Alfredo <948manuel@gmail.com>
+Date:   Fri Dec 15 22:23:13 2023 +0100
+
+    morador add
+
+[33mcommit 29784a42f8804868b71c68bdb2f4f54ede3dc084[m
+Author: Admiro André <admiroalfredo1742@gmail.com>
+Date:   Wed Nov 29 17:20:07 2023 +0100
+
+    Adicionado a routa [Apartamento]
+
+[33mcommit 83a1b7d7c18e77da500db6e261284538982b761c[m
+Author: Admiro André <admiroalfredo1742@gmail.com>
+Date:   Mon Nov 27 13:11:26 2023 +0100
+
+    Criado as modelos prencipais
+
+[33mcommit 0a8a2a142845db1133fda730c1a14693871afd2e[m
+Author: Admiro André <admiroalfredo1742@gmail.com>
+Date:   Wed Nov 8 17:07:03 2023 +0100
+
+    Adicionando
+
+[33mcommit eb94e0f0837c17a75a9368bc81e33f32a1c6501d[m
+Author: Admiro André <admiroalfredo1742@gmail.com>
+Date:   Wed Nov 8 16:55:35 2023 +0100
+
+    Versionar o .env
+
+[33mcommit d2abed245e40531d02329e48d674fd2b4d0b7004[m
+Author: Admiro André <admiroalfredo1742@gmail.com>
+Date:   Wed Nov 8 16:48:25 2023 +0100
+
+    Terminado a rota [/centralidades] e comecando a rota [/blocos]
+
+[33mcommit 93ae735f684fa5fafd9a6091fd4a9909507b7602[m
+Author: Admiro André <admiroalfredo1742@gmail.com>
+Date:   Fri Nov 3 05:55:02 2023 +0100
+
+    Modificando o [README.md]
+
+[33mcommit 4aa972192e66ce20384292bf29cc85a6e8a77f06[m
+Author: Admiro André <admiroalfredo1742@gmail.com>
+Date:   Wed Oct 25 05:51:45 2023 +0100
+
+    ExAlteração em [README.md]
+
+[33mcommit 68c202705836d173b2208493931d892632853821[m
+Author: Admiro André <admiroalfredo1742@gmail.com>
+Date:   Wed Oct 25 05:48:53 2023 +0100
+
+    Expecicado o formato da corpo de responta das requesições
+
+[33mcommit b4bc5235f55bb52e7899f7b343e79f9588c7254f[m
+Author: Admiro André <admiroalfredo1742@gmail.com>
+Date:   Sun Oct 22 10:09:06 2023 +0100
+
+    Primeiro commit

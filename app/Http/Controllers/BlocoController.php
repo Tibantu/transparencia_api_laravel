@@ -14,11 +14,20 @@ use \Illuminate\Database\QueryException;
 
 class BlocoController extends Controller
 {
-
+/**
+    * @OA\Get(
+        *     tags={"/blocos"},
+        *     path="/api/blocos",
+        *     summary="listar blocos",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function getAll()
     {
         try {
-            return Bloco::all();
+           return response()->json(['blocos' => Bloco::all()],200) ;
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -37,6 +46,33 @@ class BlocoController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+    /**
+    * @OA\Post(
+        *     tags={"/blocos"},
+        *     path="/api/blocos/centralidade/{centralidade}",
+        *     summary="Cadastrar um bloco numa centralidade",
+        *     security={{"bearerAuth": {} }},
+         *     @OA\Parameter(
+        *         name="centralidade",
+        *         in="path",
+        *         description="id da centralidade",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\RequestBody(
+        *       required=true,
+        *       @OA\JsonContent(
+        *          type="object",
+        *          @OA\Property(property="c_descbloco",type="string",description="denominação do bloco"),
+        *          @OA\Property(property="c_ruabloco",type="string",description="ruas que delimitam o bloco")
+        *       )
+        *     ),
+        *     
+        *     @OA\Response(response="201", description="bloco cadastrado com sucesso"),
+        *     @OA\Response(response="412", description="Erro ao validar os dados"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function create(Request $req, $idCentralidade)
     {
 
@@ -45,7 +81,7 @@ class BlocoController extends Controller
             "n_nblocentr" => 'integer',
             "n_codicoord" => 'integer',
             "n_codicaixa" => 'integer',
-            "c_ruablco" => 'string',
+            "c_ruabloco" => 'string',
         ]);
         $centralidadde = Centralidade::find($idCentralidade);
         if (!$centralidadde)
@@ -72,9 +108,28 @@ class BlocoController extends Controller
             $caixa->update($dataCaixa);
             return response()->json(['message' => "Bloco criada com sucesso!"], 201);;
         } catch (QueryException $e) {
+            /*deletar a caixa porque o bloco nao foi criado */
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+        /**
+    * @OA\Delete(
+        *     tags={"/blocos"},
+        *     path="/api/blocos/{bloco}",
+        *     summary="apagar um bloco",
+        *       security={{"bearerAuth": {} }},
+        *       @OA\Parameter(
+        *         name="bloco",
+        *         in="path",
+        *         description="id do bloco",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="bloco deletado com sucesso!"),
+        *     @OA\Response(response="404", description="bloco não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function delete($id)
     {
         try {
@@ -87,6 +142,33 @@ class BlocoController extends Controller
             return response()->json(['message' => "Hello " . $e->getMessage()], 500);
         }
     }
+        /**
+    * @OA\Put(
+        *     tags={"/blocos"},
+        *     path="/api/blocos/{bloco}",
+        *     summary="Atualizar um bloco de uma centralidade",
+        *     security={{"bearerAuth": {} }},
+         *     @OA\Parameter(
+        *         name="bloco",
+        *         in="path",
+        *         description="id do bloco",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\RequestBody(
+        *       required=true,
+        *       @OA\JsonContent(
+        *          type="object",
+        *          @OA\Property(property="c_descbloco",type="string",description="denominação do bloco"),
+        *          @OA\Property(property="c_ruabloco",type="string",description="ruas que delimitam o bloco")
+        *       )
+        *     ),
+        *     
+        *     @OA\Response(response="201", description="bloco cadastrado com sucesso"),
+        *     @OA\Response(response="412", description="Erro ao validar os dados"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function update(Request $req, $id)
     {
         try {
@@ -101,6 +183,24 @@ class BlocoController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+     /**
+    * @OA\Get(
+        *     tags={"/blocos"},
+        *     path="/api/blocos/{bloco}",
+        *     summary="mostrar um bloco",
+        *     security={{ "bearerAuth": {}}},   
+        *     @OA\Parameter(
+        *         name="bloco",
+        *         in="path",
+        *         description="id do bloco",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="blocos não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function getOne($id)
     {
         try {

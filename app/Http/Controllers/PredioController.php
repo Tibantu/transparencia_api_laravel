@@ -13,10 +13,20 @@ use \Illuminate\Database\QueryException;
 class PredioController extends Controller
 {
 
+    /**
+    * @OA\Get(
+        *     tags={"/predios"},
+        *     path="/api/predios",
+        *     summary="listar predios",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function getAll()
     {
         try {
-            return Predio::all();
+            return response() ->json(['message' => Predio::all()], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -32,6 +42,35 @@ class PredioController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+        /**
+    * @OA\Post(
+        *     tags={"/predios"},
+        *     path="/api/predios/bloco/{bloco}",
+        *     summary="Cadastrar um predios numa bloco",
+        *     security={{"bearerAuth": {} }},
+         *     @OA\Parameter(
+        *         name="bloco",
+        *         in="path",
+        *         description="id da bloco",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\RequestBody(
+        *       required=true,
+        *       @OA\JsonContent(
+        *          type="object",
+        *          @OA\Property(property="c_descpredi",type="string",description="denominação do Prédio"),
+        *          @OA\Property(property="c_entrpredi",type="string",description="Entrada do prédio"),
+        *          @OA\Property(property="n_codicoord",type="int",description="id do Coordenador do prédio")
+        *       )
+        *     ),
+        *     
+        *     @OA\Response(response="201", description="bloco cadastrado com sucesso"),
+        *     @OA\Response(response="412", description="Erro ao validar os dados"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
+
     public function create(Request $req, $idBloco)
     {
 
@@ -73,6 +112,24 @@ class PredioController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+            /**
+    * @OA\Delete(
+        *     tags={"/predios"},
+        *     path="/api/predios/{predio}",
+        *     summary="apagar um predio",
+        *       security={{"bearerAuth": {} }},
+        *       @OA\Parameter(
+        *         name="predio",
+        *         in="path",
+        *         description="id do predio",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="predio deletado com sucesso!"),
+        *     @OA\Response(response="404", description="predio não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function delete($id)
     {
         try {
@@ -82,9 +139,36 @@ class PredioController extends Controller
             $predio->delete();
             return response()->json(['message' => "Predio deletado com sucesso!"], 200);
         } catch (QueryException $e) {
-            return response()->json(['message' => "Hello " . $e->getMessage()], 500);
+            return response()->json(['message' => "Erro no servidor" . $e->getMessage()], 500);
         }
     }
+            /**
+    * @OA\Put(
+        *     tags={"/predios"},
+        *     path="/api/predios/{predio}",
+        *     summary="atualizar os dados de um predios",
+        *     security={{"bearerAuth": {} }},
+         *     @OA\Parameter(
+        *         name="predio",
+        *         in="path",
+        *         description="id da bloco",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\RequestBody(
+        *       required=true,
+        *       @OA\JsonContent(
+        *          type="object",
+        *          @OA\Property(property="c_descpredi",type="string",description="denominação do Prédio"),
+        *          @OA\Property(property="c_entrpredi",type="string",description="Entrada do prédio"),
+        *       )
+        *     ),
+        *     
+        *     @OA\Response(response="201", description="predio Atualizado com sucesso"),
+        *     @OA\Response(response="412", description="Erro ao validar os dados"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function update(Request $req, $id)
     {
         try {
@@ -99,6 +183,24 @@ class PredioController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+     /**
+    * @OA\Get(
+        *     tags={"/predios"},
+        *     path="/api/predios/{predio}",
+        *     summary="mostrar um predio",
+        *     security={{ "bearerAuth": {}}},   
+        *     @OA\Parameter(
+        *         name="predio",
+        *         in="path",
+        *         description="id do predio",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="predio não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function getOne($id)
     {
         try {

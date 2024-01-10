@@ -1,37 +1,99 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "My First API",
+        "title": "Transparência API",
         "version": "0.1"
     },
     "paths": {
-        "/api/centralidades": {
+        "/api/bancos": {
+            "get": {
+                "tags": [
+                    "/bancos"
+                ],
+                "summary": "listar bancos",
+                "operationId": "6c311a3cbbb7d5854a7c72e8795a6a23",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "post": {
-                "summary": "Cadastra uma nova centralidade",
-                "operationId": "08cec20a3d8ded581d6fc34a42a1e3f5",
+                "tags": [
+                    "/bancos"
+                ],
+                "summary": "Cadastrar bancos",
+                "description": "cadastrar bancos normalmente pertence a um coordenador",
+                "operationId": "0d9e58e58208b73922b8638b4201361e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_entibanco": {
+                                        "description": "entidade bancária a simular",
+                                        "type": "string",
+                                        "default": "BAI"
+                                    },
+                                    "n_codicoord": {
+                                        "description": "id do coordenador",
+                                        "type": "integer"
+                                    },
+                                    "n_codientid": {
+                                        "description": "id da entidade proprietario do banco se não for um coordenador",
+                                        "type": "integer",
+                                        "default": null
+                                    },
+                                    "c_nomeentid": {
+                                        "description": "nome da entidade proprietario do banco se não for um coordenador",
+                                        "type": "string",
+                                        "default": null
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Banco cadastrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "500": {
+                        "description": "Validation errors"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/bancos/{banco}": {
+            "get": {
+                "tags": [
+                    "/bancos"
+                ],
+                "summary": "mostrar um banco",
+                "operationId": "a58bc95718888f8280e96eb51a4dd974",
                 "parameters": [
                     {
-                        "name": "c_desccentr",
-                        "in": "query",
-                        "description": "Denominação da centralidade",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "n_codicoord",
-                        "in": "query",
-                        "description": "id do coordenador ou da adminstração da centelidade",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    },
-                    {
-                        "name": "n_codiender",
-                        "in": "query",
-                        "description": "id do endereço",
+                        "name": "banco",
+                        "in": "path",
+                        "description": "id do banco",
                         "required": true,
                         "schema": {
                             "type": "int"
@@ -39,13 +101,829 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "banco não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/bancos"
+                ],
+                "summary": "apagar um banco",
+                "operationId": "b717c5d932a544cd55374dee3164651d",
+                "parameters": [
+                    {
+                        "name": "banco",
+                        "in": "path",
+                        "description": "id do bancos",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "banco deletado com sucesso!"
+                    },
+                    "404": {
+                        "description": "banco não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/blocos": {
+            "get": {
+                "tags": [
+                    "/blocos"
+                ],
+                "summary": "listar blocos",
+                "operationId": "b7e8c77ab80118075b10ac8f66d89b9b",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/blocos/centralidade/{centralidade}": {
+            "post": {
+                "tags": [
+                    "/blocos"
+                ],
+                "summary": "Cadastrar um bloco numa centralidade",
+                "operationId": "b8ef5a9a432325f903c6877bf37e9287",
+                "parameters": [
+                    {
+                        "name": "centralidade",
+                        "in": "path",
+                        "description": "id da centralidade",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_descbloco": {
+                                        "description": "denominação do bloco",
+                                        "type": "string"
+                                    },
+                                    "c_ruabloco": {
+                                        "description": "ruas que delimitam o bloco",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "bloco cadastrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/blocos/{bloco}": {
+            "get": {
+                "tags": [
+                    "/blocos"
+                ],
+                "summary": "mostrar um bloco",
+                "operationId": "c94deb4f7e6bf0a0f3476a6ce76e1279",
+                "parameters": [
+                    {
+                        "name": "bloco",
+                        "in": "path",
+                        "description": "id do bloco",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "blocos não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "/blocos"
+                ],
+                "summary": "Atualizar um bloco de uma centralidade",
+                "operationId": "f948c9b3d404a04d4038063308055155",
+                "parameters": [
+                    {
+                        "name": "bloco",
+                        "in": "path",
+                        "description": "id do bloco",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_descbloco": {
+                                        "description": "denominação do bloco",
+                                        "type": "string"
+                                    },
+                                    "c_ruabloco": {
+                                        "description": "ruas que delimitam o bloco",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "bloco cadastrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/blocos"
+                ],
+                "summary": "apagar um bloco",
+                "operationId": "6c4f25766d9ed485f22b32b2e7b7f7dd",
+                "parameters": [
+                    {
+                        "name": "bloco",
+                        "in": "path",
+                        "description": "id do bloco",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "bloco deletado com sucesso!"
+                    },
+                    "404": {
+                        "description": "bloco não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/centralidades": {
+            "get": {
+                "tags": [
+                    "/centralidades"
+                ],
+                "summary": "listar centralidades",
+                "operationId": "8d0f6a0384d9be39463d1f05c49a8e3e",
+                "responses": {
+                    "200": {
+                        "description": "successfully"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "/centralidades"
+                ],
+                "summary": "Atualizar um objecto no banco de dado",
+                "description": "atualizar os dados de uma centralidade",
+                "operationId": "1a99be9436bb2c66feac6da0c74c38c0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_desccentr": {
+                                        "description": "denominação da centralidade",
+                                        "type": "string",
+                                        "default": "Centralidade B"
+                                    },
+                                    "n_codiender": {
+                                        "description": "id do endereço da centralidade",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Centralidade atualizada com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "/centralidades"
+                ],
+                "summary": "Cadastrar centralidade",
+                "operationId": "cab68104f1aaa297c8e58b2a0e6ad490",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_desccentr": {
+                                        "description": "denominação da centralidade",
+                                        "type": "string",
+                                        "default": "Centralidade B"
+                                    },
+                                    "n_codiender": {
+                                        "description": "id do endereço da centralidade",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
                     "201": {
                         "description": "Centralidade cadastrada successfully"
                     },
-                    "422": {
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "500": {
                         "description": "Validation errors"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/centralidades/{centralidade}": {
+            "get": {
+                "tags": [
+                    "/centralidades"
+                ],
+                "summary": "mostrar uma centralidade",
+                "operationId": "9d497f642f0267c5de587ee22d1c43af",
+                "parameters": [
+                    {
+                        "name": "centralidade",
+                        "in": "path",
+                        "description": "id da centralidade",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "centralidade não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/centralidades"
+                ],
+                "summary": "apagar uma centralidade",
+                "operationId": "467fb91439e1b561b8851854a135a7ed",
+                "parameters": [
+                    {
+                        "name": "centralidade",
+                        "in": "path",
+                        "description": "id da centralidade",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "centralidade deletada com sucesso!"
+                    },
+                    "404": {
+                        "description": "centralidade não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/despesas": {
+            "get": {
+                "tags": [
+                    "/despesas"
+                ],
+                "summary": "listar despesas",
+                "operationId": "ac8e14d119350f34662d57c5912ccca0",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "/despesas"
+                ],
+                "summary": "Registrar uma despesa",
+                "operationId": "04942cfc96912eb8a8639b8e8aa7defa",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_objedespe": {
+                                        "description": "objectivo da despesa",
+                                        "type": "string"
+                                    },
+                                    "n_codicoord": {
+                                        "description": "id do coordenador que criou a despesa",
+                                        "type": "integer"
+                                    },
+                                    "n_valodespe": {
+                                        "description": "valores da deespesa",
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "c_fontdespe": {
+                                        "description": "fonte dos valores",
+                                        "type": "integer"
+                                    },
+                                    "d_dasadespe": {
+                                        "description": "data do saque dos valores",
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "despesa cadastrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/despesas/coord/{idCoordPredio}": {
+            "get": {
+                "tags": [
+                    "/despesas"
+                ],
+                "summary": "mostrar um despesa",
+                "operationId": "f3e17e718fb9f3162e107a97e54e425c",
+                "parameters": [
+                    {
+                        "name": "idCoordPredio",
+                        "in": "path",
+                        "description": "id do coordenador do predio",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "despesas não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/despesas/{despesa}": {
+            "get": {
+                "tags": [
+                    "/despesas"
+                ],
+                "summary": "mostrar um despesa",
+                "operationId": "e98b11fc5ff3dca2fa35ee8db499c7c2",
+                "parameters": [
+                    {
+                        "name": "despesa",
+                        "in": "path",
+                        "description": "id do despesa",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "despesa não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/despesas"
+                ],
+                "summary": "apagar uma despesas",
+                "operationId": "f6980c1fb7b2523814b8b0e5be5a61da",
+                "parameters": [
+                    {
+                        "name": "despesa",
+                        "in": "path",
+                        "description": "id do despesa",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "despesa deletada com sucesso!"
+                    },
+                    "404": {
+                        "description": "despesas não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/predios": {
+            "get": {
+                "tags": [
+                    "/predios"
+                ],
+                "summary": "listar predios",
+                "operationId": "456fe57437d1670dc58d8b8a79b12d8c",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/predios/bloco/{bloco}": {
+            "post": {
+                "tags": [
+                    "/predios"
+                ],
+                "summary": "Cadastrar um predios numa bloco",
+                "operationId": "3e2cbe2ec69551301de9021052b49a81",
+                "parameters": [
+                    {
+                        "name": "bloco",
+                        "in": "path",
+                        "description": "id da bloco",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_descpredi": {
+                                        "description": "denominação do Prédio",
+                                        "type": "string"
+                                    },
+                                    "c_entrpredi": {
+                                        "description": "Entrada do prédio",
+                                        "type": "string"
+                                    },
+                                    "n_codicoord": {
+                                        "description": "id do Coordenador do prédio",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "bloco cadastrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/predios/{predio}": {
+            "get": {
+                "tags": [
+                    "/predios"
+                ],
+                "summary": "mostrar um predio",
+                "operationId": "db6cd45c9e5711d9d73696ef2dd1a0bd",
+                "parameters": [
+                    {
+                        "name": "predio",
+                        "in": "path",
+                        "description": "id do predio",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "predio não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "/predios"
+                ],
+                "summary": "atualizar os dados de um predios",
+                "operationId": "6fdcb1219d2e18883ad2a1e7c1059ecb",
+                "parameters": [
+                    {
+                        "name": "predio",
+                        "in": "path",
+                        "description": "id da bloco",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_descpredi": {
+                                        "description": "denominação do Prédio",
+                                        "type": "string"
+                                    },
+                                    "c_entrpredi": {
+                                        "description": "Entrada do prédio",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "predio Atualizado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/predios"
+                ],
+                "summary": "apagar um predio",
+                "operationId": "f64f25d3fb7795f4571b69c4e79a1003",
+                "parameters": [
+                    {
+                        "name": "predio",
+                        "in": "path",
+                        "description": "id do predio",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "predio deletado com sucesso!"
+                    },
+                    "404": {
+                        "description": "predio não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     }
