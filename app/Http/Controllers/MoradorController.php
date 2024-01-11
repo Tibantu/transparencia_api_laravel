@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Apartamento;
 use App\Models\Morador;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -9,6 +10,16 @@ use Illuminate\Support\Facades\Validator;
 
 class MoradorController extends Controller
 {
+            /**
+    * @OA\Get(
+        *     tags={"/moradores"},
+        *     path="/api/moradores",
+        *     summary="listar moradores",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function getAll()
     {
         try {
@@ -29,6 +40,31 @@ class MoradorController extends Controller
         }
     }
 */
+
+/**
+    * @OA\Post(
+        *     tags={"/moradores"},
+        *     path="/api/moradores",
+        *     summary="Registrar uma morador",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\RequestBody(
+        *       required=true,
+        *       @OA\JsonContent(
+        *          type="object",
+        *          @OA\Property(property="c_nomemorad",type="string",description="objectivo da despesa"),
+        *          @OA\Property(property="c_apelmorad",type="string",description="id do coordenador que criou a despesa"),
+        *          @OA\Property(property="n_codiapart",type="int",description="id do apartamento a vincular com o morador"),
+        *          @OA\Property(property="c_bilhmorad",type="string",description="valores da deespesa"),
+        *       )
+        *     ),
+        *     
+        *     @OA\Response(response="201", description="morador cadastrado com sucesso"),
+        *     @OA\Response(response="412", description="Erro ao validar os dados"),
+        *     @OA\Response(response="404", description="apartamento não encontrado"),
+        *     @OA\Response(response="405", description="apartamento oucupado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function create(Request $req)
     {
         $isValidData = Validator::make($req->all(), [
@@ -37,10 +73,20 @@ class MoradorController extends Controller
             "c_bilhmorad" => 'string'
         ]);
         if ($isValidData->fails())
-        return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
+        return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
 
     try {
-        Morador::create($req->all());
+        $registro = Apartamento::where('n_codiapart',$req->input('n_codiapart'))->first();
+        if(!$registro)
+              return response()->json(['message' => 'apartamento não encontrado'], 404);
+  
+        //antes de criar o morador verificar se o apartamento está oucupado
+        if($registro->n_codimorad != null)
+            return response()->json(['message' => 'apartamento oucupado'], 405);
+        $morador = Morador::create($req->all());
+        // atribuir o apartamento ao morador
+        $registro->n_codimorad = $morador->n_codimorad;
+        $registro->save();
         // dd($data);
         return response()->json(['message' => "Morador criado com sucesso!"], 201);;
     } catch (\Illuminate\Database\QueryException $e) {
@@ -48,12 +94,39 @@ class MoradorController extends Controller
     }
 }
 
+ /**
+    * @OA\Delete(
+        *     tags={"/moradores"},
+        *     path="/api/moradores/{morador}",
+        *     summary="apagar um morador",
+        *       security={{"bearerAuth": {} }},
+        *       @OA\Parameter(
+        *         name="morador",
+        *         in="path",
+        *         description="id do morador",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="morador deletado com sucesso!"),
+        *     @OA\Response(response="404", description="morador não encontrada"),
+        *     @OA\Response(response="405", description="apartamento do morador não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function delete($id)
     {
         try {
             $Morador = Morador::find($id);
             if (!$Morador)
                 return response()->json(['message' => "Morador não encontrado"], 404);
+            
+            $apartamento = Apartamento::find($Morador->n_codimorad);
+            if(!$apartamento)
+                return response()->json(['message' => "apartamento do morador não encontrado"], 405);
+            
+            $apartamento->n_codimorad = null;
+            $apartamento->save();
+
             $Morador->delete();
             return response()->json(['message' => "Morador deletado com sucesso!"], 200);
         } catch (QueryException $e) {
@@ -74,6 +147,24 @@ class MoradorController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+         /**
+    * @OA\Get(
+        *     tags={"/moradores"},
+        *     path="/api/moradores/{morador}",
+        *     summary="mostrar um morador",
+        *     security={{ "bearerAuth": {}}},   
+        *     @OA\Parameter(
+        *         name="morador",
+        *         in="path",
+        *         description="id do morador",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="morador não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function getOne($id)
     {
         try {

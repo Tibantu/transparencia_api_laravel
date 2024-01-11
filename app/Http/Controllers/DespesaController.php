@@ -75,7 +75,7 @@ class DespesaController extends Controller
         *          @OA\Property(property="c_objedespe",type="string",description="objectivo da despesa"),
         *          @OA\Property(property="n_codicoord",type="int",description="id do coordenador que criou a despesa"),
         *          @OA\Property(property="n_valodespe",type="float",description="valores da deespesa"),
-        *          @OA\Property(property="c_fontdespe",type="int",description="fonte dos valores"),
+        *          @OA\Property(property="c_fontdespe",type="int",default="caixa" ,description="fonte dos valores"),
         *          @OA\Property(property="d_dasadespe",type="date",description="data do saque dos valores")
         *       )
         *     ),

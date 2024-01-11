@@ -5,6 +5,225 @@
         "version": "0.1"
     },
     "paths": {
+        "/api/apartamentos": {
+            "get": {
+                "tags": [
+                    "/apartamentos"
+                ],
+                "summary": "listar apartamentos",
+                "operationId": "1e81be544e5f3029325871c31d5e885b",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/apartamentos/predio/{predio}": {
+            "put": {
+                "tags": [
+                    "/apartamentos"
+                ],
+                "summary": "Registrar uma apartamento",
+                "operationId": "0090590d5c010e12aab33c759fc1ad6c",
+                "parameters": [
+                    {
+                        "name": "predio",
+                        "in": "path",
+                        "description": "id do apartamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_portapart": {
+                                        "description": "porta do apartamento",
+                                        "type": "string"
+                                    },
+                                    "c_tipoapart": {
+                                        "description": "tipo do apartamento",
+                                        "type": "string"
+                                    },
+                                    "n_nandapart": {
+                                        "description": "andar do apartamento",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "apartamento cadastrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "apartamento não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "/apartamentos"
+                ],
+                "summary": "Registrar uma apartamento",
+                "operationId": "cf86f8bf0a837cd65dcea7d27bc7a332",
+                "parameters": [
+                    {
+                        "name": "predio",
+                        "in": "path",
+                        "description": "id do apartamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_portapart": {
+                                        "description": "porta do apartamento",
+                                        "type": "string"
+                                    },
+                                    "c_tipoapart": {
+                                        "description": "tipo do apartamento",
+                                        "type": "string"
+                                    },
+                                    "n_nandapart": {
+                                        "description": "andar do apartamento",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "apartamento cadastrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "apartamento não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/apartamentos/{apartamento}": {
+            "get": {
+                "tags": [
+                    "/apartamentos"
+                ],
+                "summary": "mostrar apartamento",
+                "operationId": "67068de37b8f328852193eeddeda83e9",
+                "parameters": [
+                    {
+                        "name": "apartamento",
+                        "in": "path",
+                        "description": "id do apartamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "apartamento não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/apartamentos"
+                ],
+                "summary": "apagar um apartamento",
+                "operationId": "7d7c8e6b0e5ba49ea372cd4053973243",
+                "parameters": [
+                    {
+                        "name": "apartamento",
+                        "in": "path",
+                        "description": "id do apartamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "morador deletado com sucesso!"
+                    },
+                    "404": {
+                        "description": "apartamento não encontrada"
+                    },
+                    "405": {
+                        "description": "apartamento com morador, não deletado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/bancos": {
             "get": {
                 "tags": [
@@ -583,7 +802,8 @@
                                     },
                                     "c_fontdespe": {
                                         "description": "fonte dos valores",
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "default": "caixa"
                                     },
                                     "d_dasadespe": {
                                         "description": "data do saque dos valores",
@@ -708,6 +928,180 @@
                     },
                     "404": {
                         "description": "despesas não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/moradores": {
+            "get": {
+                "tags": [
+                    "/moradores"
+                ],
+                "summary": "listar moradores",
+                "operationId": "5457059570b079039b1ca9383632ca8c",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "/moradores"
+                ],
+                "summary": "Registrar uma morador",
+                "operationId": "9275386b64af6f8d0a34de8f8facbe11",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_nomemorad": {
+                                        "description": "objectivo da despesa",
+                                        "type": "string"
+                                    },
+                                    "c_apelmorad": {
+                                        "description": "id do coordenador que criou a despesa",
+                                        "type": "string"
+                                    },
+                                    "n_codiapart": {
+                                        "description": "id do apartamento a vincular com o morador",
+                                        "type": "integer"
+                                    },
+                                    "c_bilhmorad": {
+                                        "description": "valores da deespesa",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "morador cadastrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "apartamento não encontrado"
+                    },
+                    "405": {
+                        "description": "apartamento oucupado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/moradores/{morador}": {
+            "get": {
+                "tags": [
+                    "/moradores"
+                ],
+                "summary": "mostrar um morador",
+                "operationId": "f575cc64868540686ddc792c21e58081",
+                "parameters": [
+                    {
+                        "name": "morador",
+                        "in": "path",
+                        "description": "id do morador",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "morador não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/moradores"
+                ],
+                "summary": "apagar um morador",
+                "operationId": "395380c4da06ba839c3c85a52c8f4e31",
+                "parameters": [
+                    {
+                        "name": "morador",
+                        "in": "path",
+                        "description": "id do morador",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "morador deletado com sucesso!"
+                    },
+                    "404": {
+                        "description": "morador não encontrada"
+                    },
+                    "405": {
+                        "description": "apartamento do morador não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/pagamentos": {
+            "get": {
+                "tags": [
+                    "/pagamentos"
+                ],
+                "summary": "listar pagamentos",
+                "operationId": "9898b00bd3bd21e19dd7bfb612da29ae",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
                     },
                     "500": {
                         "description": "Erro no servidor"

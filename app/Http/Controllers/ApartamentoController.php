@@ -6,13 +6,26 @@ use App\Models\Bloco;
 use App\Models\Centralidade;
 use App\Models\Apartamento;
 use App\Models\Conta;
+use App\Models\Predio;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use \Illuminate\Database\QueryException;
 
+use function PHPUnit\Framework\isNull;
+
 class ApartamentoController extends Controller
 {
 
+/**
+    * @OA\Get(
+        *     tags={"/apartamentos"},
+        *     path="/api/apartamentos",
+        *     summary="listar apartamentos",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function getAll()
     {
         try {
@@ -32,6 +45,35 @@ class ApartamentoController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+    /**
+    * @OA\Post(
+        *     tags={"/apartamentos"},
+        *     path="/api/apartamentos/predio/{predio}",
+        *     summary="Registrar uma apartamento",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Parameter(
+        *         name="predio",
+        *         in="path",
+        *         description="id do apartamento",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\RequestBody(
+        *       required=true,
+        *       @OA\JsonContent(
+        *          type="object",
+        *          @OA\Property(property="c_portapart",type="string",description="porta do apartamento"),
+        *          @OA\Property(property="c_tipoapart",type="string",description="tipo do apartamento"),
+        *          @OA\Property(property="n_nandapart",type="int",description="andar do apartamento"),
+        *       )
+        *     ),
+        *     
+        *     @OA\Response(response="201", description="apartamento cadastrado com sucesso"),
+        *     @OA\Response(response="412", description="Erro ao validar os dados"),
+        *     @OA\Response(response="404", description="apartamento não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function create(Request $req, $idPredio)
     {
 
@@ -46,9 +88,9 @@ class ApartamentoController extends Controller
 
         ]);
         try {
-            $bloco = Bloco::find($idPredio);
-            if (!$bloco)
-                return response()->json(['message' => "Bloco não encontrada!"], 404);
+            $predio = Predio::find($idPredio);
+            if (!$predio)
+                return response()->json(['message' => "predio não encontrado"], 404);
 
             if ($isValidData->fails())
                 return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
@@ -70,18 +112,68 @@ class ApartamentoController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+     /**
+    * @OA\Delete(
+        *     tags={"/apartamentos"},
+        *     path="/api/apartamentos/{apartamento}",
+        *     summary="apagar um apartamento",
+        *       security={{"bearerAuth": {} }},
+        *       @OA\Parameter(
+        *         name="apartamento",
+        *         in="path",
+        *         description="id do apartamento",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="morador deletado com sucesso!"),
+        *     @OA\Response(response="404", description="apartamento não encontrada"),
+        *     @OA\Response(response="405", description="apartamento com morador, não deletado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function delete($id)
     {
         try {
             $Apartamento = Apartamento::find($id);
             if (!$Apartamento)
                 return response()->json(['message' => "Apartamento não encontrado"], 404);
+            if(isNull($Apartamento->n_codimorad))
+                return response()->json(['message' => "apartamento com morador, não deletado"], 405);
             $Apartamento->delete();
             return response()->json(['message' => "Apartamento deletado com sucesso!"], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => "Hello " . $e->getMessage()], 500);
         }
     }
+        /**
+    * @OA\Put(
+        *     tags={"/apartamentos"},
+        *     path="/api/apartamentos/predio/{predio}",
+        *     summary="Registrar uma apartamento",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Parameter(
+        *         name="predio",
+        *         in="path",
+        *         description="id do apartamento",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\RequestBody(
+        *       required=true,
+        *       @OA\JsonContent(
+        *          type="object",
+        *          @OA\Property(property="c_portapart",type="string",description="porta do apartamento"),
+        *          @OA\Property(property="c_tipoapart",type="string",description="tipo do apartamento"),
+        *          @OA\Property(property="n_nandapart",type="int",description="andar do apartamento"),
+        *       )
+        *     ),
+        *     
+        *     @OA\Response(response="201", description="apartamento cadastrado com sucesso"),
+        *     @OA\Response(response="412", description="Erro ao validar os dados"),
+        *     @OA\Response(response="404", description="apartamento não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function update(Request $req, $id)
     {
         try {
@@ -96,6 +188,24 @@ class ApartamentoController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+/**
+    * @OA\Get(
+        *     tags={"/apartamentos"},
+        *     path="/api/apartamentos/{apartamento}",
+        *     summary="mostrar apartamento",
+        *     security={{ "bearerAuth": {}}},   
+        *     @OA\Parameter(
+        *         name="apartamento",
+        *         in="path",
+        *         description="id do apartamento",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="apartamento não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function getOne($id)
     {
         try {

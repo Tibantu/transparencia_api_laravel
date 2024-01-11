@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Validator;
 
 class PagamentoController extends Controller
 {
+  /**
+    * @OA\Get(
+        *     tags={"/pagamentos"},
+        *     path="/api/pagamentos",
+        *     summary="listar pagamentos",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function getAll()
     {
         try {

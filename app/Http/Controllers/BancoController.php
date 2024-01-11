@@ -82,7 +82,7 @@ class BancoController extends Controller
             'updated_at'
         ]);
         if ($isValidData->fails())
-        return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
+            return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
 
     try {
         $predio = Predio::find($req->input('n_codipredi'));
