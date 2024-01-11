@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Validator;
 
 class DividaController extends Controller
 {
+/**
+    * @OA\Get(
+        *     tags={"/dividas"},
+        *     path="/api/dividas",
+        *     summary="listar dividas",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function getAll()
     {
         try {
@@ -18,7 +28,24 @@ class DividaController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-
+/**
+    * @OA\Get(
+        *     tags={"/dividas"},
+        *     path="/api/dividas/apartamento/{apartamento}",
+        *     summary="mostrar divida do apartamento",
+        *     security={{ "bearerAuth": {}}},   
+        *     @OA\Parameter(
+        *         name="apartamento",
+        *         in="path",
+        *         description="id do apartamento",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="apartamento não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function getAllByApartamento($idApartamento)
     {
         try {
@@ -94,6 +121,24 @@ class DividaController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+    /**
+    * @OA\Get(
+        *     tags={"/dividas"},
+        *     path="/api/dividas/{divida}",
+        *     summary="mostrar divida",
+        *     security={{ "bearerAuth": {}}},   
+        *     @OA\Parameter(
+        *         name="divida",
+        *         in="path",
+        *         description="id do divida",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="divida não encontrada"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function getOne($id)
     {
         try {

@@ -39,6 +39,32 @@ class PagamentoController extends Controller
         }
     }
 */
+/**
+    * @OA\Post(
+        *     tags={"/pagamentos"},
+        *     path="/api/pagamentos",
+        *     summary="registrar pagamento",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\RequestBody(
+        *       required=true,
+        *       @OA\JsonContent(
+        *          required={"n_valopagam","c_descpagam","c_formpagam","d_datapagam","n_codiapart","n_codidivid"},
+        *          type="object",
+        *          @OA\Property(property="n_valopagam",type="string",description="valor do pagamento"),
+        *          @OA\Property(property="c_descpagam",type="float",description="descrição do pagamento"),
+        *          @OA\Property(property="c_formpagam",type="int",description="forma de pagamento"),
+        *          @OA\Property(property="d_datapagam",type="float",description="data de pagamento"),
+        *          @OA\Property(property="n_codidivid",type="date",description="id divida"),
+        *          @OA\Property(property="n_codiapart",type="string",description="id apartamento"),
+        *       )
+        *     ),
+        *     
+        *     @OA\Response(response="201", description="pagamento registrado com sucesso"),
+        *     @OA\Response(response="412", description="Erro ao validar os dados"),
+        *     @OA\Response(response="404", description="Morador não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function create(Request $req)
     {
         $isValidData = Validator::make($req->all(), [
@@ -70,6 +96,25 @@ class PagamentoController extends Controller
     }
 }
 
+
+ /**
+    * @OA\Delete(
+        *     tags={"/pagamentos"},
+        *     path="/api/pagamentos/{pagamento}",
+        *     summary="deletar pagamento",
+        *       security={{"bearerAuth": {} }},
+        *       @OA\Parameter(
+        *         name="pagamento",
+        *         in="path",
+        *         description="id da pagamento",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="pagamento deletado com sucesso!"),
+        *     @OA\Response(response="404", description="pagamento não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function delete($id)
     {
         try {
@@ -96,6 +141,24 @@ class PagamentoController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+/**
+    * @OA\Get(
+        *     tags={"/pagamentos"},
+        *     path="/api/pagamentos/{pagamento}",
+        *     summary="mostrar pagamento",
+        *     security={{ "bearerAuth": {}}},   
+        *     @OA\Parameter(
+        *         name="pagamento",
+        *         in="path",
+        *         description="id do pagamento",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="pagamento não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function getOne($id)
     {
         try {

@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Validator;
 
 class CoordenadorController extends Controller
 {
+    /**
+    * @OA\Get(
+        *     tags={"/coordenadores"},
+        *     path="/api/coordenadores",
+        *     summary="listar coordenadores",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function getAll()
     {
         try {

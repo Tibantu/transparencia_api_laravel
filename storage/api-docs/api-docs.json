@@ -754,6 +754,28 @@
                 ]
             }
         },
+        "/api/coordenadores": {
+            "get": {
+                "tags": [
+                    "/coordenadores"
+                ],
+                "summary": "listar coordenadores",
+                "operationId": "af6617ec01d5e78abce76c060c0a1c96",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/despesas": {
             "get": {
                 "tags": [
@@ -928,6 +950,100 @@
                     },
                     "404": {
                         "description": "despesas não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/dividas": {
+            "get": {
+                "tags": [
+                    "/dividas"
+                ],
+                "summary": "listar dividas",
+                "operationId": "a96c0f55b32afd91945f1d7aa29962e1",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/dividas/apartamento/{apartamento}": {
+            "get": {
+                "tags": [
+                    "/dividas"
+                ],
+                "summary": "mostrar divida do apartamento",
+                "operationId": "00ac21dfd51489764236edc7a65f85d5",
+                "parameters": [
+                    {
+                        "name": "apartamento",
+                        "in": "path",
+                        "description": "id do apartamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "apartamento não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/dividas/{divida}": {
+            "get": {
+                "tags": [
+                    "/dividas"
+                ],
+                "summary": "mostrar divida",
+                "operationId": "15c81bb3c492131338f7ef11e2461a0e",
+                "parameters": [
+                    {
+                        "name": "divida",
+                        "in": "path",
+                        "description": "id do divida",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "divida não encontrada"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -1167,6 +1283,149 @@
                 "responses": {
                     "200": {
                         "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "/pagamentos"
+                ],
+                "summary": "registrar pagamento",
+                "operationId": "d3a1c31d0529fe134c3ee40ddaaddab8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "n_valopagam",
+                                    "c_descpagam",
+                                    "c_formpagam",
+                                    "d_datapagam",
+                                    "n_codiapart",
+                                    "n_codidivid"
+                                ],
+                                "properties": {
+                                    "n_valopagam": {
+                                        "description": "valor do pagamento",
+                                        "type": "string"
+                                    },
+                                    "c_descpagam": {
+                                        "description": "descrição do pagamento",
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "c_formpagam": {
+                                        "description": "forma de pagamento",
+                                        "type": "integer"
+                                    },
+                                    "d_datapagam": {
+                                        "description": "data de pagamento",
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "n_codidivid": {
+                                        "description": "id divida",
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "n_codiapart": {
+                                        "description": "id apartamento",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "pagamento registrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "Morador não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/pagamentos/{pagamento}": {
+            "get": {
+                "tags": [
+                    "/pagamentos"
+                ],
+                "summary": "mostrar pagamento",
+                "operationId": "3111da2393f2f157e38767de05eaef49",
+                "parameters": [
+                    {
+                        "name": "pagamento",
+                        "in": "path",
+                        "description": "id do pagamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "pagamento não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/pagamentos"
+                ],
+                "summary": "deletar pagamento",
+                "operationId": "b3a266945e8212ccbd66dcc064dfb6b1",
+                "parameters": [
+                    {
+                        "name": "pagamento",
+                        "in": "path",
+                        "description": "id da pagamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "pagamento deletado com sucesso!"
+                    },
+                    "404": {
+                        "description": "pagamento não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -1417,6 +1676,13 @@
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "c_desctaxa",
+                                    "n_valotaxa",
+                                    "n_permtaxa",
+                                    "d_denvtaxa",
+                                    "c_freqtaxa"
+                                ],
                                 "properties": {
                                     "c_desctaxa": {
                                         "description": "descricão da taxa",
@@ -1515,6 +1781,90 @@
                     }
                 ]
             },
+            "put": {
+                "tags": [
+                    "/taxas"
+                ],
+                "summary": "atualizar taxa",
+                "operationId": "00779debabe2819bc419495c2db68a88",
+                "parameters": [
+                    {
+                        "name": "taxa",
+                        "in": "path",
+                        "description": "id do taxa",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_desctaxa": {
+                                        "description": "descricão da taxa",
+                                        "type": "string"
+                                    },
+                                    "n_valotaxa": {
+                                        "description": "valor da taxa",
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "n_vmultaxa": {
+                                        "description": "valor da multa",
+                                        "type": "integer"
+                                    },
+                                    "n_permtaxa": {
+                                        "description": "valor da multa, percentagem",
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "d_denvtaxa": {
+                                        "description": "data de início de envio da taxa",
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "c_freqtaxa": {
+                                        "description": "frequência de envio da taxa",
+                                        "type": "string"
+                                    },
+                                    "n_praztaxa": {
+                                        "description": "prazo em dias, para o pagamento da taxa",
+                                        "type": "integer"
+                                    },
+                                    "n_codicoord": {
+                                        "description": "id do coordenador do que criou a taxa",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "taxa registrada com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "coordenador não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "delete": {
                 "tags": [
                     "/taxas"
@@ -1523,9 +1873,9 @@
                 "operationId": "2ff5ccb36bc9e9d7876dff09e4c2f694",
                 "parameters": [
                     {
-                        "name": "taxas",
+                        "name": "taxa",
                         "in": "path",
-                        "description": "id da taxas",
+                        "description": "id da taxa",
                         "required": false,
                         "schema": {
                             "type": "int"
@@ -1534,7 +1884,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "taxa deletado com sucesso!"
+                        "description": "taxa deletada com sucesso!"
                     },
                     "404": {
                         "description": "taxa não encontrada"
