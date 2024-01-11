@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class MoradorController extends Controller
 {
-            /**
+/**
     * @OA\Get(
         *     tags={"/moradores"},
         *     path="/api/moradores",
@@ -45,16 +45,16 @@ class MoradorController extends Controller
     * @OA\Post(
         *     tags={"/moradores"},
         *     path="/api/moradores",
-        *     summary="Registrar uma morador",
+        *     summary="Registrar morador",
         *     security={{"bearerAuth": {} }},
         *     @OA\RequestBody(
         *       required=true,
         *       @OA\JsonContent(
         *          type="object",
-        *          @OA\Property(property="c_nomemorad",type="string",description="objectivo da despesa"),
-        *          @OA\Property(property="c_apelmorad",type="string",description="id do coordenador que criou a despesa"),
+        *          @OA\Property(property="c_nomemorad",type="string",description="nome do morador"),
+        *          @OA\Property(property="c_apelmorad",type="string",description="ultimo nome do morador"),
         *          @OA\Property(property="n_codiapart",type="int",description="id do apartamento a vincular com o morador"),
-        *          @OA\Property(property="c_bilhmorad",type="string",description="valores da deespesa"),
+        *          @OA\Property(property="c_bilhmorad",type="string",description="bilhete de identidade do morador"),
         *       )
         *     ),
         *     
@@ -133,6 +133,36 @@ class MoradorController extends Controller
             return response()->json(['message' => "Hello " . $e->getMessage()], 500);
         }
     }
+/**
+    * @OA\Put(
+        *     tags={"/moradores"},
+        *     path="/api/moradores/{morador}",
+        *     summary="atualizar morador",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Parameter(
+        *         name="morador",
+        *         in="path",
+        *         description="id do morador",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\RequestBody(
+        *       required=true,
+        *       @OA\JsonContent(
+        *          type="object",
+        *          @OA\Property(property="c_nomemorad",type="string",description="nome do morador"),
+        *          @OA\Property(property="c_apelmorad",type="string",description="ultimo"),
+        *          @OA\Property(property="n_codiapart",type="int",description="id do apartamento a vincular com o morador"),
+        *          @OA\Property(property="c_bilhmorad",type="string",description="BI"),
+        *       )
+        *     ),
+        *     
+        *     @OA\Response(response="201", description="morador atualizado com sucesso"),
+        *     @OA\Response(response="412", description="Erro ao validar os dados"),
+        *     @OA\Response(response="404", description="morador não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function update(Request $req, $id)
     {
         try {
@@ -147,11 +177,11 @@ class MoradorController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-         /**
+/**
     * @OA\Get(
         *     tags={"/moradores"},
         *     path="/api/moradores/{morador}",
-        *     summary="mostrar um morador",
+        *     summary="mostrar morador",
         *     security={{ "bearerAuth": {}}},   
         *     @OA\Parameter(
         *         name="morador",

@@ -965,7 +965,7 @@
                 "tags": [
                     "/moradores"
                 ],
-                "summary": "Registrar uma morador",
+                "summary": "Registrar morador",
                 "operationId": "9275386b64af6f8d0a34de8f8facbe11",
                 "requestBody": {
                     "required": true,
@@ -974,11 +974,11 @@
                             "schema": {
                                 "properties": {
                                     "c_nomemorad": {
-                                        "description": "objectivo da despesa",
+                                        "description": "nome do morador",
                                         "type": "string"
                                     },
                                     "c_apelmorad": {
-                                        "description": "id do coordenador que criou a despesa",
+                                        "description": "ultimo nome do morador",
                                         "type": "string"
                                     },
                                     "n_codiapart": {
@@ -986,7 +986,7 @@
                                         "type": "integer"
                                     },
                                     "c_bilhmorad": {
-                                        "description": "valores da deespesa",
+                                        "description": "bilhete de identidade do morador",
                                         "type": "string"
                                     }
                                 },
@@ -1024,7 +1024,7 @@
                 "tags": [
                     "/moradores"
                 ],
-                "summary": "mostrar um morador",
+                "summary": "mostrar morador",
                 "operationId": "f575cc64868540686ddc792c21e58081",
                 "parameters": [
                     {
@@ -1040,6 +1040,71 @@
                 "responses": {
                     "200": {
                         "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "morador não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "/moradores"
+                ],
+                "summary": "atualizar morador",
+                "operationId": "327bd42492494a0ed1a92c2747835e63",
+                "parameters": [
+                    {
+                        "name": "morador",
+                        "in": "path",
+                        "description": "id do morador",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_nomemorad": {
+                                        "description": "nome do morador",
+                                        "type": "string"
+                                    },
+                                    "c_apelmorad": {
+                                        "description": "ultimo",
+                                        "type": "string"
+                                    },
+                                    "n_codiapart": {
+                                        "description": "id do apartamento a vincular com o morador",
+                                        "type": "integer"
+                                    },
+                                    "c_bilhmorad": {
+                                        "description": "BI",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "morador atualizado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
                     },
                     "404": {
                         "description": "morador não encontrado"
@@ -1308,6 +1373,171 @@
                     },
                     "404": {
                         "description": "predio não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/taxas": {
+            "get": {
+                "tags": [
+                    "/taxas"
+                ],
+                "summary": "listar taxas",
+                "operationId": "c545976d151cf628a631bf21bcd0a630",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "/taxas"
+                ],
+                "summary": "registrar taxa",
+                "operationId": "2b99392547b0497501c2dbcb55bd4101",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_desctaxa": {
+                                        "description": "descricão da taxa",
+                                        "type": "string"
+                                    },
+                                    "n_valotaxa": {
+                                        "description": "valor da taxa",
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "n_vmultaxa": {
+                                        "description": "valor da multa",
+                                        "type": "integer"
+                                    },
+                                    "n_permtaxa": {
+                                        "description": "valor da multa, percentagem",
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "d_denvtaxa": {
+                                        "description": "data de início de envio da taxa",
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "c_freqtaxa": {
+                                        "description": "frequência de envio da taxa",
+                                        "type": "string"
+                                    },
+                                    "n_praztaxa": {
+                                        "description": "prazo em dias, para o pagamento da taxa",
+                                        "type": "integer"
+                                    },
+                                    "n_codicoord": {
+                                        "description": "id do coordenador do que criou a taxa",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "taxa registrada com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "coordenador não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/taxas/{taxa}": {
+            "get": {
+                "tags": [
+                    "/taxas"
+                ],
+                "summary": "mostrar um Taxa",
+                "operationId": "37f65b249240225ccad63ca24d6bc9eb",
+                "parameters": [
+                    {
+                        "name": "taxa",
+                        "in": "path",
+                        "description": "id do taxa",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "Taxa não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/taxas"
+                ],
+                "summary": "deletar taxa",
+                "operationId": "2ff5ccb36bc9e9d7876dff09e4c2f694",
+                "parameters": [
+                    {
+                        "name": "taxas",
+                        "in": "path",
+                        "description": "id da taxas",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "taxa deletado com sucesso!"
+                    },
+                    "404": {
+                        "description": "taxa não encontrada"
                     },
                     "500": {
                         "description": "Erro no servidor"
