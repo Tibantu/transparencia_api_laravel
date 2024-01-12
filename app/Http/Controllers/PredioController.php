@@ -13,7 +13,7 @@ use \Illuminate\Database\QueryException;
 class PredioController extends Controller
 {
 
-    /**
+/**
     * @OA\Get(
         *     tags={"/predios"},
         *     path="/api/predios",
@@ -183,7 +183,7 @@ class PredioController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-     /**
+/**
     * @OA\Get(
         *     tags={"/predios"},
         *     path="/api/predios/{predio}",
@@ -206,7 +206,7 @@ class PredioController extends Controller
         try {
             $predio = Predio::find($id);
             if (!$predio) {
-                return response()->json(['message' => "Predio não encontrada!"], 404);
+                return response()->json(['message' => "Predio não encontrado"], 404);
             }
             return response()->json($predio, 200);
         } catch (QueryException $e) {

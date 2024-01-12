@@ -10,11 +10,10 @@ use Illuminate\Support\Facades\Validator;
 
 class EnderecoController extends Controller
 {
-    //
     public function getAll()
     {
         try {
-            return Endereco::all();
+            return response() ->json(['message' => Endereco::all()], 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
@@ -39,26 +38,44 @@ class EnderecoController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-    public function getOne(Request $req, $id)
+        /**
+    * @OA\Get(
+        *     tags={"/enderecos"},
+        *     path="/api/enderecos/{endereco}",
+        *     summary="mostrar um endereco",
+        *     security={{ "bearerAuth": {}}},   
+        *     @OA\Parameter(
+        *         name="endereco",
+        *         in="path",
+        *         description="id do endereco",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="endereco não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
+    public function getOne($id)
     {
         // dd($id);
         try {
-            // $data = Endereco::find($id);
-            $data = DB::select('select * from traender where n_codiender = ?', [$id]);
-
-            if (!$data) {
-                return response()->json(['message', "Endereço não encontrada!"], 404);
-            }
-            return response()->json($data);
+            $endereco = Endereco::find($id);
+            if(!$endereco)
+                return response()->json(['message' => "Endereço não encontrado"], 404);
+            
+            return response()->json($endereco, 200);
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['message' => $e->getMessage()]);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
     public function update(Request $req, $id)
     {
         try {
-            $endereco = Endereco::findOrFail($id);
-
+            $endereco = Endereco::find($id);
+            if(!$endereco)
+                return response()->json(['message'=> 'endereço não encontrado'], 400);
+            
             $endereco->update($req->all());
 
             return response()->json($endereco);
@@ -66,6 +83,7 @@ class EnderecoController extends Controller
             return response()->json(['message'=> $e->getMessage()]);
         }
     }
+
     public function delete($id)
     {
         try {

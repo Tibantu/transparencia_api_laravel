@@ -1056,6 +1056,64 @@
                 ]
             }
         },
+        "/api/enderecos": {
+            "get": {
+                "tags": [
+                    "/enderecos"
+                ],
+                "summary": "listar enderecos",
+                "operationId": "68f1092965b9d209046483fc9d1ca1b1",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/enderecos/{endereco}": {
+            "get": {
+                "tags": [
+                    "/enderecos"
+                ],
+                "summary": "mostrar um endereco",
+                "operationId": "93fbab4aefa7cd37e616b72ac880b345",
+                "parameters": [
+                    {
+                        "name": "endereco",
+                        "in": "path",
+                        "description": "id do endereco",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "endereco não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/moradores": {
             "get": {
                 "tags": [
