@@ -56,7 +56,7 @@ class CentralidadeController extends Controller
      */
 
 
-    public function create(Request $req, Response $res)
+    public function create(Request $req)
     {
         /*
             o que aconteice na interfafce: o usuario digita os dados do endereço

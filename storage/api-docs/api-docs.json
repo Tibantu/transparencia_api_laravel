@@ -4,6 +4,11 @@
         "title": "Transparência API",
         "version": "0.1"
     },
+    "servers": [
+        {
+            "url": "http://localhost/api"
+        }
+    ],
     "paths": {
         "/api/apartamentos": {
             "get": {
@@ -313,7 +318,7 @@
                         "name": "banco",
                         "in": "path",
                         "description": "id do banco",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "int"
                         }
@@ -561,6 +566,42 @@
                     },
                     "404": {
                         "description": "bloco não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/caixas/{caixa}": {
+            "get": {
+                "tags": [
+                    "/caixas"
+                ],
+                "summary": "mostrar um Taxa",
+                "operationId": "8d1244c6fb474a7317824818c5158a64",
+                "parameters": [
+                    {
+                        "name": "caixa",
+                        "in": "path",
+                        "description": "id do caixa",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "caixa não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -1044,28 +1085,6 @@
                     },
                     "404": {
                         "description": "divida não encontrada"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/enderecos": {
-            "get": {
-                "tags": [
-                    "/enderecos"
-                ],
-                "summary": "listar enderecos",
-                "operationId": "68f1092965b9d209046483fc9d1ca1b1",
-                "responses": {
-                    "200": {
-                        "description": "sucesso"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -1956,6 +1975,66 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/usuarios": {
+            "post": {
+                "tags": [
+                    "/usuarios"
+                ],
+                "summary": "Cadastrar usuarios",
+                "operationId": "1da7e6e615da8e74ebc71b7c7db95617",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "description": "denominação da centralidade",
+                                        "type": "string",
+                                        "default": "nome de adesão"
+                                    },
+                                    "email": {
+                                        "description": "email válido",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "description": "denominação da centralidade",
+                                        "type": "string",
+                                        "default": "senha pessoal"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "usuario cadastrada successfully"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "500": {
+                        "description": "Validation errors"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     }

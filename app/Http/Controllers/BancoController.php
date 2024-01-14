@@ -153,7 +153,7 @@ class BancoController extends Controller
         *         name="banco",
         *         in="path",
         *         description="id do banco",
-        *         required=true,
+        *         required=false,
         *         @OA\Schema(type="int")
         *     ),
         *     @OA\Response(response="200", description="sucesso"),

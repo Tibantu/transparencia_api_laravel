@@ -43,6 +43,24 @@ class CaixaController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+    /**
+    * @OA\Get(
+        *     tags={"/caixas"},
+        *     path="/api/caixas/{caixa}",
+        *     summary="mostrar um Taxa",
+        *     security={{ "bearerAuth": {}}},   
+        *     @OA\Parameter(
+        *         name="caixa",
+        *         in="path",
+        *         description="id do caixa",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="caixa não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function getOne($id)
     {
         try {

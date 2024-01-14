@@ -26,7 +26,7 @@ class PredioController extends Controller
     public function getAll()
     {
         try {
-            return response() ->json(['message' => Predio::all()], 200);
+            return response() ->json(['predios' => Predio::all()], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

@@ -22,7 +22,7 @@ class PagamentoController extends Controller
     public function getAll()
     {
         try {
-            return Pagamento::all();
+            return response() ->json(['pagamentos' => Pagamento::all()], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

@@ -4,6 +4,7 @@ use App\Http\Controllers\ApartamentoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TodoController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BancoController;
 use App\Http\Controllers\BlocoController;
 use App\Http\Controllers\CaixaController;
@@ -16,22 +17,20 @@ use App\Http\Controllers\MoradorController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PredioController;
 use App\Http\Controllers\TaxaController;
-use OpenApi\Annotations as OA;
+use App\Http\Controllers\UserController;
 
-/**
- * @OA\Info(
- *    title="Swagger with Laravel",
- *    version="1.0.0",
- * )
- * @OA\SecurityScheme(
- *     type="http",
- *     securityScheme="bearerAuth",
- *     scheme="bearer",
- *     bearerFormat="JWT"
- * )
 
- */
+ Route::middleware(['auth:sanctum'])->group(function(){
+    Route::apiResource('/centralidades', CentralidadeController::class);
+});
 
+//Usuario
+Route::prefix('/usuarios')->group(function(){
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
+    Route::post('/', [UserController::class, 'create']);
+});
 //ENDERECO
 Route::prefix('/enderecos')->group(function () {
     Route::get('/', [EnderecoController::class, 'getAll']);
@@ -44,7 +43,7 @@ Route::prefix('/enderecos')->group(function () {
 // CENTRALIDADES
 Route::prefix('centralidades')->group(function () {
     Route::get('/', [CentralidadeController::class, 'getAll']);
-    Route::post('/', [CentralidadeController::class, 'create']);
+    Route::post('/', [CentralidadeController::class, 'create'])->middleware('auth');
     /**[pega] todos as centralidades de uma provoncia  - provincia, fornecida na url */
     Route::get('/provincia/{denominacao}', [CentralidadeController::class, 'getAllByProvincia']);
     Route::delete('/{id}', [CentralidadeController::class, 'delete']);
