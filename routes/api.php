@@ -3,7 +3,6 @@
 use App\Http\Controllers\ApartamentoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\TodoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BancoController;
 use App\Http\Controllers\BlocoController;
@@ -26,6 +25,7 @@ use App\Http\Controllers\UserController;
 
 //Usuario
 Route::prefix('/usuarios')->group(function(){
+
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
     Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');

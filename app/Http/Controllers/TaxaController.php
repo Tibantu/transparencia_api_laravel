@@ -12,7 +12,7 @@ class TaxaController extends Controller
     /**
     * @OA\Get(
         *     tags={"/taxas"},
-        *     path="/api/taxas",
+        *     path="/taxas",
         *     summary="listar taxas",
         *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
@@ -43,7 +43,7 @@ class TaxaController extends Controller
 /**
     * @OA\Post(
         *     tags={"/taxas"},
-        *     path="/api/taxas",
+        *     path="/taxas",
         *     summary="registrar taxa",
         *     security={{"bearerAuth": {} }},
         *     @OA\RequestBody(
@@ -61,7 +61,7 @@ class TaxaController extends Controller
         *          @OA\Property(property="n_codicoord",type="int",description="id do coordenador do que criou a taxa"),
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="taxa registrada com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="404", description="coordenador não encontrado"),
@@ -70,7 +70,7 @@ class TaxaController extends Controller
 */
     public function create(Request $req)
     {
-        $isValidData = Validator::make($req->all(), 
+        $isValidData = Validator::make($req->all(),
         [
             'c_desctaxa' => 'required|string',
             'n_valotaxa' => 'required|float',
@@ -102,7 +102,7 @@ class TaxaController extends Controller
  /**
     * @OA\Delete(
         *     tags={"/taxas"},
-        *     path="/api/taxas/{taxa}",
+        *     path="/taxas/{taxa}",
         *     summary="deletar taxa",
         *       security={{"bearerAuth": {} }},
         *       @OA\Parameter(
@@ -132,7 +132,7 @@ class TaxaController extends Controller
 /**
     * @OA\Put(
         *     tags={"/taxas"},
-        *     path="/api/taxas/{taxa}",
+        *     path="/taxas/{taxa}",
         *     summary="atualizar taxa",
         *     security={{"bearerAuth": {} }},
         *     @OA\Parameter(
@@ -156,13 +156,13 @@ class TaxaController extends Controller
         *          @OA\Property(property="n_codicoord",type="int",description="id do coordenador do que criou a taxa"),
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="taxa registrada com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="404", description="coordenador não encontrado"),
         *     @OA\Response(response="500", description="Erro no servidor")
         * )
-*/    
+*/
     public function update(Request $req, $id)
     {
         try {
@@ -180,9 +180,9 @@ class TaxaController extends Controller
 /**
     * @OA\Get(
         *     tags={"/taxas"},
-        *     path="/api/taxas/{taxa}",
+        *     path="/taxas/{taxa}",
         *     summary="mostrar um Taxa",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="taxa",
         *         in="path",

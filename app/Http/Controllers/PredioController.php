@@ -16,7 +16,7 @@ class PredioController extends Controller
 /**
     * @OA\Get(
         *     tags={"/predios"},
-        *     path="/api/predios",
+        *     path="/predios",
         *     summary="listar predios",
         *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
@@ -45,7 +45,7 @@ class PredioController extends Controller
         /**
     * @OA\Post(
         *     tags={"/predios"},
-        *     path="/api/predios/bloco/{bloco}",
+        *     path="/predios/bloco/{bloco}",
         *     summary="Cadastrar um predios numa bloco",
         *     security={{"bearerAuth": {} }},
          *     @OA\Parameter(
@@ -64,7 +64,7 @@ class PredioController extends Controller
         *          @OA\Property(property="n_codicoord",type="int",description="id do Coordenador do prédio")
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="bloco cadastrado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="500", description="Erro no servidor")
@@ -115,7 +115,7 @@ class PredioController extends Controller
             /**
     * @OA\Delete(
         *     tags={"/predios"},
-        *     path="/api/predios/{predio}",
+        *     path="/predios/{predio}",
         *     summary="apagar um predio",
         *       security={{"bearerAuth": {} }},
         *       @OA\Parameter(
@@ -145,7 +145,7 @@ class PredioController extends Controller
             /**
     * @OA\Put(
         *     tags={"/predios"},
-        *     path="/api/predios/{predio}",
+        *     path="/predios/{predio}",
         *     summary="atualizar os dados de um predios",
         *     security={{"bearerAuth": {} }},
          *     @OA\Parameter(
@@ -163,7 +163,7 @@ class PredioController extends Controller
         *          @OA\Property(property="c_entrpredi",type="string",description="Entrada do prédio"),
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="predio Atualizado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="500", description="Erro no servidor")
@@ -186,9 +186,9 @@ class PredioController extends Controller
 /**
     * @OA\Get(
         *     tags={"/predios"},
-        *     path="/api/predios/{predio}",
+        *     path="/predios/{predio}",
         *     summary="mostrar um predio",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="predio",
         *         in="path",

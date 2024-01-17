@@ -14,7 +14,7 @@ class DespesaController extends Controller
         /**
     * @OA\Get(
         *     tags={"/despesas"},
-        *     path="/api/despesas",
+        *     path="/despesas",
         *     summary="listar despesas",
         *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
@@ -33,9 +33,9 @@ class DespesaController extends Controller
             /**
     * @OA\Get(
         *     tags={"/despesas"},
-        *     path="/api/despesas/coord/{idCoordPredio}",
+        *     path="/despesas/coord/{idCoordPredio}",
         *     summary="mostrar um despesa",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="idCoordPredio",
         *         in="path",
@@ -65,7 +65,7 @@ class DespesaController extends Controller
             /**
     * @OA\Post(
         *     tags={"/despesas"},
-        *     path="/api/despesas",
+        *     path="/despesas",
         *     summary="Registrar uma despesa",
         *     security={{"bearerAuth": {} }},
         *     @OA\RequestBody(
@@ -79,7 +79,7 @@ class DespesaController extends Controller
         *          @OA\Property(property="d_dasadespe",type="date",description="data do saque dos valores")
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="despesa cadastrado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="500", description="Erro no servidor")
@@ -96,7 +96,7 @@ class DespesaController extends Controller
         'c_objedespe',
         'c_fontdespe'=> 'required',
         'd_dacrdespe',
-        'd_dasadespe'=> 'required',            
+        'd_dasadespe'=> 'required',
         ]);
         if ($isValidData->fails())
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
@@ -112,7 +112,7 @@ class DespesaController extends Controller
    /**
     * @OA\Delete(
         *     tags={"/despesas"},
-        *     path="/api/despesas/{despesa}",
+        *     path="/despesas/{despesa}",
         *     summary="apagar uma despesas",
         *       security={{"bearerAuth": {} }},
         *       @OA\Parameter(
@@ -156,9 +156,9 @@ class DespesaController extends Controller
         /**
     * @OA\Get(
         *     tags={"/despesas"},
-        *     path="/api/despesas/{despesa}",
+        *     path="/despesas/{despesa}",
         *     summary="mostrar um despesa",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="despesa",
         *         in="path",

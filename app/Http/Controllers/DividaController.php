@@ -13,7 +13,7 @@ class DividaController extends Controller
 /**
     * @OA\Get(
         *     tags={"/dividas"},
-        *     path="/api/dividas",
+        *     path="/dividas",
         *     summary="listar dividas",
         *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
@@ -31,9 +31,9 @@ class DividaController extends Controller
 /**
     * @OA\Get(
         *     tags={"/dividas"},
-        *     path="/api/dividas/apartamento/{apartamento}",
+        *     path="/dividas/apartamento/{apartamento}",
         *     summary="mostrar divida do apartamento",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="apartamento",
         *         in="path",
@@ -52,7 +52,7 @@ class DividaController extends Controller
             $apartamento = Apartamento::find($idApartamento);
             if (!$apartamento)
                 return response()->json(['message' => "Apartamento não encontrado!"], 404);
-            
+
             return Divida::where('n_codiconta', '=', $apartamento->n_codiconta)->get();
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -61,7 +61,7 @@ class DividaController extends Controller
 
     public function create(Request $req)
     {
-        $isValidData = Validator::make($req->all(), 
+        $isValidData = Validator::make($req->all(),
         [
             'c_estadivid',
             'c_descdivid' => 'required|string',
@@ -124,9 +124,9 @@ class DividaController extends Controller
     /**
     * @OA\Get(
         *     tags={"/dividas"},
-        *     path="/api/dividas/{divida}",
+        *     path="/dividas/{divida}",
         *     summary="mostrar divida",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="divida",
         *         in="path",

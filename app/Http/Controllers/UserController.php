@@ -12,7 +12,7 @@ class UserController extends Controller
     /**
     * @OA\Post(
         *     tags={"/usuarios"},
-        *     path="/api/usuarios",
+        *     path="/usuarios",
         *     summary="Cadastrar usuarios",
         *     security={{"bearerAuth": {} }},
         *     @OA\RequestBody(
@@ -24,7 +24,7 @@ class UserController extends Controller
         *          @OA\Property(property="password",type="string",default="senha pessoal",description="denominação da centralidade"),
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="usuario cadastrada successfully"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="500", description="Validation errors")
@@ -34,7 +34,7 @@ class UserController extends Controller
 
      public function create(Request $req)
      {
-        
+
          $isValidData = Validator::make($req->all(), [
              "name" => 'required|string',
              "email" => 'required|string',
@@ -43,7 +43,7 @@ class UserController extends Controller
          ]);
          if ($isValidData->fails())
              return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
- 
+
          try {
             $user = new User();
             $user->password = bcrypt($req->password);

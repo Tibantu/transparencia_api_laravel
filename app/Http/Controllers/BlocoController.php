@@ -17,7 +17,7 @@ class BlocoController extends Controller
 /**
     * @OA\Get(
         *     tags={"/blocos"},
-        *     path="/api/blocos",
+        *     path="/blocos",
         *     summary="listar blocos",
         *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
@@ -36,7 +36,7 @@ class BlocoController extends Controller
     public function getAllByCentr($idCentralidade)
     {
         try {
-            
+
             $centralidade = Centralidade::find($idCentralidade);
             if (!$centralidade) {
                 return response()->json(['message' => "Centralidade não encontrado."], 404);
@@ -49,7 +49,7 @@ class BlocoController extends Controller
     /**
     * @OA\Post(
         *     tags={"/blocos"},
-        *     path="/api/blocos/centralidade/{centralidade}",
+        *     path="/blocos/centralidade/{centralidade}",
         *     summary="Cadastrar um bloco numa centralidade",
         *     security={{"bearerAuth": {} }},
          *     @OA\Parameter(
@@ -67,7 +67,7 @@ class BlocoController extends Controller
         *          @OA\Property(property="c_ruabloco",type="string",description="ruas que delimitam o bloco")
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="bloco cadastrado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="500", description="Erro no servidor")
@@ -95,7 +95,7 @@ class BlocoController extends Controller
             'c_nomeentid'=>'trabloco'
         ];
         $caixa = Caixa::create($dataCaixa);
-        
+
 
         $data = $req->all();
 
@@ -115,7 +115,7 @@ class BlocoController extends Controller
         /**
     * @OA\Delete(
         *     tags={"/blocos"},
-        *     path="/api/blocos/{bloco}",
+        *     path="/blocos/{bloco}",
         *     summary="apagar um bloco",
         *       security={{"bearerAuth": {} }},
         *       @OA\Parameter(
@@ -145,7 +145,7 @@ class BlocoController extends Controller
         /**
     * @OA\Put(
         *     tags={"/blocos"},
-        *     path="/api/blocos/{bloco}",
+        *     path="/blocos/{bloco}",
         *     summary="Atualizar um bloco de uma centralidade",
         *     security={{"bearerAuth": {} }},
          *     @OA\Parameter(
@@ -163,7 +163,7 @@ class BlocoController extends Controller
         *          @OA\Property(property="c_ruabloco",type="string",description="ruas que delimitam o bloco")
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="bloco cadastrado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="500", description="Erro no servidor")
@@ -186,9 +186,9 @@ class BlocoController extends Controller
      /**
     * @OA\Get(
         *     tags={"/blocos"},
-        *     path="/api/blocos/{bloco}",
+        *     path="/blocos/{bloco}",
         *     summary="mostrar um bloco",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="bloco",
         *         in="path",

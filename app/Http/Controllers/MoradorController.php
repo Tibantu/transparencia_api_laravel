@@ -13,7 +13,7 @@ class MoradorController extends Controller
 /**
     * @OA\Get(
         *     tags={"/moradores"},
-        *     path="/api/moradores",
+        *     path="/moradores",
         *     summary="listar moradores",
         *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
@@ -44,7 +44,7 @@ class MoradorController extends Controller
 /**
     * @OA\Post(
         *     tags={"/moradores"},
-        *     path="/api/moradores",
+        *     path="/moradores",
         *     summary="Registrar morador",
         *     security={{"bearerAuth": {} }},
         *     @OA\RequestBody(
@@ -57,7 +57,7 @@ class MoradorController extends Controller
         *          @OA\Property(property="c_bilhmorad",type="string",description="bilhete de identidade do morador"),
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="morador cadastrado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="404", description="apartamento não encontrado"),
@@ -79,7 +79,7 @@ class MoradorController extends Controller
         $registro = Apartamento::where('n_codiapart',$req->input('n_codiapart'))->first();
         if(!$registro)
               return response()->json(['message' => 'apartamento não encontrado'], 404);
-  
+
         //antes de criar o morador verificar se o apartamento está oucupado
         if($registro->n_codimorad != null)
             return response()->json(['message' => 'apartamento oucupado'], 405);
@@ -97,7 +97,7 @@ class MoradorController extends Controller
  /**
     * @OA\Delete(
         *     tags={"/moradores"},
-        *     path="/api/moradores/{morador}",
+        *     path="/moradores/{morador}",
         *     summary="apagar um morador",
         *       security={{"bearerAuth": {} }},
         *       @OA\Parameter(
@@ -119,11 +119,11 @@ class MoradorController extends Controller
             $Morador = Morador::find($id);
             if (!$Morador)
                 return response()->json(['message' => "Morador não encontrado"], 404);
-            
+
             $apartamento = Apartamento::find($Morador->n_codimorad);
             if(!$apartamento)
                 return response()->json(['message' => "apartamento do morador não encontrado"], 405);
-            
+
             $apartamento->n_codimorad = null;
             $apartamento->save();
 
@@ -136,7 +136,7 @@ class MoradorController extends Controller
 /**
     * @OA\Put(
         *     tags={"/moradores"},
-        *     path="/api/moradores/{morador}",
+        *     path="/moradores/{morador}",
         *     summary="atualizar morador",
         *     security={{"bearerAuth": {} }},
         *     @OA\Parameter(
@@ -156,7 +156,7 @@ class MoradorController extends Controller
         *          @OA\Property(property="c_bilhmorad",type="string",description="BI"),
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="morador atualizado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="404", description="morador não encontrado"),
@@ -180,9 +180,9 @@ class MoradorController extends Controller
 /**
     * @OA\Get(
         *     tags={"/moradores"},
-        *     path="/api/moradores/{morador}",
+        *     path="/moradores/{morador}",
         *     summary="mostrar morador",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="morador",
         *         in="path",

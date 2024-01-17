@@ -45,6 +45,7 @@ return [
             ],
         ],
     ],
+    'host' => env('L5_SWAGGER_HOST', 'localhost:8000'),
     'defaults' => [
         'routes' => [
             /*

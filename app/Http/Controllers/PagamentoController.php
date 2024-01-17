@@ -12,7 +12,7 @@ class PagamentoController extends Controller
   /**
     * @OA\Get(
         *     tags={"/pagamentos"},
-        *     path="/api/pagamentos",
+        *     path="/pagamentos",
         *     summary="listar pagamentos",
         *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
@@ -42,7 +42,7 @@ class PagamentoController extends Controller
 /**
     * @OA\Post(
         *     tags={"/pagamentos"},
-        *     path="/api/pagamentos",
+        *     path="/pagamentos",
         *     summary="registrar pagamento",
         *     security={{"bearerAuth": {} }},
         *     @OA\RequestBody(
@@ -58,7 +58,7 @@ class PagamentoController extends Controller
         *          @OA\Property(property="n_codiapart",type="string",description="id apartamento"),
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="pagamento registrado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="404", description="Morador não encontrado"),
@@ -100,7 +100,7 @@ class PagamentoController extends Controller
  /**
     * @OA\Delete(
         *     tags={"/pagamentos"},
-        *     path="/api/pagamentos/{pagamento}",
+        *     path="/pagamentos/{pagamento}",
         *     summary="deletar pagamento",
         *       security={{"bearerAuth": {} }},
         *       @OA\Parameter(
@@ -144,9 +144,9 @@ class PagamentoController extends Controller
 /**
     * @OA\Get(
         *     tags={"/pagamentos"},
-        *     path="/api/pagamentos/{pagamento}",
+        *     path="/pagamentos/{pagamento}",
         *     summary="mostrar pagamento",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="pagamento",
         *         in="path",

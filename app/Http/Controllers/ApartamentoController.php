@@ -19,11 +19,11 @@ class ApartamentoController extends Controller
 /**
     * @OA\Get(
         *     tags={"/apartamentos"},
-        *     path="/api/apartamentos",
+        *     path="/apartamentos",
         *     summary="listar apartamentos",
         *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
-        *     @OA\Response(response="500", description="Erro no servidor")
+        *     @OA\Response(response="500", description="Erro no servidor"),
         * )
 */
     public function getAll()
@@ -48,7 +48,7 @@ class ApartamentoController extends Controller
     /**
     * @OA\Post(
         *     tags={"/apartamentos"},
-        *     path="/api/apartamentos/predio/{predio}",
+        *     path="/apartamentos/predio/{predio}",
         *     summary="Registrar uma apartamento",
         *     security={{"bearerAuth": {} }},
         *     @OA\Parameter(
@@ -67,7 +67,7 @@ class ApartamentoController extends Controller
         *          @OA\Property(property="n_nandapart",type="int",description="andar do apartamento"),
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="apartamento cadastrado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="404", description="apartamento não encontrado"),
@@ -79,11 +79,11 @@ class ApartamentoController extends Controller
 
         $isValidData = Validator::make($req->all(), [
             'c_portapart'=> 'required',
-            'c_tipoapart'=> 'required', 
-            'n_nandapart', 
-            'd_dacrapart', 
-            'n_codiconta', 
-            'n_codipredi', 
+            'c_tipoapart'=> 'required',
+            'n_nandapart',
+            'd_dacrapart',
+            'n_codiconta',
+            'n_codipredi',
             'n_codimorad'
 
         ]);
@@ -115,7 +115,7 @@ class ApartamentoController extends Controller
      /**
     * @OA\Delete(
         *     tags={"/apartamentos"},
-        *     path="/api/apartamentos/{apartamento}",
+        *     path="/apartamentos/{apartamento}",
         *     summary="apagar um apartamento",
         *       security={{"bearerAuth": {} }},
         *       @OA\Parameter(
@@ -148,7 +148,7 @@ class ApartamentoController extends Controller
         /**
     * @OA\Put(
         *     tags={"/apartamentos"},
-        *     path="/api/apartamentos/predio/{predio}",
+        *     path="/apartamentos/predio/{predio}",
         *     summary="Registrar uma apartamento",
         *     security={{"bearerAuth": {} }},
         *     @OA\Parameter(
@@ -167,7 +167,7 @@ class ApartamentoController extends Controller
         *          @OA\Property(property="n_nandapart",type="int",description="andar do apartamento"),
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="apartamento cadastrado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="404", description="apartamento não encontrado"),
@@ -191,9 +191,9 @@ class ApartamentoController extends Controller
 /**
     * @OA\Get(
         *     tags={"/apartamentos"},
-        *     path="/api/apartamentos/{apartamento}",
+        *     path="/apartamentos/{apartamento}",
         *     summary="mostrar apartamento",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="apartamento",
         *         in="path",

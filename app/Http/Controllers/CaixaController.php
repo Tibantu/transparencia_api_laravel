@@ -46,9 +46,9 @@ class CaixaController extends Controller
     /**
     * @OA\Get(
         *     tags={"/caixas"},
-        *     path="/api/caixas/{caixa}",
+        *     path="/caixas/{caixa}",
         *     summary="mostrar um Taxa",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="caixa",
         *         in="path",

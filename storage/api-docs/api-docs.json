@@ -6,17 +6,20 @@
     },
     "servers": [
         {
-            "url": "http://localhost/api"
+            "url": "http://localhost:8000/api"
+        },
+        {
+            "url": "/api"
         }
     ],
     "paths": {
-        "/api/apartamentos": {
+        "/apartamentos": {
             "get": {
                 "tags": [
                     "/apartamentos"
                 ],
                 "summary": "listar apartamentos",
-                "operationId": "1e81be544e5f3029325871c31d5e885b",
+                "operationId": "ce28a0e1dbc6182a2da44487ab622429",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -32,13 +35,13 @@
                 ]
             }
         },
-        "/api/apartamentos/predio/{predio}": {
+        "/apartamentos/predio/{predio}": {
             "put": {
                 "tags": [
                     "/apartamentos"
                 ],
                 "summary": "Registrar uma apartamento",
-                "operationId": "0090590d5c010e12aab33c759fc1ad6c",
+                "operationId": "b3a24843e9cd98cd32e1f204238cdc26",
                 "parameters": [
                     {
                         "name": "predio",
@@ -99,7 +102,7 @@
                     "/apartamentos"
                 ],
                 "summary": "Registrar uma apartamento",
-                "operationId": "cf86f8bf0a837cd65dcea7d27bc7a332",
+                "operationId": "2583e6315db4f71a8c554cb4dfe88237",
                 "parameters": [
                     {
                         "name": "predio",
@@ -156,13 +159,13 @@
                 ]
             }
         },
-        "/api/apartamentos/{apartamento}": {
+        "/apartamentos/{apartamento}": {
             "get": {
                 "tags": [
                     "/apartamentos"
                 ],
                 "summary": "mostrar apartamento",
-                "operationId": "67068de37b8f328852193eeddeda83e9",
+                "operationId": "2b6f3ce6374e1bff81fef65b95e7f9bc",
                 "parameters": [
                     {
                         "name": "apartamento",
@@ -196,7 +199,7 @@
                     "/apartamentos"
                 ],
                 "summary": "apagar um apartamento",
-                "operationId": "7d7c8e6b0e5ba49ea372cd4053973243",
+                "operationId": "5a30ce4680b014b7248115d336426cae",
                 "parameters": [
                     {
                         "name": "apartamento",
@@ -614,13 +617,13 @@
                 ]
             }
         },
-        "/api/centralidades": {
+        "/centralidades": {
             "get": {
                 "tags": [
                     "/centralidades"
                 ],
                 "summary": "listar centralidades",
-                "operationId": "8d0f6a0384d9be39463d1f05c49a8e3e",
+                "operationId": "ffdd9ca7e513eb3dab83ed31e523c93a",
                 "responses": {
                     "200": {
                         "description": "successfully"
@@ -641,7 +644,7 @@
                 ],
                 "summary": "Atualizar um objecto no banco de dado",
                 "description": "atualizar os dados de uma centralidade",
-                "operationId": "1a99be9436bb2c66feac6da0c74c38c0",
+                "operationId": "ab2e7f191bbd2408fc377d3bb0f5f056",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -685,7 +688,7 @@
                     "/centralidades"
                 ],
                 "summary": "Cadastrar centralidade",
-                "operationId": "cab68104f1aaa297c8e58b2a0e6ad490",
+                "operationId": "4f525a9329ee03f71439de4dea4f9222",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -725,13 +728,13 @@
                 ]
             }
         },
-        "/api/centralidades/{centralidade}": {
+        "/centralidades/{centralidade}": {
             "get": {
                 "tags": [
                     "/centralidades"
                 ],
                 "summary": "mostrar uma centralidade",
-                "operationId": "9d497f642f0267c5de587ee22d1c43af",
+                "operationId": "782d4aeba24fa155c3cfd8581d3a4dee",
                 "parameters": [
                     {
                         "name": "centralidade",
@@ -765,7 +768,7 @@
                     "/centralidades"
                 ],
                 "summary": "apagar uma centralidade",
-                "operationId": "467fb91439e1b561b8851854a135a7ed",
+                "operationId": "39b8fc4d7d90c4dfe89b2dc30bedeb87",
                 "parameters": [
                     {
                         "name": "centralidade",
