@@ -232,13 +232,13 @@
                 ]
             }
         },
-        "/api/bancos": {
+        "/bancos": {
             "get": {
                 "tags": [
                     "/bancos"
                 ],
                 "summary": "listar bancos",
-                "operationId": "6c311a3cbbb7d5854a7c72e8795a6a23",
+                "operationId": "1efa50d4e1e73964bf2d53b78206ea7b",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -259,7 +259,7 @@
                 ],
                 "summary": "Cadastrar bancos",
                 "description": "cadastrar bancos normalmente pertence a um coordenador",
-                "operationId": "0d9e58e58208b73922b8638b4201361e",
+                "operationId": "5d81cb6dfcf921017a67689517b64ddc",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -309,13 +309,13 @@
                 ]
             }
         },
-        "/api/bancos/{banco}": {
+        "/bancos/{banco}": {
             "get": {
                 "tags": [
                     "/bancos"
                 ],
                 "summary": "mostrar um banco",
-                "operationId": "a58bc95718888f8280e96eb51a4dd974",
+                "operationId": "bcffacb1b08086f2b0aa17aa53927f21",
                 "parameters": [
                     {
                         "name": "banco",
@@ -349,7 +349,7 @@
                     "/bancos"
                 ],
                 "summary": "apagar um banco",
-                "operationId": "b717c5d932a544cd55374dee3164651d",
+                "operationId": "7bf0d03b6ff77189981d2203250b2645",
                 "parameters": [
                     {
                         "name": "banco",
@@ -379,13 +379,13 @@
                 ]
             }
         },
-        "/api/blocos": {
+        "/blocos": {
             "get": {
                 "tags": [
                     "/blocos"
                 ],
                 "summary": "listar blocos",
-                "operationId": "b7e8c77ab80118075b10ac8f66d89b9b",
+                "operationId": "1d35c233f4d1d82102fb710636f47b29",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -401,13 +401,13 @@
                 ]
             }
         },
-        "/api/blocos/centralidade/{centralidade}": {
+        "/blocos/centralidade/{centralidade}": {
             "post": {
                 "tags": [
                     "/blocos"
                 ],
                 "summary": "Cadastrar um bloco numa centralidade",
-                "operationId": "b8ef5a9a432325f903c6877bf37e9287",
+                "operationId": "e42e4a34b58bc9521ad7318855e63603",
                 "parameters": [
                     {
                         "name": "centralidade",
@@ -457,13 +457,13 @@
                 ]
             }
         },
-        "/api/blocos/{bloco}": {
+        "/blocos/{bloco}": {
             "get": {
                 "tags": [
                     "/blocos"
                 ],
                 "summary": "mostrar um bloco",
-                "operationId": "c94deb4f7e6bf0a0f3476a6ce76e1279",
+                "operationId": "407c45d77ee7d42310c2c5fd3777be57",
                 "parameters": [
                     {
                         "name": "bloco",
@@ -497,7 +497,7 @@
                     "/blocos"
                 ],
                 "summary": "Atualizar um bloco de uma centralidade",
-                "operationId": "f948c9b3d404a04d4038063308055155",
+                "operationId": "071518c5f81064db70f66545997a36c0",
                 "parameters": [
                     {
                         "name": "bloco",
@@ -551,7 +551,7 @@
                     "/blocos"
                 ],
                 "summary": "apagar um bloco",
-                "operationId": "6c4f25766d9ed485f22b32b2e7b7f7dd",
+                "operationId": "c0306f39c5e1a59442ef594c49806d9d",
                 "parameters": [
                     {
                         "name": "bloco",
@@ -581,13 +581,13 @@
                 ]
             }
         },
-        "/api/caixas/{caixa}": {
+        "/caixas/{caixa}": {
             "get": {
                 "tags": [
                     "/caixas"
                 ],
                 "summary": "mostrar um Taxa",
-                "operationId": "8d1244c6fb474a7317824818c5158a64",
+                "operationId": "f10b96de9c6913b2546c072228c5e3bb",
                 "parameters": [
                     {
                         "name": "caixa",
@@ -798,13 +798,13 @@
                 ]
             }
         },
-        "/api/coordenadores": {
+        "/coordenadores": {
             "get": {
                 "tags": [
                     "/coordenadores"
                 ],
                 "summary": "listar coordenadores",
-                "operationId": "af6617ec01d5e78abce76c060c0a1c96",
+                "operationId": "02995709439171bc80b504cbbecfb2b9",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -820,13 +820,13 @@
                 ]
             }
         },
-        "/api/despesas": {
+        "/despesas": {
             "get": {
                 "tags": [
                     "/despesas"
                 ],
                 "summary": "listar despesas",
-                "operationId": "ac8e14d119350f34662d57c5912ccca0",
+                "operationId": "f524d849907dbdf5c63ba3e0f5729c03",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -846,7 +846,7 @@
                     "/despesas"
                 ],
                 "summary": "Registrar uma despesa",
-                "operationId": "04942cfc96912eb8a8639b8e8aa7defa",
+                "operationId": "2ea97f891fe1e2ed64b933a0510d478a",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -900,13 +900,13 @@
                 ]
             }
         },
-        "/api/despesas/coord/{idCoordPredio}": {
+        "/despesas/coord/{idCoordPredio}": {
             "get": {
                 "tags": [
                     "/despesas"
                 ],
                 "summary": "mostrar um despesa",
-                "operationId": "f3e17e718fb9f3162e107a97e54e425c",
+                "operationId": "708ff25f46f8a702199b7a1074a4b659",
                 "parameters": [
                     {
                         "name": "idCoordPredio",
@@ -936,13 +936,13 @@
                 ]
             }
         },
-        "/api/despesas/{despesa}": {
+        "/despesas/{despesa}": {
             "get": {
                 "tags": [
                     "/despesas"
                 ],
                 "summary": "mostrar um despesa",
-                "operationId": "e98b11fc5ff3dca2fa35ee8db499c7c2",
+                "operationId": "26df1090de28aa0c13fdf7620667586a",
                 "parameters": [
                     {
                         "name": "despesa",
@@ -976,7 +976,7 @@
                     "/despesas"
                 ],
                 "summary": "apagar uma despesas",
-                "operationId": "f6980c1fb7b2523814b8b0e5be5a61da",
+                "operationId": "08e8d87a11c86f02f910b08b015b813e",
                 "parameters": [
                     {
                         "name": "despesa",
@@ -1006,13 +1006,13 @@
                 ]
             }
         },
-        "/api/dividas": {
+        "/dividas": {
             "get": {
                 "tags": [
                     "/dividas"
                 ],
                 "summary": "listar dividas",
-                "operationId": "a96c0f55b32afd91945f1d7aa29962e1",
+                "operationId": "b4538aab95009042d55dbf029c06272f",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -1028,13 +1028,13 @@
                 ]
             }
         },
-        "/api/dividas/apartamento/{apartamento}": {
+        "/dividas/apartamento/{idApartamento}": {
             "get": {
                 "tags": [
                     "/dividas"
                 ],
                 "summary": "mostrar divida do apartamento",
-                "operationId": "00ac21dfd51489764236edc7a65f85d5",
+                "operationId": "97eed662cca3c2b333f6394a3c20e9a7",
                 "parameters": [
                     {
                         "name": "apartamento",
@@ -1064,13 +1064,13 @@
                 ]
             }
         },
-        "/api/dividas/{divida}": {
+        "/dividas/{divida}": {
             "get": {
                 "tags": [
                     "/dividas"
                 ],
                 "summary": "mostrar divida",
-                "operationId": "15c81bb3c492131338f7ef11e2461a0e",
+                "operationId": "925c0a4bf777c22392daa1ac813ab416",
                 "parameters": [
                     {
                         "name": "divida",
@@ -1136,13 +1136,13 @@
                 ]
             }
         },
-        "/api/moradores": {
+        "/moradores": {
             "get": {
                 "tags": [
                     "/moradores"
                 ],
                 "summary": "listar moradores",
-                "operationId": "5457059570b079039b1ca9383632ca8c",
+                "operationId": "944f4b03bfb27527a721a5a24fd1bc1a",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -1162,7 +1162,7 @@
                     "/moradores"
                 ],
                 "summary": "Registrar morador",
-                "operationId": "9275386b64af6f8d0a34de8f8facbe11",
+                "operationId": "47a8a0066a0ac393bfe5b86882031a0f",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1215,13 +1215,13 @@
                 ]
             }
         },
-        "/api/moradores/{morador}": {
+        "/moradores/{morador}": {
             "get": {
                 "tags": [
                     "/moradores"
                 ],
                 "summary": "mostrar morador",
-                "operationId": "f575cc64868540686ddc792c21e58081",
+                "operationId": "9796196643e376e11eeaaf354433146f",
                 "parameters": [
                     {
                         "name": "morador",
@@ -1255,7 +1255,7 @@
                     "/moradores"
                 ],
                 "summary": "atualizar morador",
-                "operationId": "327bd42492494a0ed1a92c2747835e63",
+                "operationId": "48ae04774d78a54f26cabd9e3f194428",
                 "parameters": [
                     {
                         "name": "morador",
@@ -1320,7 +1320,7 @@
                     "/moradores"
                 ],
                 "summary": "apagar um morador",
-                "operationId": "395380c4da06ba839c3c85a52c8f4e31",
+                "operationId": "5b7d5fe60385c7f7b6441a10a0238afa",
                 "parameters": [
                     {
                         "name": "morador",
@@ -1353,13 +1353,13 @@
                 ]
             }
         },
-        "/api/pagamentos": {
+        "/pagamentos": {
             "get": {
                 "tags": [
                     "/pagamentos"
                 ],
                 "summary": "listar pagamentos",
-                "operationId": "9898b00bd3bd21e19dd7bfb612da29ae",
+                "operationId": "4cbf0188e3153262e28320385f3e1621",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -1379,7 +1379,7 @@
                     "/pagamentos"
                 ],
                 "summary": "registrar pagamento",
-                "operationId": "d3a1c31d0529fe134c3ee40ddaaddab8",
+                "operationId": "ff537f8ae5880fc79db2a2fa849864fb",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1448,13 +1448,13 @@
                 ]
             }
         },
-        "/api/pagamentos/{pagamento}": {
+        "/pagamentos/{pagamento}": {
             "get": {
                 "tags": [
                     "/pagamentos"
                 ],
                 "summary": "mostrar pagamento",
-                "operationId": "3111da2393f2f157e38767de05eaef49",
+                "operationId": "f290d3cb729519acd8d39baf2d70fc88",
                 "parameters": [
                     {
                         "name": "pagamento",
@@ -1488,7 +1488,7 @@
                     "/pagamentos"
                 ],
                 "summary": "deletar pagamento",
-                "operationId": "b3a266945e8212ccbd66dcc064dfb6b1",
+                "operationId": "f19a9d9c565df40b563f8313d178fa57",
                 "parameters": [
                     {
                         "name": "pagamento",
@@ -1518,13 +1518,13 @@
                 ]
             }
         },
-        "/api/predios": {
+        "/predios": {
             "get": {
                 "tags": [
                     "/predios"
                 ],
                 "summary": "listar predios",
-                "operationId": "456fe57437d1670dc58d8b8a79b12d8c",
+                "operationId": "1fa6f235211ed57a6147f2ba231d30fa",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -1540,13 +1540,13 @@
                 ]
             }
         },
-        "/api/predios/bloco/{bloco}": {
+        "/predios/bloco/{bloco}": {
             "post": {
                 "tags": [
                     "/predios"
                 ],
                 "summary": "Cadastrar um predios numa bloco",
-                "operationId": "3e2cbe2ec69551301de9021052b49a81",
+                "operationId": "47261388df1df42b32d17a4b29bb5174",
                 "parameters": [
                     {
                         "name": "bloco",
@@ -1600,13 +1600,13 @@
                 ]
             }
         },
-        "/api/predios/{predio}": {
+        "/predios/{predio}": {
             "get": {
                 "tags": [
                     "/predios"
                 ],
                 "summary": "mostrar um predio",
-                "operationId": "db6cd45c9e5711d9d73696ef2dd1a0bd",
+                "operationId": "db838e6b412be057a036465d362398d7",
                 "parameters": [
                     {
                         "name": "predio",
@@ -1640,7 +1640,7 @@
                     "/predios"
                 ],
                 "summary": "atualizar os dados de um predios",
-                "operationId": "6fdcb1219d2e18883ad2a1e7c1059ecb",
+                "operationId": "48b999c8b2613da03ffdc041398332ba",
                 "parameters": [
                     {
                         "name": "predio",
@@ -1694,7 +1694,7 @@
                     "/predios"
                 ],
                 "summary": "apagar um predio",
-                "operationId": "f64f25d3fb7795f4571b69c4e79a1003",
+                "operationId": "03cb27f9623a7804af041928d952135c",
                 "parameters": [
                     {
                         "name": "predio",
@@ -1724,13 +1724,13 @@
                 ]
             }
         },
-        "/api/taxas": {
+        "/taxas": {
             "get": {
                 "tags": [
                     "/taxas"
                 ],
                 "summary": "listar taxas",
-                "operationId": "c545976d151cf628a631bf21bcd0a630",
+                "operationId": "19206a0dba62b7943f50057354454c35",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -1750,7 +1750,7 @@
                     "/taxas"
                 ],
                 "summary": "registrar taxa",
-                "operationId": "2b99392547b0497501c2dbcb55bd4101",
+                "operationId": "8e4c11aa527bc51b188e4e6f4210c812",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1826,13 +1826,13 @@
                 ]
             }
         },
-        "/api/taxas/{taxa}": {
+        "/taxas/{taxa}": {
             "get": {
                 "tags": [
                     "/taxas"
                 ],
                 "summary": "mostrar um Taxa",
-                "operationId": "37f65b249240225ccad63ca24d6bc9eb",
+                "operationId": "3adbeae3292f3e59c9e4e4c5dc51d1fb",
                 "parameters": [
                     {
                         "name": "taxa",
@@ -1866,7 +1866,7 @@
                     "/taxas"
                 ],
                 "summary": "atualizar taxa",
-                "operationId": "00779debabe2819bc419495c2db68a88",
+                "operationId": "c1064cdf32c40ad14c1f65d3b2a1ea08",
                 "parameters": [
                     {
                         "name": "taxa",
@@ -1950,7 +1950,7 @@
                     "/taxas"
                 ],
                 "summary": "deletar taxa",
-                "operationId": "2ff5ccb36bc9e9d7876dff09e4c2f694",
+                "operationId": "0e0eca68755c2f8cd9461a408a006f1a",
                 "parameters": [
                     {
                         "name": "taxa",
@@ -1980,13 +1980,13 @@
                 ]
             }
         },
-        "/api/usuarios": {
+        "/usuarios": {
             "post": {
                 "tags": [
                     "/usuarios"
                 ],
                 "summary": "Cadastrar usuarios",
-                "operationId": "1da7e6e615da8e74ebc71b7c7db95617",
+                "operationId": "5c5ca6aef7bfd63902a17cd68f73e687",
                 "requestBody": {
                     "required": true,
                     "content": {

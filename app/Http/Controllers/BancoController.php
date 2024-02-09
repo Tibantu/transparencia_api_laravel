@@ -14,7 +14,7 @@ class BancoController extends Controller
     /**
     * @OA\Get(
         *     tags={"/bancos"},
-        *     path="/api/bancos",
+        *     path="/bancos",
         *     summary="listar bancos",
         *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
@@ -37,7 +37,7 @@ class BancoController extends Controller
             $predio = Predio::find($idPredi);
             if (!$predio)
                 return response()->json(['message' => "Predio não encontrado!"], 404);
-            
+
             return Banco::where('n_codicoord', '=', $predio->n_codicoord)->get();
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -47,7 +47,7 @@ class BancoController extends Controller
     /**
     * @OA\Post(
         *     tags={"/bancos"},
-        *     path="/api/bancos",
+        *     path="/bancos",
         *     summary="Cadastrar bancos",
         *     description="cadastrar bancos normalmente pertence a um coordenador",
         *     security={{"bearerAuth": {} }},
@@ -61,7 +61,7 @@ class BancoController extends Controller
         *          @OA\Property(property="c_nomeentid",type="string",default=null,description="nome da entidade proprietario do banco se não for um coordenador")
         *       )
         *     ),
-        *     
+        *
         *     @OA\Response(response="201", description="Banco cadastrado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
         *     @OA\Response(response="500", description="Validation errors")
@@ -69,7 +69,7 @@ class BancoController extends Controller
      */
     public function create(Request $req)
     {
-        $isValidData = Validator::make($req->all(), 
+        $isValidData = Validator::make($req->all(),
         [
             'c_entibanco' => 'required|string',
             'c_descbanco',
@@ -102,7 +102,7 @@ class BancoController extends Controller
     /**
     * @OA\Delete(
         *     tags={"/bancos"},
-        *     path="/api/bancos/{banco}",
+        *     path="/bancos/{banco}",
         *     summary="apagar um banco",
         *     security={{"bearerAuth": {} }},
         *       @OA\Parameter(
@@ -146,9 +146,9 @@ class BancoController extends Controller
         /**
     * @OA\Get(
         *     tags={"/bancos"},
-        *     path="/api/bancos/{banco}",
+        *     path="/bancos/{banco}",
         *     summary="mostrar um banco",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="banco",
         *         in="path",

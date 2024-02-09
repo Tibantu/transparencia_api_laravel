@@ -103,9 +103,8 @@ class DespesaController extends Controller
 
     try {
         Despesa::create($req->all());
-        // dd($data);
         return response()->json(['message' => "Despesa criada com sucesso!"], 201);;
-    } catch (\Illuminate\Database\QueryException $e) {
+    } catch (QueryException $e) {
         return response()->json(['message' => $e->getMessage()], 500);
     }
 }
@@ -142,11 +141,11 @@ class DespesaController extends Controller
     public function update(Request $req, $id)
     {
         try {
-            $Divida = Divida::find($id);
-            if (!$Divida) {
-                return response()->json(['message' => "Divida não encontrado."], 404);
+            $Despesa = Despesa::find($id);
+            if (!$Despesa) {
+                return response()->json(['message' => "Despesa não encontrado."], 404);
             }
-            $Divida->update($req->all());
+            $Despesa->update($req->all());
 
             return response()->json($req->all());
         } catch (QueryException $e) {

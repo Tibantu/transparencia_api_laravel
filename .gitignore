@@ -5,6 +5,8 @@
 /storage/*.key
 /vendor
 
+
+Transp-api.zip
 .env.backup
 .env.production
 .phpunit.result.cache

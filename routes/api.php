@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ApartamentoController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BancoController;
@@ -19,20 +18,23 @@ use App\Http\Controllers\TaxaController;
 use App\Http\Controllers\UserController;
 
 
- Route::middleware(['auth:sanctum'])->group(function(){
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/centralidades', CentralidadeController::class);
 });
 
+Route::get('/getAll', function () {
+    return response()->json(['message' => 123]);
+});
 //Usuario
-Route::prefix('/usuarios')->group(function(){
-
+Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-    Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
-    Route::post('/', [UserController::class, 'create']);
+
+    // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    // Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
+    // Route::post('/', [UserController::class, 'create']);
 });
 //ENDERECO
-Route::prefix('/enderecos')->group(function () {
+Route::prefix('enderecos')->group(function () {
     Route::get('/', [EnderecoController::class, 'getAll']);
     Route::post('/', [EnderecoController::class, 'create']);
     Route::get('/{id}', [EnderecoController::class, 'getOne']);
@@ -86,7 +88,7 @@ Route::prefix('apartamentos')->group(function () {
     Route::put('/{id}', [ApartamentoController::class, 'update']);
     Route::delete('/{id}', [ApartamentoController::class, 'delete']);
 });
-    /*Manuel Alfredo*/
+/*Manuel Alfredo*/
 
 //MORADOR
 Route::prefix('moradores')->group(function () {
