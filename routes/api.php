@@ -13,16 +13,31 @@ use App\Http\Controllers\DividaController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\MoradorController;
 use App\Http\Controllers\PagamentoController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PredioController;
 use App\Http\Controllers\TaxaController;
 use App\Http\Controllers\UserController;
+use Barryvdh\DomPDF\PDF;
 
+/*
+  Rotas para os pdf
+ */
+
+ Route::prefix('documentos')->group(function () {
+  Route::get('/', [PDFController::class, 'downloadPDF']);
+  /*
+  Route::post('/', [EnderecoController::class, 'create']);
+  Route::get('/{id}', [EnderecoController::class, 'getOne']);
+  Route::put('/{id}', [EnderecoController::class, 'update']);
+  Route::delete('/{id}', [EnderecoController::class, 'delete']);
+  */
+});
 
 Route::middleware(['auth:sanctum'])->group(function () {
   Route::apiResource('/centralidades', CentralidadeController::class);
 });
 
-ROute::get('/pdf', function () {
+Route::get('/pdf', function () {
   header("Content-Type:application/json");
 
   echo json_encode(['nome'=> "Admiro Alfredo"]);
