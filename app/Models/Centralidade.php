@@ -10,7 +10,14 @@ class Centralidade extends Model
     protected $table = 'tracentr';
     protected $primaryKey = 'n_codicentr';
     public $timestamps = false;
-    protected $fillable = ['n_codicentr', 'c_desccentr', 'n_nblocentr', 'n_codicoord', 'n_codiender', 'n_codiadmin'];
+    protected $fillable = [
+        'n_codicentr',
+        'c_desccentr',
+        'n_nblocentr',
+        'n_codicoord',
+        'n_codiender',
+        'n_codiadmin'
+    ];
 
     use HasFactory;
 }
