@@ -11,6 +11,5 @@ DB_CONNECTION=mysql
 DB_HOST=localhost
 DB_PORT=3306
 DB_DATABASE=transparencia_db
-DB_USERNAME=transparencia_user_db
 DB_USERNAME=root
 DB_PASSWORD=

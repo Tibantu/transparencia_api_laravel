@@ -18,6 +18,7 @@ use App\Http\Controllers\PredioController;
 use App\Http\Controllers\TaxaController;
 use App\Http\Controllers\UserController;
 use Barryvdh\DomPDF\PDF;
+use Illuminate\Http\Client\Request;
 
 /*
   Rotas para os pdf
@@ -33,9 +34,23 @@ use Barryvdh\DomPDF\PDF;
   */
 });
 
-Route::middleware(['auth:sanctum'])->group(function () {
-  Route::apiResource('/centralidades', CentralidadeController::class);
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+  return $request->user();
 });
+Route::middleware('auth:sanctum')->get('/protected-route', function () {
+  // Código protegido
+  Route::prefix('centralidades')->group(function () {
+    Route::get('/', [CentralidadeController::class, 'getAll']);
+    Route::post('/', [CentralidadeController::class, 'create'])->middleware('auth');
+    /**[pega] todos as centralidades de uma provoncia  - provincia, fornecida na url */
+    Route::get('/provincia/{denominacao}', [CentralidadeController::class, 'getAllByProvincia']);
+    Route::delete('/{id}', [CentralidadeController::class, 'delete']);
+    Route::put('/{id}', [CentralidadeController::class, 'update']);
+    Route::get('/{id}', [CentralidadeController::class, 'getOne']);
+  });
+});
+
+
 
 Route::get('/pdf', function () {
   header("Content-Type:application/json");
@@ -63,16 +78,7 @@ Route::prefix('enderecos')->group(function () {
   Route::delete('/{id}', [EnderecoController::class, 'delete']);
 });
 
-// CENTRALIDADES
-Route::prefix('centralidades')->group(function () {
-  Route::get('/', [CentralidadeController::class, 'getAll']);
-  Route::post('/', [CentralidadeController::class, 'create'])->middleware('auth');
-  /**[pega] todos as centralidades de uma provoncia  - provincia, fornecida na url */
-  Route::get('/provincia/{denominacao}', [CentralidadeController::class, 'getAllByProvincia']);
-  Route::delete('/{id}', [CentralidadeController::class, 'delete']);
-  Route::put('/{id}', [CentralidadeController::class, 'update']);
-  Route::get('/{id}', [CentralidadeController::class, 'getOne']);
-});
+
 
 // BLOCOS
 Route::prefix('blocos')->group(function () {

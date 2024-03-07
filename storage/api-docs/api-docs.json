@@ -232,6 +232,51 @@
                 ]
             }
         },
+        "/login": {
+            "post": {
+                "tags": [
+                    "/login"
+                ],
+                "summary": "fazero login no sistema",
+                "operationId": "2dd578ff7aba2721293dac66833b27d1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "login": {
+                                        "description": "nome de adesao",
+                                        "type": "string"
+                                    },
+                                    "senha": {
+                                        "description": "senha do pessoal",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "login successfully"
+                    },
+                    "412": {
+                        "description": "Erro ao logar"
+                    },
+                    "500": {
+                        "description": "Validation errors"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/bancos": {
             "get": {
                 "tags": [
@@ -1341,6 +1386,28 @@
                     },
                     "405": {
                         "description": "apartamento do morador não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/documentos": {
+            "get": {
+                "tags": [
+                    "/documentos"
+                ],
+                "summary": "stream do documento",
+                "operationId": "2916f16f16bf22ea435c3bcf4d8937ba",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
                     },
                     "500": {
                         "description": "Erro no servidor"

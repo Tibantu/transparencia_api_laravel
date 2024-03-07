@@ -10,8 +10,7 @@
     <table class="w-full">
         <tr>
             <td class="w-half">
-                <img src="{{ asset('laraveldaily.png') }}" alt="laravel daily" width="200" />
-            </td>
+                        </td>
             <td class="w-half">
                 <h2>prodito ID: 834847473</h2>
             </td>
