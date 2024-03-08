@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Usuario;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -51,7 +52,7 @@ class UserController extends Controller
             $user = new User();
             $user->c_logiusuar = $req->login;
             $user->c_emaiusuar = $req->email;
-            $user->c_senhusuar = bcrypt($req->password);
+            $user->c_senhusuar = Hash::make($req->password);
             $user->c_nomeentid = $req->tipo;
             // dd($user);
             $user->save();
