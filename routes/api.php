@@ -23,17 +23,7 @@ use Illuminate\Http\Client\Request;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   return $request->user();
 });
-/*
-Route::get('/pdf', function () {
-  header("Content-Type:application/json");
 
-  echo json_encode(['nome'=> "Admiro Alfredo"]);
-});
-*/
-
-Route::get('/getAll', function () {
-  return response()->json(['message' => 123]);
-});
 //Usuario
 Route::prefix('auth')->group(function () {
   Route::post('/login', [AuthController::class, 'login']);
