@@ -20,29 +20,16 @@ use App\Http\Controllers\UserController;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Client\Request;
 
-/*
-  Rotas para os pdf
- */
-
- Route::prefix('documentos')->group(function () {
-  Route::get('/', [PDFController::class, 'downloadPDF']);
-  /*
-  Route::post('/', [EnderecoController::class, 'create']);
-  Route::get('/{id}', [EnderecoController::class, 'getOne']);
-  Route::put('/{id}', [EnderecoController::class, 'update']);
-  Route::delete('/{id}', [EnderecoController::class, 'delete']);
-  */
-});
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   return $request->user();
 });
-
+/*
 Route::get('/pdf', function () {
   header("Content-Type:application/json");
 
   echo json_encode(['nome'=> "Admiro Alfredo"]);
 });
+*/
 
 Route::get('/getAll', function () {
   return response()->json(['message' => 123]);
@@ -54,12 +41,23 @@ Route::prefix('auth')->group(function () {
 
   // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
   // Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
-  // Route::post('/', [UserController::class, 'create']);
+  Route::post('/', [UserController::class, 'create']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
       // Código protegido
 
+      // Rotas para os pdf
+      Route::prefix('documentos')->group(function () {
+        Route::get('/', [PDFController::class, 'downloadPDF']);
+        /*
+        Route::post('/', [PDFController::class, 'create']);
+        Route::get('/{id}', [PDFController::class, 'getOne']);
+        Route::put('/{id}', [PDFController::class, 'update']);
+        Route::delete('/{id}', [PDFController::class, 'delete']);
+        */
+      });
+      //Centralidades
       Route::prefix('centralidades')->group(function () {
         Route::get('/', [CentralidadeController::class, 'getAll'])->middleware('auth');
         Route::post('/', [CentralidadeController::class, 'create'])->middleware('auth');

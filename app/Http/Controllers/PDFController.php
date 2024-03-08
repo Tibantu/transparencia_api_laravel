@@ -29,8 +29,10 @@ class PDFController extends Controller
             ]
                 ];
         $pdf = FacadePdf::loadView('models_pdf.pdfR1', ['data' => $data]);
+        if(!$pdf)
+            return response()->json(['message' => "Erro no servidor"], 500);
         //return $pdf->download();
-        return $pdf->stream();
+        return $pdf->stream('transp-doc.pdf');
     }
 
 }

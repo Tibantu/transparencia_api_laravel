@@ -302,7 +302,7 @@
                         "description": "retorna um objecto {'message': 'User token', 'token': '18|A5wFrzvyI435BuH7NqT0sgTkARCpEDWTUaoW0faTca383882'}  "
                     },
                     "401": {
-                        "description": "credencias incorreta | senha inválida"
+                        "description": "credencias incorreta | senha incorreta"
                     }
                 },
                 "security": [
@@ -2082,32 +2082,34 @@
                 ]
             }
         },
-        "/usuarios": {
+        "/auth": {
             "post": {
                 "tags": [
                     "/usuarios"
                 ],
                 "summary": "Cadastrar usuarios",
-                "operationId": "5c5ca6aef7bfd63902a17cd68f73e687",
+                "operationId": "cbd33465670b0816050f549915476427",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "name": {
-                                        "description": "denominação da centralidade",
-                                        "type": "string",
-                                        "default": "nome de adesão"
+                                    "login": {
+                                        "description": "nome ou número de usuário",
+                                        "type": "string"
                                     },
                                     "email": {
                                         "description": "email válido",
                                         "type": "string"
                                     },
                                     "password": {
-                                        "description": "denominação da centralidade",
-                                        "type": "string",
-                                        "default": "senha pessoal"
+                                        "description": "senha pessoal",
+                                        "type": "string"
+                                    },
+                                    "tipo": {
+                                        "description": "tipo de usuario. 'enum('traapart','tramorad','traecome','traepubl','tracoord')'",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"

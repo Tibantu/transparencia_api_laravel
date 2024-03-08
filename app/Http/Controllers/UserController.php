@@ -13,16 +13,17 @@ class UserController extends Controller
     /**
      * @OA\Post(
      *     tags={"/usuarios"},
-     *     path="/usuarios",
+     *     path="/auth",
      *     summary="Cadastrar usuarios",
      *     security={{"bearerAuth": {} }},
      *     @OA\RequestBody(
      *       required=true,
      *       @OA\JsonContent(
      *          type="object",
-     *          @OA\Property(property="name",type="string",default="nome de adesão",description="denominação da centralidade"),
+     *          @OA\Property(property="login",type="string",description="nome ou número de usuário"),
      *          @OA\Property(property="email",type="string",description="email válido"),
-     *          @OA\Property(property="password",type="string",default="senha pessoal",description="denominação da centralidade"),
+     *          @OA\Property(property="password",type="string",description="senha pessoal"),
+     *          @OA\Property(property="tipo",type="string",description="tipo de usuario. 'enum('traapart','tramorad','traecome','traepubl','tracoord')'"),
      *       )
      *     ),
      *
@@ -35,25 +36,23 @@ class UserController extends Controller
 
     public function create(Request $req)
     {
-
-
-
         $isValidData = Validator::make($req->all(), [
-            "name" => 'required|string',
+            "login" => 'required|string',
             "email" => 'required|string',
             "password" => 'required|string',
+            "tipo" => 'required|string', // recebe o tipo de usuario(coordenador, morador, ...)
             "remember_token" => 'string'
         ]);
-
 
         if ($isValidData->fails())
             return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
 
         try {
             $user = new User();
-            $user->c_logiusuar = $req->email;
+            $user->c_logiusuar = $req->login;
+            $user->c_emaiusuar = $req->email;
             $user->c_senhusuar = bcrypt($req->password);
-            $user->c_nomeentid = $req->name;
+            $user->c_nomeentid = $req->tipo;
             // dd($user);
             $user->save();
 

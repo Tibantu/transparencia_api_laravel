@@ -77,7 +77,7 @@ class AuthController extends Controller
       if (!$user){
           return response()->json(['message' => 'credencias incorreta'], 401);
       }
-      if($user->c_senhusuar != $credenciais['senha'])
+      if(!Hash::check($user->c_senhusuar, $credenciais['senha']))
           return response()->json(['message' => 'senha incorreta'], 401);
 
       $user->tokens()->delete();
@@ -93,7 +93,7 @@ class AuthController extends Controller
 
         return response()->json([
             'mensage' => 'sucesso',
-        ]);
+        ], 200);
     }
     public function me(Request $request)
     {

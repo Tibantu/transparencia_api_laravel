@@ -24,6 +24,7 @@ class User extends Authenticatable
         'c_logiusuar',
         'c_senhusuar',
         'n_codientid',
+        'c_emaiusuar',
         'c_nomeentid'
     ];
 
