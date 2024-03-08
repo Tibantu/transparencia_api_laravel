@@ -232,13 +232,13 @@
                 ]
             }
         },
-        "/login": {
+        "/auth/login": {
             "post": {
                 "tags": [
                     "/login"
                 ],
-                "summary": "fazero login no sistema",
-                "operationId": "2dd578ff7aba2721293dac66833b27d1",
+                "summary": "confirmar a existencia do usuario, primeira etapa de acesso ao sistema",
+                "operationId": "8cb7742ae98d0990acb2907c4e00bf24",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -246,12 +246,8 @@
                             "schema": {
                                 "properties": {
                                     "login": {
-                                        "description": "nome de adesao",
+                                        "description": "login",
                                         "type": "string"
-                                    },
-                                    "senha": {
-                                        "description": "senha do pessoal",
-                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -260,14 +256,53 @@
                     }
                 },
                 "responses": {
-                    "201": {
-                        "description": "login successfully"
+                    "200": {
+                        "description": "login válido"
                     },
-                    "412": {
-                        "description": "Erro ao logar"
+                    "401": {
+                        "description": "credencias incorreta | login inválido"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/senha": {
+            "post": {
+                "tags": [
+                    "/login"
+                ],
+                "summary": "login no sistema. Segunda etapa do logim, passando a senha, o login da etapa 1 num campo oculto",
+                "operationId": "cfabb47683e5f903fd08f9e1ae9c4acd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "login": {
+                                        "description": "login",
+                                        "type": "string"
+                                    },
+                                    "senha": {
+                                        "description": "senha do pessoal",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "retorna um objecto {'message': 'User token', 'token': '18|A5wFrzvyI435BuH7NqT0sgTkARCpEDWTUaoW0faTca383882'}  "
                     },
-                    "500": {
-                        "description": "Validation errors"
+                    "401": {
+                        "description": "credencias incorreta | senha inválida"
                     }
                 },
                 "security": [
