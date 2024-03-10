@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Morador;
 use App\Models\User;
 use App\Models\Usuario;
 use Illuminate\Auth\Access\Response;
@@ -49,11 +50,18 @@ class UserController extends Controller
             return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
 
         try {
+            //criar um morador if tipo == tramord
+            $dadosMorador = [
+              'c_nomemorad' => $req->login
+            ];
+            $idMorador = Morador::insertGetId($dadosMorador);
+            //criar usuario
             $user = new User();
             $user->c_logiusuar = $req->login;
             $user->c_emaiusuar = $req->email;
             $user->c_senhusuar = Hash::make($req->password);
             $user->c_nomeentid = $req->tipo;
+            $user->n_codientid = $idMorador;
             // dd($user);
             $user->save();
 
