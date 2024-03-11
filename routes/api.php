@@ -10,6 +10,7 @@ use App\Http\Controllers\CentralidadeController;
 use App\Http\Controllers\CoordenadorController;
 use App\Http\Controllers\DespesaController;
 use App\Http\Controllers\DividaController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\MoradorController;
 use App\Http\Controllers\PagamentoController;
@@ -32,6 +33,12 @@ Route::prefix('auth')->group(function () {
   // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
   // Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
   Route::post('/', [UserController::class, 'create']);
+});
+
+//Email
+Route::prefix('email')->group(function () {
+  Route::get('/envia-email-boas-vindas', [EmailController::class, 'enviaEmailDeBoasVindasl']);
+
 });
 
 Route::middleware('auth:sanctum')->group(function () {
