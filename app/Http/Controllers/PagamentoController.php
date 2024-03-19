@@ -13,6 +13,46 @@ use PhpParser\Node\Expr\Throw_;
 
 class PagamentoController extends Controller
 {
+  public array $camposAceitaveisNaConsulta = ['d_dacrpagam'];
+  private array $listaDeActionsPorCampo;
+
+  public function __construct()
+  {
+    // Código no construtor
+    $this->listaDeActionsPorCampo  = [
+      'd_dacrpagam' =>array($this, 'getConsultaDePagamentoEntreAsData')
+    ];
+  }
+  private function getConsultaDePagamentoEntreAsData(Request $req, ...$args){
+    // [$dataInicial, $dataFinal] = $req->only(['di', 'df']);
+    $query = Pagamento::query();
+
+    if (!$req->has('di') && !$req->has('df')) {
+      throw new Exception('Erro ao validar os dados para consultas.');
+    }
+    if ($req->has('di') && !$req->has('df')) {
+      // faz a consulta com [di]
+      if (!Util::validarData($req->input('di')))
+        throw new Exception('Erro ao validar os dados. Data invalida.');
+      $query->where('d_dacrpagam', '=', $req->input('di'));
+    }
+    if (!$req->has('di') && $req->has('df')) {
+      // faz a consulta com [df]
+      if (!Util::validarData($req->input('df')))
+        throw new Exception('Erro ao validar os dados. Data invalida.');
+      $query->where('d_dacrpagam', '=', $req->input('df'));
+    }
+    if ($req->has('di') && $req->has('df')) {
+      // faz a consulta com [di] e [df]
+      if (!(Util::validarData($req->input('di')) && Util::validarData($req->input('df'))))
+        throw new Exception('Erro ao validar os dados. Data invilida.');
+
+      // $dx = new \DateTime($req->input('di'));
+      // $dy = new \DateTime($req->input('df'));
+      $query->whereBetween('d_dacrpagam', [$req->input('di'), $req->input('df')]);
+    }
+    return $query->get();
+  }
   /**
    * @OA\Get(
    *     tags={"/pagamentos"},
@@ -95,7 +135,7 @@ class PagamentoController extends Controller
       Pagamento::create($req->all());
       // dd($data);
       return response()->json(['message' => "Pagamento criado com sucesso!"], 201);;
-    } catch (\Illuminate\Database\QueryException $e) {
+    } catch (QueryException $e) {
       return response()->json(['message' => $e->getMessage()], 500);
     }
   }
@@ -184,44 +224,6 @@ class PagamentoController extends Controller
     return in_array($campoAVerificar, $camposDoModeloFiltrado);
   }
 
-  private array $listaDeActionsPorCampo;
-  public function __construct()
-  {
-
-    // Código no construtor
-    $this->listaDeActionsPorCampo  = [
-      'd_dacrpagam' => function (Request $req, ...$args) {
-        // [$dataInicial, $dataFinal] = $req->only(['di', 'df']);
-        $query = Pagamento::query();
-
-        if (!$req->has('di') && !$req->has('df')) {
-          throw new Exception('Erro ao validar os dados para consultas.');
-        }
-        if ($req->has('di') && !$req->has('df')) {
-          // faz a consulta com [di]
-          if (!Util::validarData($req->input('di')))
-            throw new Exception('Erro ao validar os dados. Data invalida.');
-          $query->where('d_dacrpagam', '=', $req->input('di'));
-        }
-        if (!$req->has('di') && $req->has('df')) {
-          // faz a consulta com [df]
-          if (!Util::validarData($req->input('df')))
-            throw new Exception('Erro ao validar os dados. Data invalida.');
-          $query->where('d_dacrpagam', '=', $req->input('df'));
-        }
-        if ($req->has('di') && $req->has('df')) {
-          // faz a consulta com [di] e [df]
-          if (!(Util::validarData($req->input('di')) && Util::validarData($req->input('df'))))
-            throw new Exception('Erro ao validar os dados. Data invilida.');
-
-          // $dx = new \DateTime($req->input('di'));
-          // $dy = new \DateTime($req->input('df'));
-          $query->whereBetween('d_dacrpagam', [$req->input('di'), $req->input('df')]);
-        }
-        return $query->get();
-      }
-    ];
-  }
 
 
   private function executarPesquisaDoCampo(string $campo, Request $req, ...$args)
@@ -232,7 +234,6 @@ class PagamentoController extends Controller
     return call_user_func_array($this->listaDeActionsPorCampo[$campo], [$req, ...$args]);;
   }
 
-  public array $camposAceitaveisNaConsulta = ['d_dacrpagam'];
   public function getBetweenDate(Request $req, $campoDaConsulta)
   {
     $camposDoModelo = (new Pagamento())->getFillable();
