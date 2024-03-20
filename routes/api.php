@@ -20,10 +20,32 @@ use App\Http\Controllers\TaxaController;
 use App\Http\Controllers\UserController;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Password;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   return $request->user();
 });
+
+/* recuperar 1senha */
+Route::get('/login-form', function () {
+  return view('testes.login');
+})->middleware('guest')->name('login.form');
+
+Route::get('/forgot-password', function () {
+  return view('auth.forgot-password');
+})->middleware('guest')->name('password.request');
+
+Route::post('/forgot-password', function (Request $request) {
+  $request->validate(['email' => 'required|email']);
+
+  $status = Password::sendResetLink(
+      $request->only('email')
+  );
+dd($status);
+  return $status === Password::RESET_LINK_SENT
+              ? back()->with(['status' => __($status)])
+              : back()->withErrors(['email' => __($status)]);
+})->middleware('guest')->name('password.email');
 
 //Usuario
 Route::prefix('auth')->group(function () {

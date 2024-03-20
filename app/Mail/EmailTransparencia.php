@@ -26,7 +26,7 @@ class EmailTransparencia extends Mailable
   public function envelope(): Envelope
   {
       return new Envelope(
-          subject: 'Bem vindo ao trasparência',
+          subject: 'Bem vindo ao transparência',
       );
   }
 

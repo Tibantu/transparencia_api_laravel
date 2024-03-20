@@ -13,7 +13,7 @@ class EmailController extends Controller
       $title = 'Bem vindo ao transparencia';
       $body = 'Obrigado por usar os nossos serviços!';
 
-      Mail::to('admiroalfredo1742@gmail.com')->send(new EmailTransparencia($title, $body));
+      Mail::to('nezbecho@gmail.com')->send(new EmailTransparencia($title, $body));
 
       return "Email sent successfully!";
   }
