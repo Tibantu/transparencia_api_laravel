@@ -1620,6 +1620,51 @@
                 ]
             }
         },
+        "/pagamentos/p/{campoDaConsulta}": {
+            "get": {
+                "tags": [
+                    "/pagamentos"
+                ],
+                "summary": "consultar pagamentos",
+                "operationId": "0b2be3ee3b2e43ddcd51c6ed12a7d2e9",
+                "parameters": [
+                    {
+                        "name": "di",
+                        "in": "path",
+                        "description": "data de [início] criaçao do pagamento",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "df",
+                        "in": "path",
+                        "description": "data de [final] criaçao do pagamento",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "412": {
+                        "description": "O campo  X Não é permitido."
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/predios": {
             "get": {
                 "tags": [

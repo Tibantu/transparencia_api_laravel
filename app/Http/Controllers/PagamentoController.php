@@ -23,6 +23,8 @@ class PagamentoController extends Controller
       'd_dacrpagam' =>array($this, 'getConsultaDePagamentoEntreAsData')
     ];
   }
+
+
   private function getConsultaDePagamentoEntreAsData(Request $req, ...$args){
     // [$dataInicial, $dataFinal] = $req->only(['di', 'df']);
     $query = Pagamento::query();
@@ -233,6 +235,32 @@ class PagamentoController extends Controller
     }
     return call_user_func_array($this->listaDeActionsPorCampo[$campo], [$req, ...$args]);;
   }
+
+  /**
+   * @OA\GET(
+   *     tags={"/pagamentos"},
+   *     path="/pagamentos/p/{campoDaConsulta}",
+   *     summary="consultar pagamentos",
+   *       security={{"bearerAuth": {} }},
+   *       @OA\Parameter(
+   *         name="di",
+   *         in="path",
+   *         description="data de [início] criaçao do pagamento",
+   *         required=false,
+   *         @OA\Schema(type="date")
+   *     ),
+   *       @OA\Parameter(
+   *         name="df",
+   *         in="path",
+   *         description="data de [final] criaçao do pagamento",
+   *         required=false,
+   *         @OA\Schema(type="date")
+   *     ),
+   *     @OA\Response(response="200", description=""),
+   *     @OA\Response(response="412", description="O campo  X Não é permitido."),
+   *     @OA\Response(response="500", description="Erro no servidor")
+   * )
+   */
 
   public function getBetweenDate(Request $req, $campoDaConsulta)
   {
