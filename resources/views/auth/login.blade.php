@@ -58,7 +58,7 @@
     <div class="container grid-xl login-container">
         <div class="columns">
             <div class="column col-4 col-mx-auto">
-                <form method="POST" action="{{ route('login_view_reset') }}" class="login-form">
+                <form method="POST" action="{{ route('login') }}" class="login-form">
                     @csrf
 
                     <div class="form-group">
@@ -68,11 +68,17 @@
                     </div>
 
                     <div class="form-group">
-                        <button class="btn btn-primary btn-block" type="submit">Send me link</button>
+                        <span class="icon icon-24" data-spectre-icon="key"></span>
+                        <label class="form-label" for="password">Password:</label>
+                        <input class="form-input" type="password" id="password" name="password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit">Login</button>
                     </div>
                 </form>
-                <div class="login">
-                    <a href="{{ route('login_view') }}">Forgot password?</a>
+                <div class="forgot-password">
+                    <a href="{{ route('password.request') }}">Forgot password?</a>
                 </div>
             </div>
         </div>

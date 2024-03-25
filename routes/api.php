@@ -18,6 +18,7 @@ use App\Http\Controllers\TaxaController;
 use App\Http\Controllers\UserController;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Password;
 
 Route::middleware(['auth:sanctum'])->group(function () {
   Route::apiResource('/centralidades', CentralidadeController::class);
@@ -50,7 +51,10 @@ Route::get('/getAll', function () {
 });
 //Usuario
 Route::prefix('auth')->group(function () {
-  Route::post('/login', [AuthController::class, 'login']);
+  Route::post('/login', [AuthController::class, 'login'])->name('login');
+  Route::get('/login_view', [AuthController::class, 'login_view'])->name('login_view');
+  Route::get('/login_view_reset', [AuthController::class, 'login_view_reset'])->name('login_view_reset');
+  Route::post('/login_view_reset', [AuthController::class, 'postlogin_view_reset'])->name('postlogin_view_reset');
 
   // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
   // Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');

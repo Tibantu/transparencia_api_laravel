@@ -48,4 +48,9 @@ class User extends Authenticatable implements CanResetPassword
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    static public function getEmailSingle($email){
+
+      return self::where('c_emaiusuar', '=', $email)->first();
+    }
 }

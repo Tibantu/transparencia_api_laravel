@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\AuthRequest;
+use App\Mail\ForgotPasswordMail;
 use App\Models\User;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
+
+use Stringable;
 
 class AuthController extends Controller
 {
-
 
   /**
    * @OA\Post(
@@ -47,6 +50,27 @@ class AuthController extends Controller
 
     }
 
+    public function login_view(Request $request)
+    {
+        return view("auth.login");
+    }
+
+
+    public function postlogin_view_reset(Request $request)
+    {
+      $user = User::getEmailSingle($request->email);
+        if(!empty($user))
+        {
+          $user->remember_token = Str::random(30);
+          Mail::to($user->c_emaiusuar)->send(new ForgotPasswordMail($user));
+          $user->save();
+          return response()->json(['message' => 'link enviado no seu email'], 401);
+        }
+        else
+        {
+          return response()->json(['message' => 'email nao registrado'], 401);
+        }
+    }
       /**
    * @OA\Post(
    *     tags={"/login"},
@@ -104,4 +128,5 @@ class AuthController extends Controller
             'me' => $user,
         ]);
     }
+
 }

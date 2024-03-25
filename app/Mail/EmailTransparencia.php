@@ -12,7 +12,6 @@ use Illuminate\Queue\SerializesModels;
 class EmailTransparencia extends Mailable
 {
   use Queueable, SerializesModels;
-
   /**
    * Create a new message instance.
    */
