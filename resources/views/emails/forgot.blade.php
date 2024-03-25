@@ -1,9 +1,14 @@
-@component('mail::massage')
-Olá {{ $user->c_logiusuar }}
+@component('mail::message')
+Olá {{ $user->c_logiusuar }},
 
-@component('mail::button', ['url' => $request->url('admin/reset/'.$user->remenber_token)])
-Rest your Password
+Você está recebendo este e-mail porque recebemos uma solicitação de redefinição de senha para sua conta.
+
+@component('mail::button', ['url' => url('reset/'.$user->remember_token)])
+Redefinir sua senha
 @endcomponent
-Obrigado><br>
-<p>{{ $body }}</p>
+
+Se você não solicitou uma redefinição de senha, nenhuma ação adicional é necessária.
+
+Obrigado,<br>
+{{ config('app.name') }}
 @endcomponent

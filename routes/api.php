@@ -58,7 +58,7 @@ Route::prefix('auth')->group(function () {
 
   // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
   // Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
-  // Route::post('/', [UserController::class, 'create']);
+   Route::post('/', [UserController::class, 'create']);
 });
 //ENDERECO
 Route::prefix('enderecos')->group(function () {
