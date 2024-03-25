@@ -1672,7 +1672,13 @@
                         "description": "campo da consulta",
                         "required": false,
                         "schema": {
-                            "type": "String"
+                            "description": "Valor permitido: d_dacrpagam, d_datapagam, d_dacopagam",
+                            "type": "string",
+                            "enum": [
+                                "d_dacrpagam",
+                                "d_datapagam",
+                                "d_dacopagam"
+                            ]
                         }
                     },
                     {

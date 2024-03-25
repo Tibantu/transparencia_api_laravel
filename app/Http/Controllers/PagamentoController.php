@@ -247,7 +247,10 @@ class PagamentoController extends Controller
    *         in="path",
    *         description="campo da consulta",
    *         required=false,
-   *         @OA\Schema(type="String")
+   *         @OA\Schema(
+   *             type="string",
+   *             enum={"d_dacrpagam", "d_datapagam", "d_dacopagam"},
+   *             description="Valor permitido: d_dacrpagam, d_datapagam, d_dacopagam")
    *     ),
    *       @OA\Parameter(
    *         name="di",
