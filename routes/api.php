@@ -30,7 +30,7 @@ Route::prefix('auth')->group(function () {
   Route::post('/login', [AuthController::class, 'login'])->name('login');
   Route::get('/login_view', [AuthController::class, 'login_view'])->name('login_view');// rota nao necessaria
   Route::get('/login_view_reset', [AuthController::class, 'login_view_reset'])->name('login_view_reset');// rota nao necessaria
-  Route::post('/login_view_reset', [AuthController::class, 'postlogin_view_reset'])->name('postlogin_view_reset');// rota necessaria
+  Route::post('/reset-senha', [AuthController::class, 'postlogin_view_reset'])->name('postlogin_view_reset');// rota necessaria
 
   // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
   // Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');

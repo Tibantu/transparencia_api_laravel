@@ -13,14 +13,16 @@ use PhpParser\Node\Expr\Throw_;
 
 class PagamentoController extends Controller
 {
-  public array $camposAceitaveisNaConsulta = ['d_dacrpagam'];
+  public array $camposAceitaveisNaConsulta = ['d_datapagam', 'd_dacrpagam', 'd_dacopagam'];
   private array $listaDeActionsPorCampo;
 
   public function __construct()
   {
     // Código no construtor
     $this->listaDeActionsPorCampo  = [
-      'd_dacrpagam' =>array($this, 'getConsultaDePagamentoEntreAsData')
+      'd_dacrpagam' =>array($this, 'getConsultaDePagamentoEntreAsData'),
+      'd_datapagam' =>array($this, 'getConsultaDePagamentoEntreAsData'),
+      'd_dacopagam' =>array($this, 'getConsultaDePagamentoEntreAsData'),
     ];
   }
 
@@ -36,13 +38,13 @@ class PagamentoController extends Controller
       // faz a consulta com [di]
       if (!Util::validarData($req->input('di')))
         throw new Exception('Erro ao validar os dados. Data invalida.');
-      $query->where('d_dacrpagam', '=', $req->input('di'));
+      $query->where($args['campo'], '=', $req->input('di'));
     }
     if (!$req->has('di') && $req->has('df')) {
       // faz a consulta com [df]
       if (!Util::validarData($req->input('df')))
         throw new Exception('Erro ao validar os dados. Data invalida.');
-      $query->where('d_dacrpagam', '=', $req->input('df'));
+      $query->where($args['campo'], '=', $req->input('df'));
     }
     if ($req->has('di') && $req->has('df')) {
       // faz a consulta com [di] e [df]
@@ -51,7 +53,7 @@ class PagamentoController extends Controller
 
       // $dx = new \DateTime($req->input('di'));
       // $dy = new \DateTime($req->input('df'));
-      $query->whereBetween('d_dacrpagam', [$req->input('di'), $req->input('df')]);
+      $query->whereBetween($args['campo'], [$req->input('di'), $req->input('df')]);
     }
     return $query->get();
   }
@@ -226,14 +228,12 @@ class PagamentoController extends Controller
     return in_array($campoAVerificar, $camposDoModeloFiltrado);
   }
 
-
-
   private function executarPesquisaDoCampo(string $campo, Request $req, ...$args)
   {
     if (!isset($this->listaDeActionsPorCampo[$campo])) {
       throw  new Exception("Não foi definido uma ação para o campo $campo");
     }
-    return call_user_func_array($this->listaDeActionsPorCampo[$campo], [$req, ...$args]);;
+    return call_user_func_array($this->listaDeActionsPorCampo[$campo], [$req, ...$args, "campo"=> $campo]);
   }
 
   /**
@@ -243,15 +243,22 @@ class PagamentoController extends Controller
    *     summary="consultar pagamentos",
    *       security={{"bearerAuth": {} }},
    *       @OA\Parameter(
-   *         name="di",
+   *         name="campoDaConsulta",
    *         in="path",
+   *         description="campo da consulta",
+   *         required=false,
+   *         @OA\Schema(type="String")
+   *     ),
+   *       @OA\Parameter(
+   *         name="di",
+   *         in="query",
    *         description="data de [início] criaçao do pagamento",
    *         required=false,
    *         @OA\Schema(type="date")
    *     ),
    *       @OA\Parameter(
    *         name="df",
-   *         in="path",
+   *         in="query",
    *         description="data de [final] criaçao do pagamento",
    *         required=false,
    *         @OA\Schema(type="date")

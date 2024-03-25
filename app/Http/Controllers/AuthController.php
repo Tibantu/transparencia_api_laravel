@@ -58,6 +58,24 @@ class AuthController extends Controller
     {
         return view("auth.forgot-password");
     }
+      /**
+   * @OA\Post(
+   *     tags={"/login"},
+   *     path="/auth/reset-senha",
+   *     summary="Envia o link para o reset da senha, passando o email cadastrado no sistema",
+   *     security={{"bearerAuth": {} }},
+   *     @OA\RequestBody(
+   *       required=true,
+   *       @OA\JsonContent(
+   *          type="object",
+   *          @OA\Property(property="email",type="string",description="email")
+   *       )
+   *     ),
+   *
+   *     @OA\Response(response="200", description="ink enviado no seu email"),
+   *     @OA\Response(response="401", description="email nao registrado")
+   * )
+   */
     public function postlogin_view_reset(Request $request)
     {
       $user = User::getEmailSingle($request->email);

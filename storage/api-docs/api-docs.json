@@ -270,6 +270,44 @@
                 ]
             }
         },
+        "/auth/reset-senha": {
+            "post": {
+                "tags": [
+                    "/login"
+                ],
+                "summary": "Envia o link para o reset da senha, passando o email cadastrado no sistema",
+                "operationId": "a827af66d92b6fe23ba9460a916a85d2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "email",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ink enviado no seu email"
+                    },
+                    "401": {
+                        "description": "email nao registrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/auth/senha": {
             "post": {
                 "tags": [
@@ -1629,8 +1667,17 @@
                 "operationId": "0b2be3ee3b2e43ddcd51c6ed12a7d2e9",
                 "parameters": [
                     {
-                        "name": "di",
+                        "name": "campoDaConsulta",
                         "in": "path",
+                        "description": "campo da consulta",
+                        "required": false,
+                        "schema": {
+                            "type": "String"
+                        }
+                    },
+                    {
+                        "name": "di",
+                        "in": "query",
                         "description": "data de [início] criaçao do pagamento",
                         "required": false,
                         "schema": {
@@ -1639,7 +1686,7 @@
                     },
                     {
                         "name": "df",
-                        "in": "path",
+                        "in": "query",
                         "description": "data de [final] criaçao do pagamento",
                         "required": false,
                         "schema": {
