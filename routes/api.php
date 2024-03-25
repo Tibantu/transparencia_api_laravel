@@ -25,36 +25,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 /* recuperar 1senha */
-Route::get('/login-form', function () {
-  return view('testes.login');
-})->middleware('guest')->name('login.form');
-
-Route::get('/forgot-password', function () {
-  return view('auth.forgot-password');
-})->middleware('guest')->name('password.request');
-
-Route::post('/forgot-password', function (Request $request) {
-  $request->validate(['email' => 'required|email']);
-
-  $status = Password::sendResetLink(
-      $request->only('email')
-  );
-dd($status);
-  return $status === Password::RESET_LINK_SENT
-              ? back()->with(['status' => __($status)])
-              : back()->withErrors(['email' => __($status)]);
-})->middleware('guest')->name('password.email');
-
-
-Route::get('/getAll', function () {
-  return response()->json(['message' => 123]);
-});
 //Usuario
 Route::prefix('auth')->group(function () {
   Route::post('/login', [AuthController::class, 'login'])->name('login');
-  Route::get('/login_view', [AuthController::class, 'login_view'])->name('login_view');
-  Route::get('/login_view_reset', [AuthController::class, 'login_view_reset'])->name('login_view_reset');
-  Route::post('/login_view_reset', [AuthController::class, 'postlogin_view_reset'])->name('postlogin_view_reset');
+  Route::get('/login_view', [AuthController::class, 'login_view'])->name('login_view');// rota nao necessaria
+  Route::get('/login_view_reset', [AuthController::class, 'login_view_reset'])->name('login_view_reset');// rota nao necessaria
+  Route::post('/login_view_reset', [AuthController::class, 'postlogin_view_reset'])->name('postlogin_view_reset');// rota necessaria
 
   // Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
   // Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');

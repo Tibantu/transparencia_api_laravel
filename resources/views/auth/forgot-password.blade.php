@@ -58,7 +58,7 @@
     <div class="container grid-xl login-container">
         <div class="columns">
             <div class="column col-4 col-mx-auto">
-                <form method="POST" action="{{ route('login_view_reset') }}" class="login-form">
+                <form method="POST" action="{{ route('postlogin_view_reset') }}" class="login-form">
                     @csrf
 
                     <div class="form-group">
@@ -72,7 +72,7 @@
                     </div>
                 </form>
                 <div class="login">
-                    <a href="{{ route('login_view') }}">Forgot password?</a>
+                    <a href="{{ route('login_view') }}">to do login?</a>
                 </div>
             </div>
         </div>

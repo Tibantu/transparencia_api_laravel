@@ -78,7 +78,7 @@
                     </div>
                 </form>
                 <div class="forgot-password">
-                    <a href="{{ route('password.request') }}">Forgot password?</a>
+                    <a href="{{ route('login_view_reset') }}">Forgot password?</a>
                 </div>
             </div>
         </div>

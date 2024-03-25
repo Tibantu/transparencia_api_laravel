@@ -54,8 +54,10 @@ class AuthController extends Controller
     {
         return view("auth.login");
     }
-
-
+    public function login_view_reset(Request $request)
+    {
+        return view("auth.forgot-password");
+    }
     public function postlogin_view_reset(Request $request)
     {
       $user = User::getEmailSingle($request->email);
