@@ -275,7 +275,7 @@
                 "tags": [
                     "/login"
                 ],
-                "summary": "Envia o link para o reset da senha, passando o email cadastrado no sistema",
+                "summary": "Envia o link para o reset da senha no email de ususario cadastrado",
                 "operationId": "a827af66d92b6fe23ba9460a916a85d2",
                 "requestBody": {
                     "required": true,
@@ -295,7 +295,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "ink enviado no seu email"
+                        "description": "link enviado no seu email"
                     },
                     "401": {
                         "description": "email nao registrado"
@@ -1663,16 +1663,16 @@
                 "tags": [
                     "/pagamentos"
                 ],
-                "summary": "consultar pagamentos",
+                "summary": "consultar pagamentos no intervalo das datas inicial e final, de alguma propriedade do tipo date do pagamento",
                 "operationId": "0b2be3ee3b2e43ddcd51c6ed12a7d2e9",
                 "parameters": [
                     {
                         "name": "campoDaConsulta",
                         "in": "path",
-                        "description": "campo da consulta",
+                        "description": "pesquisa por propriedades do pagamento, jeralmente do tipo datas",
                         "required": false,
                         "schema": {
-                            "description": "Valor permitido: d_dacrpagam, d_datapagam, d_dacopagam",
+                            "description": "propriedade [permitida]: d_dacrpagam, d_datapagam, d_dacopagam",
                             "type": "string",
                             "enum": [
                                 "d_dacrpagam",
@@ -1684,7 +1684,7 @@
                     {
                         "name": "di",
                         "in": "query",
-                        "description": "data de [início] criaçao do pagamento",
+                        "description": "data [inícial] X do pagamento",
                         "required": false,
                         "schema": {
                             "type": "date"
@@ -1693,7 +1693,7 @@
                     {
                         "name": "df",
                         "in": "query",
-                        "description": "data de [final] criaçao do pagamento",
+                        "description": "data [final] X do pagamento",
                         "required": false,
                         "schema": {
                             "type": "date"

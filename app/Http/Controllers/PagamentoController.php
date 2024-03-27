@@ -240,29 +240,29 @@ class PagamentoController extends Controller
    * @OA\GET(
    *     tags={"/pagamentos"},
    *     path="/pagamentos/p/{campoDaConsulta}",
-   *     summary="consultar pagamentos",
+   *     summary="consultar pagamentos no intervalo das datas inicial e final, de alguma propriedade do tipo date do pagamento",
    *       security={{"bearerAuth": {} }},
    *       @OA\Parameter(
    *         name="campoDaConsulta",
    *         in="path",
-   *         description="campo da consulta",
+   *         description="pesquisa por propriedades do pagamento, jeralmente do tipo datas",
    *         required=false,
    *         @OA\Schema(
    *             type="string",
    *             enum={"d_dacrpagam", "d_datapagam", "d_dacopagam"},
-   *             description="Valor permitido: d_dacrpagam, d_datapagam, d_dacopagam")
+   *             description="propriedade [permitida]: d_dacrpagam, d_datapagam, d_dacopagam")
    *     ),
    *       @OA\Parameter(
    *         name="di",
    *         in="query",
-   *         description="data de [início] criaçao do pagamento",
+   *         description="data [inícial] X do pagamento",
    *         required=false,
    *         @OA\Schema(type="date")
    *     ),
    *       @OA\Parameter(
    *         name="df",
    *         in="query",
-   *         description="data de [final] criaçao do pagamento",
+   *         description="data [final] X do pagamento",
    *         required=false,
    *         @OA\Schema(type="date")
    *     ),
