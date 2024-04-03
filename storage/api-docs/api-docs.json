@@ -1684,7 +1684,7 @@
                     {
                         "name": "di",
                         "in": "query",
-                        "description": "data [inícial] X do pagamento",
+                        "description": "data [inícial] X do pagamento no fotmato: Ano-mes-dia",
                         "required": false,
                         "schema": {
                             "type": "date"
@@ -1693,7 +1693,7 @@
                     {
                         "name": "df",
                         "in": "query",
-                        "description": "data [final] X do pagamento",
+                        "description": "data [final] X do pagamento no fotmato: Ano-mes-dia",
                         "required": false,
                         "schema": {
                             "type": "date"
@@ -2206,7 +2206,7 @@
                                         "type": "string"
                                     },
                                     "tipo": {
-                                        "description": "tipo de usuario. 'enum('traapart','tramorad','traecome','traepubl','tracoord')'",
+                                        "description": "tipo de usuario",
                                         "type": "string"
                                     }
                                 },

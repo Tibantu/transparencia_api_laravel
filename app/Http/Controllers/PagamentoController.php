@@ -255,14 +255,14 @@ class PagamentoController extends Controller
    *       @OA\Parameter(
    *         name="di",
    *         in="query",
-   *         description="data [inícial] X do pagamento",
+   *         description="data [inícial] X do pagamento no fotmato: Ano-mes-dia",
    *         required=false,
    *         @OA\Schema(type="date")
    *     ),
    *       @OA\Parameter(
    *         name="df",
    *         in="query",
-   *         description="data [final] X do pagamento",
+   *         description="data [final] X do pagamento no fotmato: Ano-mes-dia",
    *         required=false,
    *         @OA\Schema(type="date")
    *     ),

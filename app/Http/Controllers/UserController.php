@@ -25,7 +25,7 @@ class UserController extends Controller
      *          @OA\Property(property="login",type="string",description="nome ou número de usuário"),
      *          @OA\Property(property="email",type="string",description="email válido"),
      *          @OA\Property(property="password",type="string",description="senha pessoal"),
-     *          @OA\Property(property="tipo",type="string",description="tipo de usuario. 'enum('traapart','tramorad','traecome','traepubl','tracoord')'"),
+     *          @OA\Property(property="tipo",type="string",description="tipo de usuario"),
      *       )
      *     ),
      *
@@ -51,17 +51,27 @@ class UserController extends Controller
 
         try {
             //criar um morador if tipo == tramord
-            $dadosMorador = [
-              'c_nomemorad' => $req->login
-            ];
-            $idMorador = Morador::insertGetId($dadosMorador);
+            $dadosEntidade = [];
+            $idEntidade = 0;
+            switch ($req->tipo) {
+              case 'c_nomemorad':
+                  array_merge(['c_nomemorad' => $req->login], $dadosEntidade);
+                  $idEntidade = Morador::insertGetId($dadosEntidade);
+                  break;
+              // Adicionar mais casos conforme necessário
+              default:
+                   array_merge(['outro' => $req->login], $dadosEntidade);
+                  break;
+          }
+
+
             //criar usuario
             $user = new User();
             $user->c_logiusuar = $req->login;
             $user->c_emaiusuar = $req->email;
             $user->c_senhusuar = Hash::make($req->password);
             $user->c_nomeentid = $req->tipo;
-            $user->n_codientid = $idMorador;
+            $user->n_codientid = $idEntidade;
             // dd($user);
             $user->save();
 
