@@ -275,7 +275,7 @@
                 "tags": [
                     "/login"
                 ],
-                "summary": "Envia o link para o reset da senha no email de ususario cadastrado",
+                "summary": "Envia o link, para alterar a senha, no email de ususario cadastrado",
                 "operationId": "a827af66d92b6fe23ba9460a916a85d2",
                 "requestBody": {
                     "required": true,
@@ -313,7 +313,7 @@
                 "tags": [
                     "/login"
                 ],
-                "summary": "login no sistema. Segunda etapa do logim, passando a senha, o login da etapa 1 num campo oculto",
+                "summary": "login no sistema. Segunda etapa do login, passando a senha, o login da etapa 1 num campo oculto",
                 "operationId": "cfabb47683e5f903fd08f9e1ae9c4acd",
                 "requestBody": {
                     "required": true,

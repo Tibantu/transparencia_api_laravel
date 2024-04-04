@@ -62,7 +62,7 @@ class AuthController extends Controller
    * @OA\Post(
    *     tags={"/login"},
    *     path="/auth/reset-senha",
-   *     summary="Envia o link para o reset da senha no email de ususario cadastrado",
+   *     summary="Envia o link, para alterar a senha, no email de ususario cadastrado",
    *     security={{"bearerAuth": {} }},
    *     @OA\RequestBody(
    *       required=true,
@@ -84,7 +84,7 @@ class AuthController extends Controller
           $user->remember_token = Str::random(30);
           Mail::to($user->c_emaiusuar)->send(new ForgotPasswordMail($user));
           $user->save();
-          return response()->json(['message' => 'link enviado no seu email'], 401);
+          return response()->json(['message' => 'link enviado no seu email'], 200);
         }
         else
         {
@@ -95,7 +95,7 @@ class AuthController extends Controller
    * @OA\Post(
    *     tags={"/login"},
    *     path="/auth/senha",
-   *     summary="login no sistema. Segunda etapa do logim, passando a senha, o login da etapa 1 num campo oculto",
+   *     summary="login no sistema. Segunda etapa do login, passando a senha, o login da etapa 1 num campo oculto",
    *     security={{"bearerAuth": {} }},
    *     @OA\RequestBody(
    *       required=true,
@@ -143,7 +143,7 @@ class AuthController extends Controller
     {
 
         $user = $request->user();
-        dd($user);
+        //dd($user);
         return response()->json([
             'me' => $user,
         ]);
