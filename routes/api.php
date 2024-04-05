@@ -13,6 +13,7 @@ use App\Http\Controllers\DividaController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\MoradorController;
 use App\Http\Controllers\PagamentoController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PredioController;
 use App\Http\Controllers\TaxaController;
 use App\Http\Controllers\UserController;
@@ -20,15 +21,16 @@ use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Password;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-  return response()->json(['message' => 'nao outorizadp'], 500);
-});
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+  return response()->json(['message' => 'nao autorizado'], 500);
+});*/
 
 /* recuperar 1senha */
 //Usuario
 Route::prefix('auth')->group(function () {
-  Route::post('/login', [AuthController::class, 'login'])->name('login');
+  Route::post('/username', [AuthController::class, 'username'])->name('username');
   Route::post('/senha', [AuthController::class, 'senha']);
+  Route::post('/login', [AuthController::class, 'login'])->name('login');
   Route::get('/login_view', [AuthController::class, 'login_view'])->name('login_view');// rota nao necessaria
   Route::get('/login_view_reset', [AuthController::class, 'login_view_reset'])->name('login_view_reset');// rota nao necessaria
   Route::post('/reset-senha', [AuthController::class, 'postlogin_view_reset'])->name('postlogin_view_reset');// rota necessaria
@@ -189,5 +191,9 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('/{id}', [BancoController::class, 'getOne']);
       Route::put('/{id}', [BancoController::class, 'update']);
       Route::delete('/{id}', [BancoController::class, 'delete']);
+    });
+    //DOCUMENTOS
+    Route::prefix('documentos')->group(function () {
+      Route::get('/recibo', [PDFController::class, 'downloadPDF']);
     });
 });

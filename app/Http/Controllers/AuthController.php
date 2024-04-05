@@ -6,6 +6,7 @@ use App\Http\Requests\Api\AuthRequest;
 use App\Mail\ForgotPasswordMail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
@@ -19,41 +20,50 @@ class AuthController extends Controller
   /**
    * @OA\Post(
    *     tags={"/login"},
-   *     path="/auth/login",
+   *     path="/auth/username",
    *     summary="confirmar a existencia do usuario, primeira etapa de acesso ao sistema",
    *     security={{"bearerAuth": {} }},
    *     @OA\RequestBody(
    *       required=true,
    *       @OA\JsonContent(
    *          type="object",
-   *          @OA\Property(property="login",type="string",description="login")
+   *          @OA\Property(property="username",type="string",description="username")
    *       )
    *     ),
    *
-   *     @OA\Response(response="200", description="login válido"),
-   *     @OA\Response(response="401", description="credencias incorreta | login inválido")
+   *     @OA\Response(response="200", description="username válido"),
+   *     @OA\Response(response="401", description="credencias incorreta | username inválido")
    * )
    */
 
+   public function username(Request $request)
+   {
+       $credenciais = $request->only(['username']);
+
+       if (count($credenciais) != 1) {
+           return response()->json(['message' => 'credencias incorreta'], 401);
+       }
+       $user = User::where('c_logiusuar', $credenciais['login'])->first();
+
+       if (!$user)
+           return response()->json(['message' => 'username inválido'], 401);
+       return response()->json(['message' => "username válido"], 200);
+
+   }
+
     public function login(Request $request)
     {
-        $credenciais = $request->only(['login']);
-
-        if (count($credenciais) != 1) {
-            return response()->json(['message' => 'credencias incorreta'], 401);
-        }
-        $user = User::where('c_logiusuar', $credenciais['login'])->first();
-
-        if (!$user)
-            return response()->json(['message' => 'login inválido'], 401);
-        return response()->json(['message' => "login válido"], 200);
-
+      if(Auth::attempt($request->only('email','senha'))){
+        return response()->json(['message' => 'Autorizado'], 200);
+      }
+      return response()->json(['message' => 'Nao Autorizado'], 403);
     }
-
+//te1ste
     public function login_view(Request $request)
     {
         return view("auth.login");
     }
+//  te1ste
     public function login_view_reset(Request $request)
     {
         return view("auth.forgot-password");
