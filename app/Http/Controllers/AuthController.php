@@ -43,7 +43,7 @@ class AuthController extends Controller
        if (count($credenciais) != 1) {
            return response()->json(['message' => 'credencias incorreta'], 401);
        }
-       $user = User::where('c_logiusuar', $credenciais['login'])->first();
+       $user = User::where('c_logiusuar', $credenciais['username'])->first();
 
        if (!$user)
            return response()->json(['message' => 'username inválido'], 401);
@@ -122,12 +122,12 @@ class AuthController extends Controller
    */
     public function senha(Request $request){
 
-      $credenciais = $request->only(['login', 'senha']);
+      $credenciais = $request->only(['username', 'senha']);
 
       if (count($credenciais) != 2) {
           return response()->json(['message' => 'credencias incorreta'], 401);
        }
-      $user = User::where('c_logiusuar', $credenciais['login'])->first();
+      $user = User::where('c_logiusuar', $credenciais['username'])->first();
       if (!$user){
           return response()->json(['message' => 'credencias incorreta'], 401);
       }

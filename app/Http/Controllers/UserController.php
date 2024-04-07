@@ -54,8 +54,8 @@ class UserController extends Controller
             $dadosEntidade = [];
             $idEntidade = 0;
             switch ($req->tipo) {
-              case 'c_nomemorad':
-                  array_merge(['c_nomemorad' => $req->login], $dadosEntidade);
+              case 'tramorad':
+                $dadosEntidade = ['c_nomemorad' => $req->login];
                   $idEntidade = Morador::insertGetId($dadosEntidade);
                   break;
               // Adicionar mais casos conforme necessário

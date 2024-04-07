@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Apartamento;
 use App\Models\Pagamento;
 use App\Utils\Util;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use PhpParser\Node\Expr\Throw_;
 
@@ -70,7 +72,19 @@ class PagamentoController extends Controller
   public function getAll()
   {
     try {
-      return response()->json(['pagamentos' => Pagamento::all()], 200);
+      //$data = response()->json(['pagamentos' => Pagamento::all()], 200);
+      $user = auth()->user();
+      $data = response()->json(['pagamentos' => []], 200);
+
+      if ($user->c_nomeentid == 'tramorad' && $user->n_codientid != null) {
+          $apartamento = Apartamento::where('n_codimorad', $user->n_codientid)->first();
+          if ($apartamento) {
+              $data = response()->json(['pagamentos' => Pagamento::where('n_codiapart', $apartamento->n_codiapart)->get()], 200);
+          }
+      }
+
+      return $data;
+
     } catch (QueryException $e) {
       return response()->json(['message' => $e->getMessage()], 500);
     }

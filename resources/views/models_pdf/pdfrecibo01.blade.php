@@ -122,7 +122,7 @@ padding: 10px;
             <span>COMISÃO DE MORADORES DA CENTRALIDADE DO CEKELE</span>
           </div>
           <div class="frame-footer">
-            <span>Bloco 2, Rua 01, Prédio 29</span>
+            <span>{{ $data['morador'] }}</span>
           </div>
         </div>
         <div class="frame">

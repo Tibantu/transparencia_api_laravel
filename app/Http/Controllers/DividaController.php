@@ -22,9 +22,22 @@ class DividaController extends Controller
      */
     public function getAll()
     {
+
         try {
-            return Divida::all();
-        } catch (QueryException $e) {
+                //$data = response()->json(['pagamentos' => Pagamento::all()], 200);
+              $user = auth()->user();
+              $data = response()->json(['dividas' => []], 200);
+
+              if ($user->c_nomeentid == 'tramorad' && $user->n_codientid != null) {
+                  $apartamento = Apartamento::where('n_codimorad', $user->n_codientid)->first();
+                  if ($apartamento) {
+                      $data = response()->json(['dividas' => Divida::where('n_codiconta', $apartamento->n_codiconta)->get()], 200);
+                  }
+              }
+
+              return $data;
+
+         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }

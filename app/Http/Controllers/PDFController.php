@@ -21,14 +21,12 @@ class PDFController extends Controller
         * )
 */
     public function downloadPDF(){
-        /*$data  = [
-            [
-                'quantity' => 1,
-                'description' => '1 ano de descriacao',
-                'price' => 500.03
-            ]
-                ];*/
-              $pdf = FacadePdf::loadView('models_pdf.pdfrecibo01'/*, ['data' => $data]*/);
+        $data  = [
+                'morador' => 'Joao Matala',
+                'Predio' => '1-A50',
+                'Apartamento' => '5A'
+                ];
+              $pdf = FacadePdf::loadView('models_pdf.pdfrecibo01', ['data' => $data]);
         if(!$pdf)
             return response()->json(['message' => "Erro no servidor"], 500);
         //return $pdf->download();
