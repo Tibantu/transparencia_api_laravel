@@ -80,6 +80,8 @@ class PagamentoController extends Controller
           $apartamento = Apartamento::where('n_codimorad', $user->n_codientid)->first();
           if ($apartamento) {
               $data = response()->json(['pagamentos' => Pagamento::where('n_codiapart', $apartamento->n_codiapart)->get()], 200);
+          }else{
+            $data = response()->json(['message' => 'nemhum pagamento encontrado'], 200);
           }
       }
 

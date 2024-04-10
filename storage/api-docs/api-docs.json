@@ -69,7 +69,7 @@
                                     },
                                     "n_nandapart": {
                                         "description": "andar do apartamento",
-                                        "type": "integer"
+                                        "type": "int"
                                     }
                                 },
                                 "type": "object"
@@ -130,7 +130,7 @@
                                     },
                                     "n_nandapart": {
                                         "description": "andar do apartamento",
-                                        "type": "integer"
+                                        "type": "int"
                                     }
                                 },
                                 "type": "object"
@@ -232,21 +232,21 @@
                 ]
             }
         },
-        "/auth/login": {
+        "/auth/username": {
             "post": {
                 "tags": [
                     "/login"
                 ],
                 "summary": "confirmar a existencia do usuario, primeira etapa de acesso ao sistema",
-                "operationId": "8cb7742ae98d0990acb2907c4e00bf24",
+                "operationId": "e561abc5527c5ab235a7cc10a14d16cb",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "login": {
-                                        "description": "login",
+                                    "username": {
+                                        "description": "username",
                                         "type": "string"
                                     }
                                 },
@@ -257,10 +257,10 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "login válido"
+                        "description": "username válido"
                     },
                     "401": {
-                        "description": "credencias incorreta | login inválido"
+                        "description": "credencias incorreta | username inválido"
                     }
                 },
                 "security": [
@@ -391,11 +391,11 @@
                                     },
                                     "n_codicoord": {
                                         "description": "id do coordenador",
-                                        "type": "integer"
+                                        "type": "int"
                                     },
                                     "n_codientid": {
                                         "description": "id da entidade proprietario do banco se não for um coordenador",
-                                        "type": "integer",
+                                        "type": "int",
                                         "default": null
                                     },
                                     "c_nomeentid": {
@@ -776,7 +776,7 @@
                                     },
                                     "n_codiender": {
                                         "description": "id do endereço da centralidade",
-                                        "type": "integer"
+                                        "type": "int"
                                     }
                                 },
                                 "type": "object"
@@ -820,7 +820,7 @@
                                     },
                                     "n_codiender": {
                                         "description": "id do endereço da centralidade",
-                                        "type": "integer"
+                                        "type": "int"
                                     }
                                 },
                                 "type": "object"
@@ -977,22 +977,20 @@
                                     },
                                     "n_codicoord": {
                                         "description": "id do coordenador que criou a despesa",
-                                        "type": "integer"
+                                        "type": "int"
                                     },
                                     "n_valodespe": {
                                         "description": "valores da deespesa",
-                                        "type": "number",
-                                        "format": "float"
+                                        "type": "float"
                                     },
                                     "c_fontdespe": {
                                         "description": "fonte dos valores",
-                                        "type": "integer",
+                                        "type": "int",
                                         "default": "caixa"
                                     },
                                     "d_dasadespe": {
                                         "description": "data do saque dos valores",
-                                        "type": "string",
-                                        "format": "date"
+                                        "type": "date"
                                     }
                                 },
                                 "type": "object"
@@ -1218,13 +1216,70 @@
                 ]
             }
         },
-        "/api/enderecos/{endereco}": {
+        "/auth": {
+            "post": {
+                "tags": [
+                    "enderecos"
+                ],
+                "summary": "Cadastrar enderecos",
+                "operationId": "f81d55b51b1c7f29b7ea88fcf7df82ef",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_paisender": {
+                                        "description": "País",
+                                        "type": "string"
+                                    },
+                                    "c_descender": {
+                                        "description": "mais detalhes",
+                                        "type": "string"
+                                    },
+                                    "c_provender": {
+                                        "description": "Provínvia",
+                                        "type": "string"
+                                    },
+                                    "c_muniender": {
+                                        "description": "município",
+                                        "type": "string"
+                                    },
+                                    "c_bairender": {
+                                        "description": "bairro",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "enderecos cadastrada successfully"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/enderecos/{endereco}": {
             "get": {
                 "tags": [
-                    "/enderecos"
+                    "enderecos"
                 ],
                 "summary": "mostrar um endereco",
-                "operationId": "93fbab4aefa7cd37e616b72ac880b345",
+                "operationId": "60c0cafacab46c30e9d285ccb6665410",
                 "parameters": [
                     {
                         "name": "endereco",
@@ -1297,7 +1352,7 @@
                                     },
                                     "n_codiapart": {
                                         "description": "id do apartamento a vincular com o morador",
-                                        "type": "integer"
+                                        "type": "int"
                                     },
                                     "c_bilhmorad": {
                                         "description": "bilhete de identidade do morador",
@@ -1401,7 +1456,7 @@
                                     },
                                     "n_codiapart": {
                                         "description": "id do apartamento a vincular com o morador",
-                                        "type": "integer"
+                                        "type": "int"
                                     },
                                     "c_bilhmorad": {
                                         "description": "BI",
@@ -1540,22 +1595,19 @@
                                     },
                                     "c_descpagam": {
                                         "description": "descrição do pagamento",
-                                        "type": "number",
-                                        "format": "float"
+                                        "type": "float"
                                     },
                                     "c_formpagam": {
                                         "description": "forma de pagamento",
-                                        "type": "integer"
+                                        "type": "int"
                                     },
                                     "d_datapagam": {
                                         "description": "data de pagamento",
-                                        "type": "number",
-                                        "format": "float"
+                                        "type": "float"
                                     },
                                     "n_codidivid": {
                                         "description": "id divida",
-                                        "type": "string",
-                                        "format": "date"
+                                        "type": "date"
                                     },
                                     "n_codiapart": {
                                         "description": "id apartamento",
@@ -1774,7 +1826,7 @@
                                     },
                                     "n_codicoord": {
                                         "description": "id do Coordenador do prédio",
-                                        "type": "integer"
+                                        "type": "int"
                                     }
                                 },
                                 "type": "object"
@@ -1970,22 +2022,19 @@
                                     },
                                     "n_valotaxa": {
                                         "description": "valor da taxa",
-                                        "type": "number",
-                                        "format": "float"
+                                        "type": "float"
                                     },
                                     "n_vmultaxa": {
                                         "description": "valor da multa",
-                                        "type": "integer"
+                                        "type": "int"
                                     },
                                     "n_permtaxa": {
                                         "description": "valor da multa, percentagem",
-                                        "type": "number",
-                                        "format": "float"
+                                        "type": "float"
                                     },
                                     "d_denvtaxa": {
                                         "description": "data de início de envio da taxa",
-                                        "type": "string",
-                                        "format": "date"
+                                        "type": "date"
                                     },
                                     "c_freqtaxa": {
                                         "description": "frequência de envio da taxa",
@@ -1993,11 +2042,11 @@
                                     },
                                     "n_praztaxa": {
                                         "description": "prazo em dias, para o pagamento da taxa",
-                                        "type": "integer"
+                                        "type": "int"
                                     },
                                     "n_codicoord": {
                                         "description": "id do coordenador do que criou a taxa",
-                                        "type": "integer"
+                                        "type": "int"
                                     }
                                 },
                                 "type": "object"
@@ -2090,22 +2139,19 @@
                                     },
                                     "n_valotaxa": {
                                         "description": "valor da taxa",
-                                        "type": "number",
-                                        "format": "float"
+                                        "type": "float"
                                     },
                                     "n_vmultaxa": {
                                         "description": "valor da multa",
-                                        "type": "integer"
+                                        "type": "int"
                                     },
                                     "n_permtaxa": {
                                         "description": "valor da multa, percentagem",
-                                        "type": "number",
-                                        "format": "float"
+                                        "type": "float"
                                     },
                                     "d_denvtaxa": {
                                         "description": "data de início de envio da taxa",
-                                        "type": "string",
-                                        "format": "date"
+                                        "type": "date"
                                     },
                                     "c_freqtaxa": {
                                         "description": "frequência de envio da taxa",
@@ -2113,11 +2159,11 @@
                                     },
                                     "n_praztaxa": {
                                         "description": "prazo em dias, para o pagamento da taxa",
-                                        "type": "integer"
+                                        "type": "int"
                                     },
                                     "n_codicoord": {
                                         "description": "id do coordenador do que criou a taxa",
-                                        "type": "integer"
+                                        "type": "int"
                                     }
                                 },
                                 "type": "object"
@@ -2180,34 +2226,71 @@
                 ]
             }
         },
-        "/auth": {
+        "/api/create": {
             "post": {
                 "tags": [
-                    "/usuarios"
+                    "Users"
                 ],
-                "summary": "Cadastrar usuarios",
-                "operationId": "cbd33465670b0816050f549915476427",
+                "summary": "Cria um novo usuário",
+                "description": "Cria um novo usuário com base nos dados fornecidos",
+                "operationId": "createUser",
                 "requestBody": {
+                    "description": "Dados do usuário a serem criados",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "login",
+                                    "email",
+                                    "password",
+                                    "tipo",
+                                    "codiApartamento"
+                                ],
                                 "properties": {
                                     "login": {
-                                        "description": "nome ou número de usuário",
-                                        "type": "string"
+                                        "description": "Login do usuário",
+                                        "type": "string",
+                                        "example": "example_user"
                                     },
                                     "email": {
-                                        "description": "email válido",
-                                        "type": "string"
+                                        "description": "Email do usuário",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "example@example.com"
                                     },
                                     "password": {
-                                        "description": "senha pessoal",
-                                        "type": "string"
+                                        "description": "Senha do usuário",
+                                        "type": "string",
+                                        "example": "password123"
                                     },
                                     "tipo": {
-                                        "description": "tipo de usuario",
+                                        "description": "Tipo de usuário (coordenador ou morador)",
+                                        "type": "string",
+                                        "enum": [
+                                            "tracoord",
+                                            "tramorad"
+                                        ]
+                                    },
+                                    "remember_token": {
+                                        "description": "Token de lembrete opcional",
                                         "type": "string"
+                                    },
+                                    "tipoDeEntidadeACoordenar": {
+                                        "description": "Tipo de entidade a ser coordenada (opcional)",
+                                        "type": "string",
+                                        "enum": [
+                                            "trapredi",
+                                            "trabloco"
+                                        ]
+                                    },
+                                    "codiEntidade": {
+                                        "description": "ID da entidade (opcional)",
+                                        "type": "integer"
+                                    },
+                                    "codiApartamento": {
+                                        "description": "ID do apartamento (obrigatório para tramorad)",
+                                        "type": "integer"
                                     }
                                 },
                                 "type": "object"
@@ -2217,20 +2300,18 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "usuario cadastrada successfully"
+                        "description": "Usuário criado com sucesso"
                     },
                     "412": {
                         "description": "Erro ao validar os dados"
                     },
+                    "404": {
+                        "description": "Apartamento não encontrado"
+                    },
                     "500": {
-                        "description": "Validation errors"
+                        "description": "Erro interno do servidor"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         }
     },

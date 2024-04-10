@@ -24,7 +24,6 @@ class DividaController extends Controller
     {
 
         try {
-                //$data = response()->json(['pagamentos' => Pagamento::all()], 200);
               $user = auth()->user();
               $data = response()->json(['dividas' => []], 200);
 
@@ -32,6 +31,8 @@ class DividaController extends Controller
                   $apartamento = Apartamento::where('n_codimorad', $user->n_codientid)->first();
                   if ($apartamento) {
                       $data = response()->json(['dividas' => Divida::where('n_codiconta', $apartamento->n_codiconta)->get()], 200);
+                  }else{
+                    $data = response()->json(['message' => 'nemhuma dívida encontrada'], 200);
                   }
               }
 
@@ -56,7 +57,7 @@ class DividaController extends Controller
      *     ),
      *     @OA\Response(response="200", description="sucesso"),
      *     @OA\Response(response="404", description="apartamento não encontrado"),
-     *     @OA\Response(response="500", description="Erro no servidor")
+     *     @OA\Response(response="500", description="Erro no servidor"),
      * )
      */
     public function getAllByApartamento($idApartamento)
@@ -151,7 +152,7 @@ class DividaController extends Controller
      *     ),
      *     @OA\Response(response="200", description="sucesso"),
      *     @OA\Response(response="404", description="divida não encontrada"),
-     *     @OA\Response(response="500", description="Erro no servidor")
+     *     @OA\Response(response="500", description="Erro no servidor"),
      * )
      */
     public function getOne($id)

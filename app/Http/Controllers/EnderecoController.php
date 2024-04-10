@@ -18,13 +18,38 @@ class EnderecoController extends Controller
             return response()->json(['message' => $e->getMessage()]);
         }
     }
+
+    /**
+     * @OA\Post(
+     *     tags={"enderecos"},
+     *     path="/auth",
+     *     summary="Cadastrar enderecos",
+     *     security={{"bearerAuth": {} }},
+     *     @OA\RequestBody(
+     *       required=true,
+     *       @OA\JsonContent(
+     *          type="object",
+     *          @OA\Property(property="c_paisender",type="string",description="País"),
+     *          @OA\Property(property="c_descender",type="string",description="mais detalhes"),
+     *          @OA\Property(property="c_provender",type="string",description="Provínvia"),
+     *          @OA\Property(property="c_muniender",type="string",description="município"),
+     *          @OA\Property(property="c_bairender",type="string",description="bairro"),
+     *       )
+     *     ),
+     *
+     *     @OA\Response(response="201", description="enderecos cadastrada successfully"),
+     *     @OA\Response(response="412", description="Erro ao validar os dados"),
+     *     @OA\Response(response="500", description="Erro no servidor")
+     * )
+     */
+
     public function create(Request $req)
     {
         $isValidData =  Validator::make($req->all(), [
             'c_paisender' => 'string|min:2',
             'c_descender' => 'string|max:100',
             'c_provender' => 'string|max:14',
-            'c_muniender' => 'string|max:15',
+            'c_muniender' => 'required|string|max:15',
             'c_bairender' => 'string|max:15'
         ]);
         if ($isValidData->fails())
@@ -38,12 +63,12 @@ class EnderecoController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-        /**
+    /**
     * @OA\Get(
-        *     tags={"/enderecos"},
-        *     path="/api/enderecos/{endereco}",
+        *     tags={"enderecos"},
+        *     path="/enderecos/{endereco}",
         *     summary="mostrar um endereco",
-        *     security={{ "bearerAuth": {}}},   
+        *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
         *         name="endereco",
         *         in="path",
@@ -63,7 +88,7 @@ class EnderecoController extends Controller
             $endereco = Endereco::find($id);
             if(!$endereco)
                 return response()->json(['message' => "Endereço não encontrado"], 404);
-            
+
             return response()->json($endereco, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -75,7 +100,7 @@ class EnderecoController extends Controller
             $endereco = Endereco::find($id);
             if(!$endereco)
                 return response()->json(['message'=> 'endereço não encontrado'], 400);
-            
+
             $endereco->update($req->all());
 
             return response()->json($endereco);

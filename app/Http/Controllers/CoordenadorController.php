@@ -42,7 +42,7 @@ class CoordenadorController extends Controller
     public function create(Request $req)
     {
         $isValidData = Validator::make($req->all(), [
-            'c_nomeentid' => 'required|string',
+            'c_nomeentid' => 'required|string|in:trapredi,trabloco',
             'n_codientid' => 'required|integer',
             'c_nomecoord' => 'required|string',
             'c_apelcoord' => 'required|string',

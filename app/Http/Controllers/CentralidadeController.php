@@ -72,7 +72,7 @@ class CentralidadeController extends Controller
       "c_desccentr" => 'required|string|max:50',
       "n_nblocentr" => 'integer',
       "n_codicoord" => 'integer',
-      "n_codiender" => 'integer',
+      "n_codiender" => 'required|integer',
       "n_codiadmin" => 'integer'
     ]);
     if ($isValidData->fails())

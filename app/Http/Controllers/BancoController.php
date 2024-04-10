@@ -24,6 +24,19 @@ class BancoController extends Controller
     public function getAll()
     {
         try {
+            $user = auth()->user();
+            $data = response()->json(['bancos' => []], 200);
+
+            if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
+                $coordenador = Coordenador::where('n_codicoord', $user->n_codientid)->first();
+                if ($coordenador) {
+                    $data = response()->json(['pagamentos' => Coordenador::where('n_codicoord', $coordenador->n_codicoord)->get()], 200);
+                }else{
+                  $data = response()->json(['message' => 'nemhum banco encontrado'], 200);
+                }
+            }
+
+            return $data;
             return Banco::all();
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
