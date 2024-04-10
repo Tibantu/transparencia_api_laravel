@@ -497,16 +497,30 @@
                 ]
             }
         },
-        "/blocos": {
+        "/blocos/centralidade/{idCentralidade}": {
             "get": {
                 "tags": [
                     "/blocos"
                 ],
-                "summary": "listar blocos",
-                "operationId": "1d35c233f4d1d82102fb710636f47b29",
+                "summary": "Obter todos os blocos por centralidade",
+                "operationId": "f5018c4a8fa4f3402792ec3483dbf2a9",
+                "parameters": [
+                    {
+                        "name": "idCentralidade",
+                        "in": "path",
+                        "description": "ID da centralidade",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "sucesso"
+                        "description": "Sucesso"
+                    },
+                    "404": {
+                        "description": "Centralidade não encontrada"
                     },
                     "500": {
                         "description": "Erro no servidor"

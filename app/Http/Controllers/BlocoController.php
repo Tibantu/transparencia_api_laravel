@@ -15,37 +15,42 @@ use \Illuminate\Database\QueryException;
 class BlocoController extends Controller
 {
 /**
-    * @OA\Get(
-        *     tags={"/blocos"},
-        *     path="/blocos",
-        *     summary="listar blocos",
-        *     security={{"bearerAuth": {} }},
-        *     @OA\Response(response="200", description="sucesso"),
-        *     @OA\Response(response="500", description="Erro no servidor")
-        * )
-*/
-    public function getAll()
-    {
-        try {
-           return response()->json(['blocos' => Bloco::all()],200) ;
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
+ * @OA\Get(
+ *     tags={"/blocos"},
+ *     path="/blocos/centralidade/{idCentralidade}",
+ *     summary="Obter todos os blocos por centralidade",
+ *     security={{ "bearerAuth": {} }},
+ *     @OA\Parameter(
+ *         name="idCentralidade",
+ *         in="path",
+ *         description="ID da centralidade",
+ *         required=false,
+ *         @OA\Schema(type="int")
+ *     ),
+ *     @OA\Response(response="200", description="Sucesso"),
+ *     @OA\Response(response="404", description="Centralidade não encontrada"),
+ *     @OA\Response(response="500", description="Erro no servidor")
+ * )
+ */
+public function getAllByCentr($idCentralidade)
+{
+    try {
+        $centralidade = Centralidade::find($idCentralidade);
 
-    public function getAllByCentr($idCentralidade)
-    {
-        try {
-
-            $centralidade = Centralidade::find($idCentralidade);
-            if (!$centralidade) {
-                return response()->json(['message' => "Centralidade não encontrado."], 404);
-            }
-            return Bloco::where('n_codicentr', '=', $idCentralidade)->get();
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+        if (!$centralidade) {
+            return response()->json(['message' => "Centralidade não encontrada."], 404);
         }
+
+        $blocos = Bloco::where('n_codicentr', $idCentralidade)->get();
+
+        return response()->json(['blocos' => $blocos], 200);
+    } catch (QueryException $e) {
+        return response()->json(['message' => $e->getMessage()], 500);
     }
+}
+
+
+
     /**
     * @OA\Post(
         *     tags={"/blocos"},
