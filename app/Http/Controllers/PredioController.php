@@ -16,28 +16,29 @@ class PredioController extends Controller
 /**
     * @OA\Get(
         *     tags={"/predios"},
-        *     path="/predios",
-        *     summary="listar predios",
+        *     path="/predios/bloco/{idBloco}",
+        *     summary="listar predios de um bloco",
         *     security={{"bearerAuth": {} }},
+        *     @OA\Parameter(
+        *         name="idBloco",
+        *         in="path",
+        *         description="id do Bloco",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
         *     @OA\Response(response="200", description="sucesso"),
+         *     @OA\Response(response="404", description="Bloco não encontrado."),
         *     @OA\Response(response="500", description="Erro no servidor")
         * )
 */
-    public function getAll()
+  public function getAllByBloco($idBloco)
     {
         try {
-            return response() ->json(['predios' => Predio::all()], 200);
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
-    public function getAllByBloco($idBloco)
-    {
-        try {
-            Predio::findOrFail($idBloco);
-
-            return Predio::where('n_codibloco', '=', $idBloco)->get();
+            $bloco = Bloco::find($idBloco);
+            if (!$bloco) {
+            return response()->json(['message' => "Bloco não encontrado."], 404);
+      }
+            return response()->json(['predios' => Predio::where('n_codibloco', '=', $idBloco)->get()], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

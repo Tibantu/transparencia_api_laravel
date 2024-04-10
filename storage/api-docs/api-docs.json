@@ -1784,16 +1784,30 @@
                 ]
             }
         },
-        "/predios": {
+        "/predios/bloco/{idBloco}": {
             "get": {
                 "tags": [
                     "/predios"
                 ],
-                "summary": "listar predios",
-                "operationId": "1fa6f235211ed57a6147f2ba231d30fa",
+                "summary": "listar predios de um bloco",
+                "operationId": "78f98b0aa59457ded5814afda65fdf9c",
+                "parameters": [
+                    {
+                        "name": "idBloco",
+                        "in": "path",
+                        "description": "id do Bloco",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "Bloco não encontrado."
                     },
                     "500": {
                         "description": "Erro no servidor"

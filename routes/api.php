@@ -66,7 +66,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // BLOCOS
     Route::prefix('blocos')->group(function () {
-      Route::get('/', [BlocoController::class, 'getAll']);
+     // Route::get('/', [BlocoController::class, 'getAll']);
       /**[cria] um bloco dentro de uma centralidade - id da centralidade e fornecida na url */
       Route::post('/centralidade/{idCentralidade}', [BlocoController::class, 'create']);
       /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
@@ -78,7 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // PREDIOS
     Route::prefix('predios')->group(function () {
-      Route::get('/', [PredioController::class, 'getAll']);
+      //Route::get('/', [PredioController::class, 'getAll']);
       /**[cria] um bloco dentro de uma centralidade - id da centralidade e fornecida na url */
       Route::post('/bloco/{idBloco}', [PredioController::class, 'create']);
       /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
