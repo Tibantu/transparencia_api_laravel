@@ -22,5 +22,9 @@ class Predio extends Model
         'n_codibloco'
     ];
 
+    public function apartamentos()
+    {
+        return $this->hasMany(Apartamento::class, 'n_codipredi', 'n_codipredi');
+    }
     use HasFactory;
 }

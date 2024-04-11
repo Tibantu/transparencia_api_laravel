@@ -107,7 +107,7 @@ Route::middleware('auth:sanctum')->group(function () {
       /**[cria] um morador */
       Route::post('/', [MoradorController::class, 'create']);
       /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
-      //Route::get('/predio/{idPredio}', [MoradorController::class, 'getAllByPredio']);
+      Route::get('/predio/{idPredio}', [MoradorController::class, 'getAllByMoradores']);
       Route::get('/{id}', [MoradorController::class, 'getOne']);
       Route::put('/{id}', [MoradorController::class, 'update']);
       Route::delete('/{id}', [MoradorController::class, 'delete']);

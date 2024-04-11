@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Apartamento;
 use App\Models\Morador;
+use App\Models\Predio;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -31,18 +32,39 @@ class MoradorController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-/*
+
+    /**
+    * @OA\Get(
+        *     tags={"/moradores"},
+        *     path="/moradores/predio/{idPredio}",
+        *     summary="listar moradores de um predio",
+        *     security={{ "bearerAuth": {}}},
+        *     @OA\Parameter(
+        *         name="idPredio",
+        *         in="path",
+        *         description="id do predio",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="predio não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
     public function getAllByMoradores($idPredio)
     {
         try {
-            Apartamento::findOrFail($idBloco);
+          $predio = Predio::with('apartamentos.moradores')->find($idPredio);
+          if(!$predio){
+            return response()->json(['message' => 'predio não encontrado'], 404);
+          }
+          $moradores = $predio->apartamentos->flatMap->moradores;
 
-            return Apartamento::where('n_codibloco', '=', $idBloco)->get();
+          return response()->json(['moradores' => $moradores], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-*/
 
 /**
     * @OA\Post(

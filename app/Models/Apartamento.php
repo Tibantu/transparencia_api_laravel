@@ -14,12 +14,17 @@ class Apartamento extends Model
     protected $fillable = [
         'n_codiapart',
         'c_portapart',
-        'c_tipoapart', 
-        'n_nandapart', 
-        'd_dacrapart', 
-        'n_codiconta', 
-        'n_codipredi', 
+        'c_tipoapart',
+        'n_nandapart',
+        'd_dacrapart',
+        'n_codiconta',
+        'n_codipredi',
         'n_codimorad'
     ];
+
+    public function moradores()
+    {
+        return $this->hasMany(Morador::class, 'n_codimorad', 'n_codimorad');
+    }
     use HasFactory;
 }

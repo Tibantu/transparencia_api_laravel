@@ -20,5 +20,10 @@ class Morador extends Model
         'c_bilhmorad'
         ];
 
+        public function apartamento()
+        {
+            return $this->belongsTo(Apartamento::class, 'n_codimorad', 'n_codimorad');
+        }
+
     use HasFactory;
 }

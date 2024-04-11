@@ -15,32 +15,33 @@ use function PHPUnit\Framework\isNull;
 
 class ApartamentoController extends Controller
 {
-
-/**
+    /**
     * @OA\Get(
         *     tags={"/apartamentos"},
-        *     path="/apartamentos",
-        *     summary="listar apartamentos",
-        *     security={{"bearerAuth": {} }},
+        *     path="/apartamentos/predio/{idPredio}",
+        *     summary="mostrar apartamentos do predio ",
+        *     security={{ "bearerAuth": {}}},
+        *     @OA\Parameter(
+        *         name="idPredio",
+        *         in="path",
+        *         description="id do Predio",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
         *     @OA\Response(response="200", description="sucesso"),
-        *     @OA\Response(response="500", description="Erro no servidor"),
+        *     @OA\Response(response="404", description="Predio não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
         * )
-*/
-    public function getAll()
-    {
-        try {
-            return Apartamento::all();
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
+     */
     public function getAllByPredio($idPredio)
     {
         try {
-            Apartamento::findOrFail($idPredio);
+            $predio = Predio::find($idPredio);
+            if(!$predio){
+              return response()->json(['message' => "Predio não encontrado"], 404);
+            }
 
-            return Apartamento::where('n_codipredi', '=', $idPredio)->get();
+            return response()->json(['apartamentos' => Apartamento::where('n_codipredi', '=', $idPredio)->get()], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -48,11 +49,11 @@ class ApartamentoController extends Controller
     /**
     * @OA\Post(
         *     tags={"/apartamentos"},
-        *     path="/apartamentos/predio/{predio}",
+        *     path="/apartamentos/predio/{idPredio}",
         *     summary="Registrar uma apartamento",
         *     security={{"bearerAuth": {} }},
         *     @OA\Parameter(
-        *         name="predio",
+        *         name="idPredio",
         *         in="path",
         *         description="id do apartamento",
         *         required=false,
@@ -115,11 +116,11 @@ class ApartamentoController extends Controller
      /**
     * @OA\Delete(
         *     tags={"/apartamentos"},
-        *     path="/apartamentos/{apartamento}",
+        *     path="/apartamentos/{idApartamento}",
         *     summary="apagar um apartamento",
         *       security={{"bearerAuth": {} }},
         *       @OA\Parameter(
-        *         name="apartamento",
+        *         name="idApartamento",
         *         in="path",
         *         description="id do apartamento",
         *         required=false,
@@ -148,11 +149,11 @@ class ApartamentoController extends Controller
         /**
     * @OA\Put(
         *     tags={"/apartamentos"},
-        *     path="/apartamentos/predio/{predio}",
+        *     path="/apartamentos/predio/{idPredio}",
         *     summary="Registrar uma apartamento",
         *     security={{"bearerAuth": {} }},
         *     @OA\Parameter(
-        *         name="predio",
+        *         name="idPredio",
         *         in="path",
         *         description="id do apartamento",
         *         required=false,
@@ -191,11 +192,11 @@ class ApartamentoController extends Controller
 /**
     * @OA\Get(
         *     tags={"/apartamentos"},
-        *     path="/apartamentos/{apartamento}",
+        *     path="/apartamentos/{idApartamento}",
         *     summary="mostrar apartamento",
         *     security={{ "bearerAuth": {}}},
         *     @OA\Parameter(
-        *         name="apartamento",
+        *         name="idApartamento",
         *         in="path",
         *         description="id do apartamento",
         *         required=false,
