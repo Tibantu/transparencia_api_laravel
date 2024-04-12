@@ -22,6 +22,10 @@ class Banco extends Model
         'create_at',
         'updated_at'
     ];
-
+    public function predio()
+    {
+        return $this->belongsTo(Predio::class, 'n_codientid', 'n_codipredi')
+                    ->where('c_nomeentid', 'trapredi');
+    }
 use HasFactory;
 }

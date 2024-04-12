@@ -148,12 +148,12 @@ padding: 10px;
           </thead>
           <tbody>
             <tr>
-              <td>001</td>
-              <td>FAT-001/29-02-2020</td>
-              <td>Taxa de manutenção</td>
-              <td>4.500,00</td>
-              <td>4.000,00</td>
-              <td>500,00</td>
+              <td>{{ $data['id'] }}</td>
+              <td>FAT-{{ $data['data_pagamento'] }}</td>
+              <td>{{ $data['descricao'] }}</td>
+              <td>{{ $data['valor_da_divida'] }}</td>
+              <td>{{ $data['valor_pago'] }}</td>
+              <td>{{ $data['valor_pendente'] }}</td>
             </tr>
 
           </tbody>

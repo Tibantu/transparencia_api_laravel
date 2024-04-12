@@ -750,6 +750,96 @@
                 ]
             }
         },
+        "/caixas/{idCaixa}": {
+            "put": {
+                "tags": [
+                    "/caixas"
+                ],
+                "summary": "Atualizar os dados do caixa de um predio",
+                "operationId": "dc007235243d1587417b3b9d5c99aa40",
+                "parameters": [
+                    {
+                        "name": "idCaixa",
+                        "in": "path",
+                        "description": "id do caixa",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "n_saldcaixa": {
+                                        "description": "saldo do caixa do predio",
+                                        "type": "string"
+                                    },
+                                    "n_limicaixa": {
+                                        "description": "limite do  saldo do caixa do predio",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "caixa atualizado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "/caixas"
+                ],
+                "summary": "deletar uma Caixa",
+                "operationId": "d12558a4e0a1e566aae29afe92fa9ef9",
+                "parameters": [
+                    {
+                        "name": "idCaixa",
+                        "in": "path",
+                        "description": "id da Caixa",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "caixa deletado com sucesso!"
+                    },
+                    "404": {
+                        "description": "caixa não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/caixas/{caixa}": {
             "get": {
                 "tags": [
@@ -1560,16 +1650,52 @@
                 ]
             }
         },
-        "/documentos": {
+        "/documentos/recibo": {
             "get": {
                 "tags": [
                     "/documentos"
                 ],
                 "summary": "stream do documento",
-                "operationId": "2916f16f16bf22ea435c3bcf4d8937ba",
+                "operationId": "f95e5cb736fbf9dc35e7409568c7387a",
                 "responses": {
                     "200": {
                         "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/documentos/pagamento/recibo/{idPagamento}": {
+            "get": {
+                "tags": [
+                    "/documentos"
+                ],
+                "summary": "mostrar pagamento",
+                "operationId": "86ad1182fa1d665fe458d9f0712e9adb",
+                "parameters": [
+                    {
+                        "name": "idPagamento",
+                        "in": "path",
+                        "description": "id do pagamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "pagamento não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"

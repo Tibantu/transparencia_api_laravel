@@ -190,5 +190,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //DOCUMENTOS
     Route::prefix('documentos')->group(function () {
       Route::get('/recibo', [PDFController::class, 'downloadPDF']);
+      Route::get('/pagamento/recibo/{idPagamento}', [PDFController::class, 'getPagamentoPDF']);
+
     });
 });

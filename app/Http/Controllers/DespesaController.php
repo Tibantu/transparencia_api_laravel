@@ -40,16 +40,9 @@ class DespesaController extends Controller
 
         return $data;
 
-   } catch (QueryException $e) {
-      return response()->json(['message' => $e->getMessage()], 500);
-  }
-  /*
-      try {
-            return Despesa::all();
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    */
+      } catch (QueryException $e) {
+          return response()->json(['message' => $e->getMessage()], 500);
+      }
     }
 
             /**

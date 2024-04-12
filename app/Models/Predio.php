@@ -30,5 +30,10 @@ class Predio extends Model
     {
         return $this->belongsTo(Caixa::class, 'n_codicaixa', 'n_codicaixa');
     }
+    public function bancos()
+    {
+        return $this->hasMany(Banco::class, 'n_codientid', 'n_codipredi')
+                    ->where('c_nomeentid', 'trapredi');
+    }
     use HasFactory;
 }

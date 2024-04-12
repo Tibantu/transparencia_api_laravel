@@ -28,30 +28,23 @@ class BancoController extends Controller
             $data = response()->json(['bancos' => []], 200);
 
             if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
-                $coordenador = Coordenador::where('n_codicoord', $user->n_codientid)->first();
-                if ($coordenador) {
-                    $data = response()->json(['pagamentos' => Coordenador::where('n_codicoord', $coordenador->n_codicoord)->get()], 200);
-                }else{
-                  $data = response()->json(['message' => 'nemhum banco encontrado'], 200);
-                }
+              $coordenador = Coordenador::find($user->n_codientid);
+              if (!$coordenador) {
+                return $data = response()->json(['message' => 'Coordenador nao encontrado'], 404);
+            }else{
+              $predio = Predio::where('n_codicoord', $user->n_codientid);
+            }
+
+            if (!$predio) {
+              return $data = response()->json(['message' => 'predio nao encontrado'], 404);
+            }
+
+              $bancos = $predio->bancos;
+
+              $data = response()->json(['bancos' => $bancos], 200);
             }
 
             return $data;
-            return Banco::all();
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
-    public function getAllByCoordenador($idPredi)
-    {
-        try {
-            //$coordenador = Coordenador::find($idCoordenador);
-            $predio = Predio::find($idPredi);
-            if (!$predio)
-                return response()->json(['message' => "Predio não encontrado!"], 404);
-
-            return Banco::where('n_codicoord', '=', $predio->n_codicoord)->get();
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
