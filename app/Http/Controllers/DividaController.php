@@ -14,7 +14,7 @@ class DividaController extends Controller
      * @OA\Get(
      *     tags={"/dividas"},
      *     path="/dividas",
-     *     summary="listar dividas",
+     *     summary="listar dividas do morador logado",
      *     security={{"bearerAuth": {} }},
      *     @OA\Response(response="200", description="sucesso"),
      *     @OA\Response(response="500", description="Erro no servidor")
@@ -67,7 +67,7 @@ class DividaController extends Controller
             if (!$apartamento)
                 return response()->json(['message' => "Apartamento não encontrado!"], 404);
 
-            return Divida::where('n_codiconta', '=', $apartamento->n_codiconta)->get();
+            return response()->json(['dividas' => Divida::where('n_codiconta', '=', $apartamento->n_codiconta)->get()], 404);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

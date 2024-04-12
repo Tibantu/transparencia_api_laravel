@@ -11,55 +11,45 @@ use Illuminate\Support\Facades\Validator;
 
 class DespesaController extends Controller
 {
-        /**
+/**
     * @OA\Get(
         *     tags={"/despesas"},
         *     path="/despesas",
         *     summary="listar despesas",
         *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="Coordenador nao encontrado"),
         *     @OA\Response(response="500", description="Erro no servidor")
         * )
 */
     public function getAll()
     {
-        try {
+
+      try {
+        $user = auth()->user();
+        $data = response()->json(['message' => "nao autorizado"], 404);
+
+        if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
+            $coordenador = Coordenador::find($user->n_codientid);
+            if (!$coordenador) {
+                return $data = response()->json(['message' => 'Coordenador nao encontrado'], 404);
+            }
+
+            $data = response()->json(['despesas' => $coordenador->despesas], 200);
+        }
+
+        return $data;
+
+   } catch (QueryException $e) {
+      return response()->json(['message' => $e->getMessage()], 500);
+  }
+  /*
+      try {
             return Despesa::all();
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
-    }
-
-            /**
-    * @OA\Get(
-        *     tags={"/despesas"},
-        *     path="/despesas/coord/{idCoordPredio}",
-        *     summary="mostrar um despesa",
-        *     security={{ "bearerAuth": {}}},
-        *     @OA\Parameter(
-        *         name="idCoordPredio",
-        *         in="path",
-        *         description="id do coordenador do predio",
-        *         required=false,
-        *         @OA\Schema(type="int")
-        *     ),
-        *     @OA\Response(response="200", description="sucesso"),
-        *     @OA\Response(response="404", description="despesas não encontrada"),
-        *     @OA\Response(response="500", description="Erro no servidor")
-        * )
-     */
-    public function getAllByPredio($idCoordPredio)
-    {
-        try {
-            $coord = Coordenador::find($idCoordPredio);
-            if(!$coord)
-                return response()->json(['message' => 'coordenador não encontrado'], 404);
-
-
-            return response()->json([Despesa::where('n_codicoord', '=', $idCoordPredio)->get()],200);
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
+    */
     }
 
             /**

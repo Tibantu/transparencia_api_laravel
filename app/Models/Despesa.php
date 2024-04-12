@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Despesa extends Model
 {
-    
+
 
     protected $table = 'tradespe';
     protected $primaryKey = 'n_codidespe';
@@ -21,9 +21,13 @@ class Despesa extends Model
         'c_objedespe',
         'c_fontdespe',
         'd_dacrdespe',
-        'd_dasadespe',   
+        'd_dasadespe',
         ];
 
+    public function coordenador()
+    {
+        return $this->belongsTo(Coordenador::class, 'n_codicoord', 'n_codicoord');
+    }
     use HasFactory;
 }
 

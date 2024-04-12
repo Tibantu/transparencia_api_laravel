@@ -22,5 +22,10 @@ class Coordenador extends Model
         'n_codimorad'
         ];
 
+
+    public function despesas()
+    {
+        return $this->hasMany(Despesa::class, 'n_codicoord', 'n_codicoord');
+    }
     use HasFactory;
 }

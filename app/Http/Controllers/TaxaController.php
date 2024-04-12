@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coordenador;
 use App\Models\Taxa;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -12,30 +13,31 @@ class TaxaController extends Controller
     /**
     * @OA\Get(
         *     tags={"/taxas"},
-        *     path="/taxas",
-        *     summary="listar taxas",
-        *     security={{"bearerAuth": {} }},
+        *     path="/taxas/predio/coord/{idCoordenador}",
+        *     summary="mostrar um Taxa",
+        *     security={{ "bearerAuth": {}}},
+        *     @OA\Parameter(
+        *         name="idCoordenador",
+        *         in="path",
+        *         description="id do coordenador do predio",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
         *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="coordenador não encontrado"),
         *     @OA\Response(response="500", description="Erro no servidor")
         * )
-*/
-    public function getAll()
-    {
-        try {
-            return Taxa::all();
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
+     */
     public function getAllByPredio($idCoordenador)
     {
         try {
-            $taxa = taxa::find($idCoordenador);
-            if (!$taxa)
-                return response()->json(['message' => "Taxa não encontrada"], 404);
-
-            return Taxa::where('n_codicoord', '=', $idCoordenador)->get();
+            $coordenador = Coordenador::find($idCoordenador);
+            if (!$coordenador)
+            {
+                return response()->json(['message' => "coordenador não encontrado"], 404);
+            }
+            $taxas = Taxa::where('n_codicoord', '=', $idCoordenador)->get();
+            return response()->json(['taxas' => $taxas], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

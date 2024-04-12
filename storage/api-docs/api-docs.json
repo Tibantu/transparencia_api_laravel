@@ -725,6 +725,31 @@
                 ]
             }
         },
+        "/caixas": {
+            "get": {
+                "tags": [
+                    "/caixas"
+                ],
+                "summary": "listar caixas do coordenador logado",
+                "operationId": "9f288c3b9d64e7fa32d1766b3a7912af",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "Coordenador ou predio nao encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/caixas/{caixa}": {
             "get": {
                 "tags": [
@@ -975,6 +1000,9 @@
                     "200": {
                         "description": "sucesso"
                     },
+                    "404": {
+                        "description": "Coordenador nao encontrado"
+                    },
                     "500": {
                         "description": "Erro no servidor"
                     }
@@ -1030,42 +1058,6 @@
                     },
                     "412": {
                         "description": "Erro ao validar os dados"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/despesas/coord/{idCoordPredio}": {
-            "get": {
-                "tags": [
-                    "/despesas"
-                ],
-                "summary": "mostrar um despesa",
-                "operationId": "708ff25f46f8a702199b7a1074a4b659",
-                "parameters": [
-                    {
-                        "name": "idCoordPredio",
-                        "in": "path",
-                        "description": "id do coordenador do predio",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "sucesso"
-                    },
-                    "404": {
-                        "description": "despesas não encontrada"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -1153,7 +1145,7 @@
                 "tags": [
                     "/dividas"
                 ],
-                "summary": "listar dividas",
+                "summary": "listar dividas do morador logado",
                 "operationId": "b4538aab95009042d55dbf029c06272f",
                 "responses": {
                     "200": {
@@ -1335,16 +1327,30 @@
                 ]
             }
         },
-        "/moradores": {
+        "/moradores/predio/{idPredio}": {
             "get": {
                 "tags": [
                     "/moradores"
                 ],
-                "summary": "listar moradores",
-                "operationId": "944f4b03bfb27527a721a5a24fd1bc1a",
+                "summary": "listar moradores de um predio",
+                "operationId": "2b31d433a603bdf9fb1e4b6326b310d6",
+                "parameters": [
+                    {
+                        "name": "idPredio",
+                        "in": "path",
+                        "description": "id do predio",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "predio não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -1355,7 +1361,9 @@
                         "bearerAuth": []
                     }
                 ]
-            },
+            }
+        },
+        "/moradores": {
             "post": {
                 "tags": [
                     "/moradores"
@@ -1402,42 +1410,6 @@
                     },
                     "405": {
                         "description": "apartamento oucupado"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/moradores/predio/{idPredio}": {
-            "get": {
-                "tags": [
-                    "/moradores"
-                ],
-                "summary": "listar moradores de um predio",
-                "operationId": "2b31d433a603bdf9fb1e4b6326b310d6",
-                "parameters": [
-                    {
-                        "name": "idPredio",
-                        "in": "path",
-                        "description": "id do predio",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "sucesso"
-                    },
-                    "404": {
-                        "description": "predio não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -1687,6 +1659,42 @@
                     },
                     "412": {
                         "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "Morador não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/pagamentos/morador/{idMorador}": {
+            "get": {
+                "tags": [
+                    "/pagamentos"
+                ],
+                "summary": "mostrar pagamento",
+                "operationId": "03677fb8a7f864cf0963f69a5a84878a",
+                "parameters": [
+                    {
+                        "name": "idMorador",
+                        "in": "path",
+                        "description": "id do pagamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
                     },
                     "404": {
                         "description": "Morador não encontrado"
@@ -2052,16 +2060,30 @@
                 ]
             }
         },
-        "/taxas": {
+        "/taxas/predio/coord/{idCoordenador}": {
             "get": {
                 "tags": [
                     "/taxas"
                 ],
-                "summary": "listar taxas",
-                "operationId": "19206a0dba62b7943f50057354454c35",
+                "summary": "mostrar um Taxa",
+                "operationId": "b603da47e5e707cff1d87d6ec0570173",
+                "parameters": [
+                    {
+                        "name": "idCoordenador",
+                        "in": "path",
+                        "description": "id do coordenador do predio",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "coordenador não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -2072,7 +2094,9 @@
                         "bearerAuth": []
                     }
                 ]
-            },
+            }
+        },
+        "/taxas": {
             "post": {
                 "tags": [
                     "/taxas"

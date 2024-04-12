@@ -11,28 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class MoradorController extends Controller
 {
-/**
-    * @OA\Get(
-        *     tags={"/moradores"},
-        *     path="/moradores",
-        *     summary="listar moradores",
-        *     security={{"bearerAuth": {} }},
-        *     @OA\Response(response="200", description="sucesso"),
-        *     @OA\Response(response="500", description="Erro no servidor")
-        * )
-*/
-    public function getAll()
-    {
-
-        try {
-            $morador = Morador::all();
-
-            return response()->json(['moradores' => $morador], 200);
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
-
     /**
     * @OA\Get(
         *     tags={"/moradores"},

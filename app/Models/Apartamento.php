@@ -26,5 +26,9 @@ class Apartamento extends Model
     {
         return $this->hasMany(Morador::class, 'n_codimorad', 'n_codimorad');
     }
+    public function pagamentos()
+    {
+        return $this->hasMany(Pagamento::class, 'n_codiapart', 'n_codiapart');
+    }
     use HasFactory;
 }

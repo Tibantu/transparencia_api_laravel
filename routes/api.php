@@ -129,7 +129,6 @@ Route::middleware('auth:sanctum')->group(function () {
     //TAXA
     Route::prefix('taxas')->group(function () {
       Route::get('/', [TaxaController::class, 'getAll']);
-      /**[cria] um morador */
       Route::post('/', [TaxaController::class, 'create']);
       /**[pega] todas as taxas de um predio  - id do predio e fornecida na url */
       Route::get('/predio/coord/{idCoordenador}', [TaxaController::class, 'getAllByPredio']);
@@ -141,11 +140,9 @@ Route::middleware('auth:sanctum')->group(function () {
     //PAGAMENTO
     Route::prefix('pagamentos')->group(function () {
       Route::get('/', [PagamentoController::class, 'getAll']);
-      /**[cria] um morador */
+      Route::get('/morador/{idMorador}', [PagamentoController::class, 'getAllByPagamentos']);
       Route::get('/p/{campoDaConsulta}', [PagamentoController::class, 'getBetweenDate']);
       Route::post('/', [PagamentoController::class, 'create']);
-      /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
-      //Route::get('/predio/{idPredio}', [PagamentoController::class, 'getAllByPredio']);
       Route::get('/{id}', [PagamentoController::class, 'getOne']);
       Route::put('/{id}', [PagamentoController::class, 'update']);
       Route::delete('/{id}', [PagamentoController::class, 'delete']);
@@ -167,15 +164,13 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('/', [DespesaController::class, 'getAll']);
       /**[cria] um morador */
       Route::post('/', [DespesaController::class, 'create']);
-      /**[pega] todas as dividas de uma conta de apartamento  - id da conta e fornecida na url */
-      Route::get('/coord/{idCoordPredio}', [DespesaController::class, 'getAllByPredio']);
       Route::get('/{id}', [DespesaController::class, 'getOne']);
       Route::put('/{id}', [DespesaController::class, 'update']);
       Route::delete('/{id}', [DespesaController::class, 'delete']);
     });
     //CAIXA
     Route::prefix('caixas')->group(function () {
-      Route::get('/', [CaixaController::class, 'getAll']);
+      Route::get('/', [CaixaController::class, 'getCaixa']);
       /**[pega] todas as dividas de uma conta de apartamento  - id da conta e fornecida na url */
       Route::get('/coord/{idCoordPredio}', [CaixaController::class, 'getAllByPredio']);
       Route::get('/{id}', [CaixaController::class, 'getOne']);

@@ -29,5 +29,15 @@ class Pagamento extends Model
         'n_codiapart'
         ];
 
+        public function apartamento()
+        {
+            return $this->belongsTo(Apartamento::class, 'n_codiapart', 'n_codiapart');
+        }
+
+        public function morador()
+        {
+            return $this->belongsTo(Morador::class, 'n_codimorad', 'n_codimorad');
+        }
+
     use HasFactory;
 }

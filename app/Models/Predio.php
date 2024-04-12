@@ -26,5 +26,9 @@ class Predio extends Model
     {
         return $this->hasMany(Apartamento::class, 'n_codipredi', 'n_codipredi');
     }
+    public function caixa()
+    {
+        return $this->belongsTo(Caixa::class, 'n_codicaixa', 'n_codicaixa');
+    }
     use HasFactory;
 }

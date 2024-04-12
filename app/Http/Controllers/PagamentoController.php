@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apartamento;
+use App\Models\Morador;
 use App\Models\Pagamento;
 use App\Utils\Util;
 use Exception;
@@ -91,18 +92,42 @@ class PagamentoController extends Controller
       return response()->json(['message' => $e->getMessage()], 500);
     }
   }
-  /*
-    public function getAllByMoradores($idPredio)
+
+
+    /**
+   * @OA\Get(
+   *     tags={"/pagamentos"},
+   *     path="/pagamentos/morador/{idMorador}",
+   *     summary="mostrar pagamento",
+   *     security={{ "bearerAuth": {}}},
+   *     @OA\Parameter(
+   *         name="idMorador",
+   *         in="path",
+   *         description="id do pagamento",
+   *         required=false,
+   *         @OA\Schema(type="int")
+   *     ),
+   *     @OA\Response(response="200", description="sucesso"),
+   *     @OA\Response(response="404", description="Morador não encontrado"),
+   *     @OA\Response(response="500", description="Erro no servidor")
+   * )
+   */
+    public function getAllByPagamentos($idMorador)
     {
         try {
-            Apartamento::findOrFail($idBloco);
 
-            return Apartamento::where('n_codibloco', '=', $idBloco)->get();
+          $morador = Morador::with('pagamentos')->find($idMorador);
+          if(!$morador){
+            return response()->json(['message' => 'Morador não encontrado'], 404);
+          }
+          $pagamentos = $morador->pagamentos;
+          return response()->json(['pagamentos' => $pagamentos], 200);
+
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-*/
+
   /**
    * @OA\Post(
    *     tags={"/pagamentos"},

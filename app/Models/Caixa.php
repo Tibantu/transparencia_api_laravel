@@ -19,6 +19,9 @@ class Caixa extends Model
         'c_nomeentid',
         'n_codientid',
     ];
-
+    public function predio()
+    {
+        return $this->hasOne(Predio::class, 'n_codicaixa', 'n_codicaixa')->where('c_nomeentid', 'trapredi');
+    }
 use HasFactory;
 }
