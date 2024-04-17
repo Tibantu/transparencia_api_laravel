@@ -3,14 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apartamento;
+use App\Models\Bloco;
+use App\Models\Caixa;
+use App\Models\Centralidade;
 use App\Models\Coordenador;
 use App\Models\Morador;
+use App\Models\Predio;
 use App\Models\User;
 use App\Models\Usuario;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+
+use function PHPUnit\Framework\isNull;
 
 class UserController extends Controller
 {
@@ -51,14 +57,20 @@ class UserController extends Controller
     public function create(Request $req)
     {
         $isValidData = Validator::make($req->all(), [
+            //dados do usuario
             "login" => 'required|string',
             "email" => 'required|string',
             "password" => 'required|string',
-            "tipo" => 'required|string|in:tracoord,tramorad', // recebe o tipo de usuario(coordenador, morador ou ...)
-            "remember_token" => 'string',
-            "tipoDeEntidadeACoordenar" => 'string|in:trapredi,trabloco',
-            "codiEntidade" => 'integer',
-            "codiApartamento" => 'required|integer'
+            //dados do coord
+            "nome" => 'required|string',
+            "apelido" => 'required|string',
+            //dados do predio
+            "descricao_do_bloco" => 'string',
+            //"id_bloco" => 'string', // vai no ; se for vasio criar um bloco na centralidade com a descricao_do_bloco
+            //dados do predio
+            "descricao_do_predio" => 'required|string',
+            "entrada_do_predio" => 'required|string',
+            "id_centralidade" => 'required|int'
         ]);
 
         if ($isValidData->fails()) {
@@ -66,43 +78,98 @@ class UserController extends Controller
         }
 
         try {
-            //criar um morador if tipo == tramord
-            $dadosEntidade = [];
-            $idEntidade = 0;
-            switch ($req->tipo) {
-                case 'tramorad':
-                    $dadosEntidade = ['c_nomemorad' => $req->login];
-                    $idEntidade = Morador::insertGetId($dadosEntidade);
-                    //*codiApartamento alterar
-                    $apartamento = Apartamento::find($req->codiApartamento);
-                    if ($apartamento) {
-                        // Alterando o nome do usuário
-                        $apartamento->n_codimorad = $idEntidade;
-                        // Salvando as alterações no banco de dados
-                        $idEntidade->save();
-                    } else {
-                      return response()->json(['message' => "Apartamento não encontrado!"], 404);
-                    }
-                    break;
-                case 'tracoord':
-                    $dadosEntidade = [
-                        'c_nomecoord' => $req->login,
-                        'c_nomeentid' => $req->tipoDeEntidadeACoordenar,
-                        'n_codientid' => $req->codiEntidade
-                    ];
-                    $idEntidade = Coordenador::insertGetId($dadosEntidade);
-                    //*codiApartamento
-                    break;
-            }
+/* *///criar um bloco, apenas se id_bloco for vasio
+
+          $bloco = [];
+          //dd($req->id_bloco);
+          if(isNull($req->id_bloco) && $req->descricao_do_bloco != "")
+          {
+                $centralidadde = Centralidade::find($req->id_centralidade);
+                if (!$centralidadde)
+                    return response()->json(['message' => "Centralidade não encontrada!"], 404);
+
+              /*Criar um caixa para o bloco*/
+                $dataCaixa = [
+                  'c_nomeentid'=>'trabloco'
+                ];
+
+                $caixa = Caixa::create($dataCaixa);
+
+                    //criar o bloco
+                $dadosBloco = [
+                    'c_descbloco' => $req->descricao_do_bloco,
+                    'n_codicentr' => $req->id_centralidade,
+                    'n_codicaixa' => $caixa->n_codicaixa
+                ];
+
+                $bloco = Bloco::create($dadosBloco);
+                $dataCaixa['n_codientid'] = (int) $bloco->n_codibloco;
+                $caixa->update($dataCaixa);
+          }else{
+            $bloco = Bloco::find($req->id_bloco);
+          }
+
+/* */
+
+/* *///criar um predio
+
+        $bloco = Bloco::find($bloco->n_codibloco);
+        if (!$bloco)
+            return response()->json(['message' => "Bloco não encontrado!"], 404);
+
+        /*Criar um caixa para o predio*/
+        $dataCaixaPredi = [
+          'c_nomeentid'=>'trapredi'
+        ];
+        $caixaPredi = Caixa::create($dataCaixaPredi);
+        if(!$caixaPredi){
+        return response()->json(['message' => "Erro ao criar predio"], 412);
+        }
+
+        $dadosPredi = [
+          'c_entrpredi' => $req->entrada_do_predio,
+          'c_descpredi' => $req->descricao_do_predio,
+          'n_codicaixa' => $caixaPredi->n_codicaixa,
+          'n_codibloco' => $bloco->n_codibloco
+          //d3ado1s do predi
+      ];
+
+
+        $predio = Predio::create($dadosPredi);
+        $caixaPredi['n_codientid'] = (int) $predio->n_codipredi;
+        $caixaPredi->update($dataCaixa);
+
+/* */
+
+/* *///criar um coord
+
+            $dadosCoord = [
+                'c_nomecoord' => $req->nome,
+                'c_nomeentid' => 'trapredi',
+                'n_codientid' => $predio->n_codipredi,
+                'c_apelcoord' => $req->apelido
+            ];
+          $coord = Coordenador::create($dadosCoord);
+
+          if(!$coord)
+            return response()->json(['message' => "Erro ao criar o coordenador"], 412);
+
+          $dadosPredi['n_codicoord'] = (int) $coord->n_codicoord;
+          $predio->update($dadosPredi);
+
+/* */
+
+/* *///criar um usuario
+            $dadosUser = [
+              'c_logiusuar' => $req->login,
+              'c_senhusuar' => Hash::make($req->password),
+              'n_codientid' => $coord->n_codicoord,
+              'c_nomeentid' => 'tracoord',
+              'c_emaiusuar' => $req->email
+          ];
 
             //criar usuario
-            $user = new User();
-            $user->c_logiusuar = $req->login;
-            $user->c_emaiusuar = $req->email;
-            $user->c_senhusuar = Hash::make($req->password);
-            $user->c_nomeentid = $req->tipo;
-            $user->n_codientid = $idEntidade;
-            $user->save();
+            $user = User::create($dadosUser);
 
             return response()->json(['message' => "usuario criado com sucesso!"], 201);
         } catch (\Illuminate\Database\QueryException $e) {

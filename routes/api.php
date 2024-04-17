@@ -40,7 +40,7 @@ Route::prefix('auth')->group(function () {
   Route::post('/', [UserController::class, 'create']);
 });
 
-//Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
   // Código protegido
 
 
@@ -190,4 +190,4 @@ Route::prefix('auth')->group(function () {
       Route::get('/pagamento/recibo/{idPagamento}', [PDFController::class, 'getPagamentoPDF']);
 
     });
-//});
+});

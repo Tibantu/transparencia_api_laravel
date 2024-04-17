@@ -123,8 +123,8 @@ class PredioController extends Controller
             $dataCaixa['n_codientid'] = (int) $predio->n_codipredi;
             $caixa->update($dataCaixa);
 
-            $dataCood['n_codientid'] = (int) $predio->n_codipredi;
-            $coord->update($dataCood);
+            $dataCoord['n_codientid'] = (int) $predio->n_codipredi;
+            $coord->update($dataCoord);
 
             return response()->json(['message' => "Predio criado com sucesso!"], 200);
         } catch (QueryException $e) {
