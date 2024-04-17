@@ -85,7 +85,6 @@ public function getAllByCentr($idCentralidade)
             "c_descbloco" => 'required|string|max:50',
             "n_nblocentr" => 'integer',
             "n_codicoord" => 'integer',
-            "n_codicaixa" => 'integer',
             "c_ruabloco" => 'string',
         ]);
         $centralidadde = Centralidade::find($idCentralidade);

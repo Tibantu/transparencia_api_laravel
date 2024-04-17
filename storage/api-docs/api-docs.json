@@ -2034,9 +2034,13 @@
                                         "description": "Entrada do prédio",
                                         "type": "string"
                                     },
-                                    "n_codicoord": {
-                                        "description": "id do Coordenador do prédio",
-                                        "type": "int"
+                                    "c_nomecoord": {
+                                        "description": "nome do coordenador do prédio",
+                                        "type": "string"
+                                    },
+                                    "c_apelcoord": {
+                                        "description": "ultimo nome do coordenador do prédio",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -2045,11 +2049,11 @@
                     }
                 },
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "bloco cadastrado com sucesso"
                     },
                     "412": {
-                        "description": "Erro ao validar os dados"
+                        "description": "Erro ao validar os dados || Erro ao criar predio"
                     },
                     "500": {
                         "description": "Erro no servidor"

@@ -47,16 +47,23 @@ class MoradorController extends Controller
 /**
     * @OA\Post(
         *     tags={"/moradores"},
-        *     path="/moradores",
+        *     path="/moradores/apartamento/{idAparta}",
         *     summary="Registrar morador",
         *     security={{"bearerAuth": {} }},
+        *     @OA\Parameter(
+        *         name="idAparta",
+        *         in="path",
+        *         description="id do apartamento onde sera registrado o morador",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
         *     @OA\RequestBody(
         *       required=true,
         *       @OA\JsonContent(
         *          type="object",
         *          @OA\Property(property="c_nomemorad",type="string",description="nome do morador"),
         *          @OA\Property(property="c_apelmorad",type="string",description="ultimo nome do morador"),
-        *          @OA\Property(property="n_codiapart",type="int",description="id do apartamento a vincular com o morador"),
+        *          @OA\Property(property="n_codiapart",type="integer",description="id do apartamento a vincular com o morador"),
         *          @OA\Property(property="c_bilhmorad",type="string",description="bilhete de identidade do morador"),
         *       )
         *     ),
@@ -68,7 +75,7 @@ class MoradorController extends Controller
         *     @OA\Response(response="500", description="Erro no servidor")
         * )
      */
-    public function create(Request $req)
+    public function create(Request $req, $idAparta)
     {
         $isValidData = Validator::make($req->all(), [
             "c_nomemorad" => 'required|string',
@@ -79,7 +86,7 @@ class MoradorController extends Controller
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
 
     try {
-        $registro = Apartamento::where('n_codiapart',$req->input('n_codiapart'))->first();
+        $registro = Apartamento::where('n_codiapart',$idAparta)->first();
         if(!$registro)
               return response()->json(['message' => 'apartamento não encontrado'], 404);
 

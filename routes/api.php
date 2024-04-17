@@ -40,7 +40,7 @@ Route::prefix('auth')->group(function () {
   Route::post('/', [UserController::class, 'create']);
 });
 
-Route::middleware('auth:sanctum')->group(function () {
+//Route::middleware('auth:sanctum')->group(function () {
   // Código protegido
 
 
@@ -91,9 +91,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // APARTAMENTOS
     Route::prefix('apartamentos')->group(function () {
       Route::get('/', [ApartamentoController::class, 'getAll']);
-      /**[cria] um bloco dentro de uma centralidade - id da centralidade e fornecida na url */
       Route::post('/predio/{idPredio}', [ApartamentoController::class, 'create']);
-      /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
       Route::get('/predio/{idPredio}', [ApartamentoController::class, 'getAllByPredio']);
       Route::get('/{id}', [ApartamentoController::class, 'getOne']);
       Route::put('/{id}', [ApartamentoController::class, 'update']);
@@ -103,10 +101,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //MORADOR
     Route::prefix('moradores')->group(function () {
-      Route::get('/', [MoradorController::class, 'getAll']);
+      //Route::get('/', [MoradorController::class, 'getAll']);
       /**[cria] um morador */
-      Route::post('/', [MoradorController::class, 'create']);
-      /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
+      Route::post('/apartamento/{idApartamento}', [MoradorController::class, 'create']);
       Route::get('/predio/{idPredio}', [MoradorController::class, 'getAllByMoradores']);
       Route::get('/{id}', [MoradorController::class, 'getOne']);
       Route::put('/{id}', [MoradorController::class, 'update']);
@@ -193,4 +190,4 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('/pagamento/recibo/{idPagamento}', [PDFController::class, 'getPagamentoPDF']);
 
     });
-});
+//});

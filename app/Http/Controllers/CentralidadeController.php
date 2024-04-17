@@ -26,7 +26,6 @@ class CentralidadeController extends Controller
    */
   public function getAll()
   {
-    Centralidade::paginate();
     try {
       return response()->json(['centralidades' => Centralidade::all()], 200);
     } catch (\Illuminate\Database\QueryException $e) {
@@ -70,10 +69,8 @@ class CentralidadeController extends Controller
          */
     $isValidData = Validator::make($req->all(), [
       "c_desccentr" => 'required|string|max:50',
-      "n_nblocentr" => 'integer',
       "n_codicoord" => 'integer',
-      "n_codiender" => 'required|integer',
-      "n_codiadmin" => 'integer'
+      "n_codiender" => 'required|integer'
     ]);
     if ($isValidData->fails())
       return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);

@@ -40,8 +40,8 @@ class ApartamentoController extends Controller
             if(!$predio){
               return response()->json(['message' => "Predio não encontrado"], 404);
             }
-
-            return response()->json(['apartamentos' => Apartamento::where('n_codipredi', '=', $idPredio)->get()], 200);
+            $apartamentos = $predio->apartamentos;
+            return response()->json(['apartamentos' => $apartamentos], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -55,7 +55,7 @@ class ApartamentoController extends Controller
         *     @OA\Parameter(
         *         name="idPredio",
         *         in="path",
-        *         description="id do apartamento",
+        *         description="id do predio onde será registrado o apartamento",
         *         required=false,
         *         @OA\Schema(type="int")
         *     ),
@@ -79,14 +79,8 @@ class ApartamentoController extends Controller
     {
 
         $isValidData = Validator::make($req->all(), [
-            'c_portapart'=> 'required',
-            'c_tipoapart'=> 'required',
-            'n_nandapart',
-            'd_dacrapart',
-            'n_codiconta',
-            'n_codipredi',
-            'n_codimorad'
-
+            'c_portapart'=> 'required|string|max:5',
+            'c_tipoapart'=> 'required|string|max:5'
         ]);
         try {
             $predio = Predio::find($idPredio);
