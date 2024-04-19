@@ -77,6 +77,9 @@ class PredioController extends Controller
     public function create(Request $req, $idBloco)
     {
 
+    //APENAS O SISTEMA PODE USAR ESTA ROTA
+    return response()->json(['message' => 'APENAS O SISTEMA PODE USAR ESTA ROTA'], 404);
+      /*
         $isValidData = Validator::make($req->all(), [
            //dados do predio
             "c_descpredi" => 'required|string|max:10',
@@ -95,13 +98,13 @@ class PredioController extends Controller
                 return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
 
 
-            /*Criar um caixa para o predio*/
+            //Criar um caixa para o predio
             $dataCaixa = [
                 'c_nomeentid'=>'trapredi'
             ];
             $caixa = Caixa::create($dataCaixa);
 
-            /*Criar o coordenador do predio*/
+            //Criar o coordenador do predio
             $dataCoord = [
                 'c_nomeentid'=>'trapredi',
                 'c_nomecoord'=>$req->c_nomecoord,
@@ -129,7 +132,7 @@ class PredioController extends Controller
             return response()->json(['message' => "Predio criado com sucesso!"], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
-        }
+        }*/
     }
             /**
     * @OA\Delete(
@@ -151,7 +154,9 @@ class PredioController extends Controller
      */
     public function delete($id)
     {
-        try {
+      //APENAS O SISTEMA PODE USAR ESTA ROTA
+      return response()->json(['message' => 'APENAS O SISTEMA PODE USAR ESTA ROTA'], 404);
+/*        try {
             $predio = Predio::find($id);
             if (!$predio)
                 return response()->json(['message' => "Predio não encontrado"], 404);
@@ -159,7 +164,7 @@ class PredioController extends Controller
             return response()->json(['message' => "Predio deletado com sucesso!"], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => "Erro no servidor" . $e->getMessage()], 500);
-        }
+        }*/
     }
             /**
     * @OA\Put(

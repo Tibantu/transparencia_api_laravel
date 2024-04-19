@@ -22,7 +22,7 @@ class EnderecoController extends Controller
     /**
      * @OA\Post(
      *     tags={"enderecos"},
-     *     path="/auth",
+     *     path="/enderecos",
      *     summary="Cadastrar enderecos",
      *     security={{"bearerAuth": {} }},
      *     @OA\RequestBody(

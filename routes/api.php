@@ -56,9 +56,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // CENTRALIDADES
     Route::prefix('centralidades')->group(function () {
       Route::get('/', [CentralidadeController::class, 'getAll']);
-      Route::post('/', [CentralidadeController::class, 'create'])->middleware('auth');
-      /**[pega] todos as centralidades de uma provoncia  - provincia, fornecida na url */
-      Route::get('/provincia/{denominacao}', [CentralidadeController::class, 'getAllByProvincia']);
+      Route::post('/', [CentralidadeController::class, 'create']);
+      /*[pega] todos as centralidades de uma provoncia  - provincia, fornecida na url
+      Route::get('/provincia/{denominacao}', [CentralidadeController::class, 'getAllByProvincia']); */
       Route::delete('/{id}', [CentralidadeController::class, 'delete']);
       Route::put('/{id}', [CentralidadeController::class, 'update']);
       Route::get('/{id}', [CentralidadeController::class, 'getOne']);
@@ -92,7 +92,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('apartamentos')->group(function () {
       Route::get('/', [ApartamentoController::class, 'getAll']);
       Route::post('/predio/{idPredio}', [ApartamentoController::class, 'create']);
-      Route::get('/predio/{idPredio}', [ApartamentoController::class, 'getAllByPredio']);
+      Route::get('/predio', [ApartamentoController::class, 'getAllByPredio']);
       Route::get('/{id}', [ApartamentoController::class, 'getOne']);
       Route::put('/{id}', [ApartamentoController::class, 'update']);
       Route::delete('/{id}', [ApartamentoController::class, 'delete']);
@@ -167,9 +167,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     //CAIXA
     Route::prefix('caixas')->group(function () {
-      Route::get('/', [CaixaController::class, 'getCaixa']);
+      //Route::get('/', [CaixaController::class, 'getCaixa']);
       /**[pega] todas as dividas de uma conta de apartamento  - id da conta e fornecida na url */
-      Route::get('/coord/{idCoordPredio}', [CaixaController::class, 'getAllByPredio']);
+      Route::get('/coord', [CaixaController::class, 'getCaixa']);
       Route::get('/{id}', [CaixaController::class, 'getOne']);
       Route::put('/{id}', [CaixaController::class, 'update']);
       Route::delete('/{id}', [CaixaController::class, 'delete']);

@@ -6,6 +6,7 @@ use App\Models\Bloco;
 use App\Models\Centralidade;
 use App\Models\Apartamento;
 use App\Models\Conta;
+use App\Models\Coordenador;
 use App\Models\Predio;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -18,30 +19,37 @@ class ApartamentoController extends Controller
     /**
     * @OA\Get(
         *     tags={"/apartamentos"},
-        *     path="/apartamentos/predio/{idPredio}",
+        *     path="/apartamentos/predio",
         *     summary="mostrar apartamentos do predio ",
-        *     security={{ "bearerAuth": {}}},
-        *     @OA\Parameter(
-        *         name="idPredio",
-        *         in="path",
-        *         description="id do Predio",
-        *         required=false,
-        *         @OA\Schema(type="int")
-        *     ),
         *     @OA\Response(response="200", description="sucesso"),
         *     @OA\Response(response="404", description="Predio não encontrado"),
         *     @OA\Response(response="500", description="Erro no servidor")
         * )
      */
-    public function getAllByPredio($idPredio)
+    public function getAllByPredio()
     {
         try {
-            $predio = Predio::find($idPredio);
-            if(!$predio){
-              return response()->json(['message' => "Predio não encontrado"], 404);
-            }
-            $apartamentos = $predio->apartamentos;
-            return response()->json(['apartamentos' => $apartamentos], 200);
+
+              //dd(auth()->user());
+              $user = auth()->user();
+
+              $data = response()->json(['message' => "nao autorizado"], 404);
+              if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
+                $coord = Coordenador::find($user->n_codientid);
+                if(!$coord){
+                  return response()->json(['message' => "Coordenador não encontrado"], 404);
+                }
+                if($coord->c_nomeentid != 'trapredi'){
+                  return response()->json(['message' => "Não es coordenador do predio"], 404);
+                }
+                $predio = Predio::find($coord->n_codientid);
+                if(!$predio){
+                  return response()->json(['message' => "Predio não encontrado"], 404);
+                }
+                $apartamentos = $predio->apartamentos;
+                $data = response()->json(['apartamentos' => $apartamentos], 200);
+              }
+                return $data;
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

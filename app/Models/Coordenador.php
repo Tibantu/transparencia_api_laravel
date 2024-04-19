@@ -27,5 +27,13 @@ class Coordenador extends Model
     {
         return $this->hasMany(Despesa::class, 'n_codicoord', 'n_codicoord');
     }
+    public function predio()
+    {
+        /*if($this->c_nomeentid != 'trapredi'){
+          return null;
+        }*/
+        return $this->belongsTo(Predio::class, 'n_codicoord', 'n_codicoord');
+    }
+
     use HasFactory;
 }

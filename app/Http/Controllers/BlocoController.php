@@ -136,7 +136,10 @@ public function getAllByCentr($idCentralidade)
      */
     public function delete($id)
     {
-        try {
+
+    //APENAS O SISTEMA PODE USAR ESTA ROTA
+    return response()->json(['message' => 'APENAS O SISTEMA PODE USAR ESTA ROTA'], 404);
+/*        try {
             $bloco = Bloco::find($id);
             if (!$bloco)
                 return response()->json(['message' => "bloco não encontrado"], 404);
@@ -144,7 +147,7 @@ public function getAllByCentr($idCentralidade)
             return response()->json(['message' => "bloco deletado com sucesso!"], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => "Hello " . $e->getMessage()], 500);
-        }
+        }*/
     }
         /**
     * @OA\Put(

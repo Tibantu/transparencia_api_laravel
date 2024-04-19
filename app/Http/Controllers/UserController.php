@@ -89,22 +89,22 @@ class UserController extends Controller
                     return response()->json(['message' => "Centralidade não encontrada!"], 404);
 
               /*Criar um caixa para o bloco*/
-                $dataCaixa = [
+                $dataCaixaBloco = [
                   'c_nomeentid'=>'trabloco'
                 ];
 
-                $caixa = Caixa::create($dataCaixa);
+                $caixaBloco = Caixa::create($dataCaixaBloco);
 
                     //criar o bloco
                 $dadosBloco = [
                     'c_descbloco' => $req->descricao_do_bloco,
                     'n_codicentr' => $req->id_centralidade,
-                    'n_codicaixa' => $caixa->n_codicaixa
+                    'n_codicaixa' => $caixaBloco->n_codicaixa
                 ];
 
                 $bloco = Bloco::create($dadosBloco);
-                $dataCaixa['n_codientid'] = (int) $bloco->n_codibloco;
-                $caixa->update($dataCaixa);
+                $dataCaixaBloco['n_codientid'] = (int) $bloco->n_codibloco;
+                $caixaBloco->update($dataCaixaBloco);
           }else{
             $bloco = Bloco::find($req->id_bloco);
           }
@@ -137,7 +137,7 @@ class UserController extends Controller
 
         $predio = Predio::create($dadosPredi);
         $caixaPredi['n_codientid'] = (int) $predio->n_codipredi;
-        $caixaPredi->update($dataCaixa);
+        $caixaPredi->update($dataCaixaPredi);
 
 /* */
 
@@ -169,7 +169,7 @@ class UserController extends Controller
           ];
 
             //criar usuario
-            $user = User::create($dadosUser);
+            User::create($dadosUser);
 
             return response()->json(['message' => "usuario criado com sucesso!"], 201);
         } catch (\Illuminate\Database\QueryException $e) {

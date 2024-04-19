@@ -13,24 +13,13 @@
         }
     ],
     "paths": {
-        "/apartamentos/predio/{idPredio}": {
+        "/apartamentos/predio": {
             "get": {
                 "tags": [
                     "/apartamentos"
                 ],
                 "summary": "mostrar apartamentos do predio ",
-                "operationId": "6e350e632ce06dc50aaec24b707fa68a",
-                "parameters": [
-                    {
-                        "name": "idPredio",
-                        "in": "path",
-                        "description": "id do Predio",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    }
-                ],
+                "operationId": "00f66128fc56dc5b641768ebf2e7dcb0",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -41,13 +30,10 @@
                     "500": {
                         "description": "Erro no servidor"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
+                }
+            }
+        },
+        "/apartamentos/predio/{idPredio}": {
             "put": {
                 "tags": [
                     "/apartamentos"
@@ -119,7 +105,7 @@
                     {
                         "name": "idPredio",
                         "in": "path",
-                        "description": "id do apartamento",
+                        "description": "id do predio onde será registrado o apartamento",
                         "required": false,
                         "schema": {
                             "type": "int"
@@ -725,13 +711,13 @@
                 ]
             }
         },
-        "/caixas": {
+        "/caixas/coord": {
             "get": {
                 "tags": [
                     "/caixas"
                 ],
-                "summary": "listar caixas do coordenador logado",
-                "operationId": "9f288c3b9d64e7fa32d1766b3a7912af",
+                "summary": "listar caixas do predio do cooord logado",
+                "operationId": "340b456e3d17693b1f9b5d2cb79be852",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -1324,13 +1310,13 @@
                 ]
             }
         },
-        "/auth": {
+        "/enderecos": {
             "post": {
                 "tags": [
                     "enderecos"
                 ],
                 "summary": "Cadastrar enderecos",
-                "operationId": "f81d55b51b1c7f29b7ea88fcf7df82ef",
+                "operationId": "792da3f06d5a46a07cd1d508d81c5324",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1453,13 +1439,24 @@
                 ]
             }
         },
-        "/moradores": {
+        "/moradores/apartamento/{idAparta}": {
             "post": {
                 "tags": [
                     "/moradores"
                 ],
                 "summary": "Registrar morador",
-                "operationId": "47a8a0066a0ac393bfe5b86882031a0f",
+                "operationId": "f18f944bd5dcfc9ae8a83787816f3924",
+                "parameters": [
+                    {
+                        "name": "idAparta",
+                        "in": "path",
+                        "description": "id do apartamento onde sera registrado o morador",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1476,7 +1473,7 @@
                                     },
                                     "n_codiapart": {
                                         "description": "id do apartamento a vincular com o morador",
-                                        "type": "int"
+                                        "type": "integer"
                                     },
                                     "c_bilhmorad": {
                                         "description": "bilhete de identidade do morador",

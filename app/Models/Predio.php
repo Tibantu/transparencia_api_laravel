@@ -35,5 +35,9 @@ class Predio extends Model
         return $this->hasMany(Banco::class, 'n_codientid', 'n_codipredi')
                     ->where('c_nomeentid', 'trapredi');
     }
+    public function coordenador(){
+      return $this->hasOne(Coordenador::class, 'n_codicoord', 'n_codicoord')->where('c_nomeentid', 'trapredi');
+    }
+
     use HasFactory;
 }

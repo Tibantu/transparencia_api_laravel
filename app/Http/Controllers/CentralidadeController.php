@@ -57,6 +57,8 @@ class CentralidadeController extends Controller
 
   public function create(Request $req)
   {
+    //APENAS O SISTEMA PODE USAR ESTA ROTA
+    return response()->json(['message' => 'APENAS O SISTEMA PODE USAR ESTA ROTA'], 404);
     /*
             o que aconteice na interfafce: o usuario digita os dados do endereço
             e os dados da centralidade.
@@ -67,7 +69,8 @@ class CentralidadeController extends Controller
             usa-lo para criar a centralidade
 
          */
-    $isValidData = Validator::make($req->all(), [
+    /*
+         $isValidData = Validator::make($req->all(), [
       "c_desccentr" => 'required|string|max:50',
       "n_codicoord" => 'integer',
       "n_codiender" => 'required|integer'
@@ -80,7 +83,7 @@ class CentralidadeController extends Controller
       return response()->json(['message' => "centralidade criada com sucesso!"], 201);
     } catch (\Illuminate\Database\QueryException $e) {
       return response()->json(['message' => $e->getMessage()], 500);
-    }
+    }*/
   }
   /**
    * @OA\Delete(
@@ -102,7 +105,9 @@ class CentralidadeController extends Controller
    */
   public function delete($id)
   {
-    try {
+    //APENAS O SISTEMA PODE USAR ESTA ROTA
+    return response()->json(['message' => 'APENAS O SISTEMA PODE USAR ESTA ROTA'], 404);
+/*    try {
       $centralidade = Centralidade::find($id);
       if (!$centralidade)
         return response()->json(['message' => 'centralidade não encontrada'], 404);
@@ -110,7 +115,7 @@ class CentralidadeController extends Controller
       return response()->json(['message' => "centralidade deletada com sucesso!"], 200);
     } catch (\Illuminate\Database\QueryException $e) {
       return response()->json(['message' => $e->getMessage()], 500);
-    }
+    } */
   }
   /**
    * @OA\Put(
@@ -135,7 +140,9 @@ class CentralidadeController extends Controller
    */
   public function update(Request $req, $id)
   {
-    try {
+        //APENAS O SISTEMA PODE USAR ESTA ROTA
+        return response()->json(['message' => 'APENAS O SISTEMA PODE USAR ESTA ROTA'], 404);
+/*    try {
       $centralidade = Centralidade::find($id);
       if (!$centralidade)
         return response()->json(['message' => 'centralidade não encontrada'], 404);
@@ -146,6 +153,7 @@ class CentralidadeController extends Controller
     } catch (\Illuminate\Database\QueryException $e) {
       return response()->json(['message' => $e->getMessage()], 500);
     }
+    */
   }
   /**
    * @OA\Get(

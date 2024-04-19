@@ -14,8 +14,8 @@ class CaixaController extends Controller
 /**
     * @OA\Get(
         *     tags={"/caixas"},
-        *     path="/caixas",
-        *     summary="listar caixas do coordenador logado",
+        *     path="/caixas/coord",
+        *     summary="listar caixas do predio do cooord logado",
         *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
         *     @OA\Response(response="404", description="Coordenador ou predio nao encontrado"),
@@ -24,8 +24,11 @@ class CaixaController extends Controller
 */
   public function getCaixa()
   {
+//    return response()->json(['message' => "nao autorizado"], 404);
+    //dd("ola");
     try {
       $user = auth()->user();
+
       $data = response()->json(['message' => "nao autorizado"], 404);
       $predio = [];
       if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
@@ -33,14 +36,21 @@ class CaixaController extends Controller
           if (!$coordenador) {
               return $data = response()->json(['message' => 'Coordenador nao encontrado'], 404);
           }else{
-            $predio = Predio::where('n_codicoord', $user->n_codientid);
+              if($coordenador->c_nomeentid == 'trapredi')
+              {
+                  $predio = Predio::find($coordenador->n_codientid);
+              }else
+              {
+              return $data = response()->json(['message' => 'Coordenador nao encontrado'], 404);
+            }
           }
 
           if (!$predio) {
             return $data = response()->json(['message' => 'predio nao encontrado'], 404);
           }
-          $data = response()->json(['caixa' => $predio->caixa], 200);
-      }
+          $caixa = $predio->caixa;
+          $data = response()->json(['caixa' => $caixa], 200);
+     }
 
       return $data;
 
