@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apartamento;
+use App\Models\Coordenador;
 use App\Models\Morador;
 use App\Models\Predio;
 use Illuminate\Database\QueryException;
@@ -11,28 +12,44 @@ use Illuminate\Support\Facades\Validator;
 
 class MoradorController extends Controller
 {
+  private function getPredio(){
+
+    //dd(auth()->user());
+    $user = auth()->user();
+
+    $predio = [];
+    if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
+      $coord = Coordenador::find($user->n_codientid);
+      if(!$coord){
+        return response()->json(['message' => "Coordenador não encontrado"], 404);
+      }
+      if($coord->c_nomeentid != 'trapredi'){
+        return response()->json(['message' => "Não es coordenador do predio"], 404);
+      }
+      $predio = Predio::find($coord->n_codientid);
+      if(!$predio){
+        return response()->json(['message' => "Predio não encontrado"], 404);
+      }
+      //$apartamentos = $predio->apartamentos;
+    }
+    return $predio;
+}
+
     /**
     * @OA\Get(
         *     tags={"/moradores"},
-        *     path="/moradores/predio/{idPredio}",
+        *     path="/moradores",
         *     summary="listar moradores de um predio",
         *     security={{ "bearerAuth": {}}},
-        *     @OA\Parameter(
-        *         name="idPredio",
-        *         in="path",
-        *         description="id do predio",
-        *         required=false,
-        *         @OA\Schema(type="int")
-        *     ),
         *     @OA\Response(response="200", description="sucesso"),
         *     @OA\Response(response="404", description="predio não encontrado"),
         *     @OA\Response(response="500", description="Erro no servidor")
         * )
      */
-    public function getAllByMoradores($idPredio)
+    public function getAllByMoradores(/*$idPredio*/)
     {
         try {
-          $predio = Predio::with('apartamentos.moradores')->find($idPredio);
+          $predio = $this->getPredio();//Predio::with('apartamentos.moradores')->find($idPredio);
           if(!$predio){
             return response()->json(['message' => 'predio não encontrado'], 404);
           }
@@ -47,7 +64,7 @@ class MoradorController extends Controller
 /**
     * @OA\Post(
         *     tags={"/moradores"},
-        *     path="/moradores/apartamento/{idAparta}",
+        *     path="/moradores",
         *     summary="Registrar morador",
         *     security={{"bearerAuth": {} }},
         *     @OA\Parameter(
@@ -86,6 +103,8 @@ class MoradorController extends Controller
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
 
     try {
+        //$apartamentos = $this->getPredio()->apartamentos;
+
         $registro = Apartamento::where('n_codiapart',$idAparta)->first();
         if(!$registro)
               return response()->json(['message' => 'apartamento não encontrado'], 404);

@@ -13,77 +13,19 @@
         }
     ],
     "paths": {
-        "/apartamentos/predio": {
+        "/apartamentos": {
             "get": {
                 "tags": [
                     "/apartamentos"
                 ],
                 "summary": "mostrar apartamentos do predio ",
-                "operationId": "00f66128fc56dc5b641768ebf2e7dcb0",
+                "operationId": "af649ce50f97801faddd840beb5ad522",
                 "responses": {
                     "200": {
                         "description": "sucesso"
                     },
                     "404": {
                         "description": "Predio não encontrado"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                }
-            }
-        },
-        "/apartamentos/predio/{idPredio}": {
-            "put": {
-                "tags": [
-                    "/apartamentos"
-                ],
-                "summary": "Registrar uma apartamento",
-                "operationId": "38f966dce8be6540d9049fd197d3d0fe",
-                "parameters": [
-                    {
-                        "name": "idPredio",
-                        "in": "path",
-                        "description": "id do apartamento",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "c_portapart": {
-                                        "description": "porta do apartamento",
-                                        "type": "string"
-                                    },
-                                    "c_tipoapart": {
-                                        "description": "tipo do apartamento",
-                                        "type": "string"
-                                    },
-                                    "n_nandapart": {
-                                        "description": "andar do apartamento",
-                                        "type": "int"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "apartamento cadastrado com sucesso"
-                    },
-                    "412": {
-                        "description": "Erro ao validar os dados"
-                    },
-                    "404": {
-                        "description": "apartamento não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -99,8 +41,8 @@
                 "tags": [
                     "/apartamentos"
                 ],
-                "summary": "Registrar uma apartamento",
-                "operationId": "a411c9c7f6855161c3cbf1afe66e6f83",
+                "summary": "Registrar um apartamento",
+                "operationId": "506959e7e38588b60a370abc0a440936",
                 "parameters": [
                     {
                         "name": "idPredio",
@@ -218,6 +160,69 @@
                     },
                     "405": {
                         "description": "apartamento com morador, não deletado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/apartamentos/predio/{idPredio}": {
+            "put": {
+                "tags": [
+                    "/apartamentos"
+                ],
+                "summary": "Registrar uma apartamento",
+                "operationId": "38f966dce8be6540d9049fd197d3d0fe",
+                "parameters": [
+                    {
+                        "name": "idPredio",
+                        "in": "path",
+                        "description": "id do apartamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "c_portapart": {
+                                        "description": "porta do apartamento",
+                                        "type": "string"
+                                    },
+                                    "c_tipoapart": {
+                                        "description": "tipo do apartamento",
+                                        "type": "string"
+                                    },
+                                    "n_nandapart": {
+                                        "description": "andar do apartamento",
+                                        "type": "int"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "apartamento cadastrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "apartamento não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"

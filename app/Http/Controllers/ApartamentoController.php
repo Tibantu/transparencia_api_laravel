@@ -16,11 +16,40 @@ use function PHPUnit\Framework\isNull;
 
 class ApartamentoController extends Controller
 {
+  /**METODOTOS PRIVADO*/
+  private function getPredio(){
+
+      //dd(auth()->user());
+      $user = auth()->user();
+
+      $predio = [];
+      if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
+        $coord = Coordenador::find($user->n_codientid);
+        if(!$coord){
+          return response()->json(['message' => "Coordenador não encontrado"], 404);
+        }
+        if($coord->c_nomeentid != 'trapredi'){
+          return response()->json(['message' => "Não es coordenador do predio"], 404);
+        }
+        $predio = Predio::find($coord->n_codientid);
+        if(!$predio){
+          return response()->json(['message' => "Predio não encontrado"], 404);
+        }
+        //$apartamentos = $predio->apartamentos;
+      }
+      return $predio;
+  }
+
+  /** */
+
+
+
     /**
     * @OA\Get(
         *     tags={"/apartamentos"},
-        *     path="/apartamentos/predio",
+        *     path="/apartamentos",
         *     summary="mostrar apartamentos do predio ",
+        *     security={{"bearerAuth": {} }},
         *     @OA\Response(response="200", description="sucesso"),
         *     @OA\Response(response="404", description="Predio não encontrado"),
         *     @OA\Response(response="500", description="Erro no servidor")
@@ -29,26 +58,9 @@ class ApartamentoController extends Controller
     public function getAllByPredio()
     {
         try {
-
-              //dd(auth()->user());
-              $user = auth()->user();
-
-              $data = response()->json(['message' => "nao autorizado"], 404);
-              if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
-                $coord = Coordenador::find($user->n_codientid);
-                if(!$coord){
-                  return response()->json(['message' => "Coordenador não encontrado"], 404);
-                }
-                if($coord->c_nomeentid != 'trapredi'){
-                  return response()->json(['message' => "Não es coordenador do predio"], 404);
-                }
-                $predio = Predio::find($coord->n_codientid);
-                if(!$predio){
-                  return response()->json(['message' => "Predio não encontrado"], 404);
-                }
-                $apartamentos = $predio->apartamentos;
+                $apartamentos = $this->getPredio()->apartamentos;
                 $data = response()->json(['apartamentos' => $apartamentos], 200);
-              }
+              //}
                 return $data;
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -57,8 +69,8 @@ class ApartamentoController extends Controller
     /**
     * @OA\Post(
         *     tags={"/apartamentos"},
-        *     path="/apartamentos/predio/{idPredio}",
-        *     summary="Registrar uma apartamento",
+        *     path="/apartamentos",
+        *     summary="Registrar um apartamento",
         *     security={{"bearerAuth": {} }},
         *     @OA\Parameter(
         *         name="idPredio",
@@ -83,7 +95,7 @@ class ApartamentoController extends Controller
         *     @OA\Response(response="500", description="Erro no servidor")
         * )
      */
-    public function create(Request $req, $idPredio)
+    public function create(Request $req/*, $idPredio*/)
     {
 
         $isValidData = Validator::make($req->all(), [
@@ -91,7 +103,7 @@ class ApartamentoController extends Controller
             'c_tipoapart'=> 'required|string|max:5'
         ]);
         try {
-            $predio = Predio::find($idPredio);
+            $predio = $this->getPredio();//Predio::find($idPredio);
             if (!$predio)
                 return response()->json(['message' => "predio não encontrado"], 404);
 
@@ -105,7 +117,7 @@ class ApartamentoController extends Controller
 
             $data = $req->all();
 
-            $data['n_codipredi'] = (int) $idPredio;
+            $data['n_codipredi'] = (int) $predio->n_codipredi;
             $data['n_codiconta'] = (int) $conta->n_codiconta;
 
 

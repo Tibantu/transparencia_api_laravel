@@ -90,9 +90,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // APARTAMENTOS
     Route::prefix('apartamentos')->group(function () {
-      Route::get('/', [ApartamentoController::class, 'getAll']);
-      Route::post('/predio/{idPredio}', [ApartamentoController::class, 'create']);
-      Route::get('/predio', [ApartamentoController::class, 'getAllByPredio']);
+      //Route::get('/', [ApartamentoController::class, 'getAll']);
+      Route::post('/', [ApartamentoController::class, 'create']);
+      Route::get('/', [ApartamentoController::class, 'getAllByPredio']);
       Route::get('/{id}', [ApartamentoController::class, 'getOne']);
       Route::put('/{id}', [ApartamentoController::class, 'update']);
       Route::delete('/{id}', [ApartamentoController::class, 'delete']);
