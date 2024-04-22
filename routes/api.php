@@ -7,6 +7,7 @@ use App\Http\Controllers\BancoController;
 use App\Http\Controllers\BlocoController;
 use App\Http\Controllers\CaixaController;
 use App\Http\Controllers\CentralidadeController;
+use App\Http\Controllers\ContaController;
 use App\Http\Controllers\CoordenadorController;
 use App\Http\Controllers\DespesaController;
 use App\Http\Controllers\DividaController;
@@ -174,6 +175,11 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('/{id}', [CaixaController::class, 'getOne']);
       Route::put('/{id}', [CaixaController::class, 'update']);
       Route::delete('/{id}', [CaixaController::class, 'delete']);
+    });
+    //CONTA
+    Route::prefix('contas')->group(function () {
+      Route::get('/morador', [ContaController::class, 'getConta']);
+      Route::get('/{id}', [ContaController::class, 'getOne']);
     });
     //BANCO
     Route::prefix('bancos')->group(function () {

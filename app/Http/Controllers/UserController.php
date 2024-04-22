@@ -243,7 +243,7 @@ class UserController extends Controller
 
         $nUsuario = $morad->usuarios->count();
         /* *///criar um usuario
-        if($nUsuario > 3){
+        if($nUsuario > 2){
           return response()->json(['message' => "Morador possui 3 usuarios. Número limite"], 400);
         }
          $dadosUser = [

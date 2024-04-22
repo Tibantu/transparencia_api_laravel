@@ -30,5 +30,9 @@ class Apartamento extends Model
     {
         return $this->hasMany(Pagamento::class, 'n_codiapart', 'n_codiapart');
     }
+    public function conta()
+    {
+        return $this->hasOne(Conta::class, 'n_codiconta', 'n_codiconta');
+    }
     use HasFactory;
 }

@@ -18,5 +18,9 @@ class Conta extends Model
         'n_limiconta'
     ];
 
+    public function apartamento()
+    {
+        return $this->belongsTo(Apartamento::class, 'n_codiconta', 'n_codiconta');
+    }
 use HasFactory;
 }
