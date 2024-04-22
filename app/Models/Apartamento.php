@@ -34,5 +34,9 @@ class Apartamento extends Model
     {
         return $this->hasOne(Conta::class, 'n_codiconta', 'n_codiconta');
     }
+    public function dividas()
+    {
+        return $this->hasMany(Divida::class, 'n_codiconta', 'n_codiconta');
+    }
     use HasFactory;
 }

@@ -88,79 +88,6 @@
                 ]
             }
         },
-        "/apartamentos/{idApartamento}": {
-            "get": {
-                "tags": [
-                    "/apartamentos"
-                ],
-                "summary": "mostrar apartamento",
-                "operationId": "e34e1b20f401c40f21b13b1c4ed14432",
-                "parameters": [
-                    {
-                        "name": "idApartamento",
-                        "in": "path",
-                        "description": "id do apartamento",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "sucesso"
-                    },
-                    "404": {
-                        "description": "apartamento não encontrado"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "/apartamentos"
-                ],
-                "summary": "apagar um apartamento",
-                "operationId": "64ab9f440d8d01b66715f96473f71dbf",
-                "parameters": [
-                    {
-                        "name": "idApartamento",
-                        "in": "path",
-                        "description": "id do apartamento",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "morador deletado com sucesso!"
-                    },
-                    "404": {
-                        "description": "apartamento não encontrada"
-                    },
-                    "405": {
-                        "description": "apartamento com morador, não deletado"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "/apartamentos/predio/{idPredio}": {
             "put": {
                 "tags": [
@@ -209,6 +136,42 @@
                     },
                     "412": {
                         "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "apartamento não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/apartamentos/{idApartamento}": {
+            "get": {
+                "tags": [
+                    "/apartamentos"
+                ],
+                "summary": "mostrar apartamento",
+                "operationId": "e34e1b20f401c40f21b13b1c4ed14432",
+                "parameters": [
+                    {
+                        "name": "idApartamento",
+                        "in": "path",
+                        "description": "id do apartamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
                     },
                     "404": {
                         "description": "apartamento não encontrado"
@@ -1025,6 +988,67 @@
                     },
                     "404": {
                         "description": "centralidade não encontrada"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/contas/morador": {
+            "get": {
+                "tags": [
+                    "/contas"
+                ],
+                "summary": "listar conta do apartamento do morador logado",
+                "operationId": "14bfe72b0c847a48851376897f31567e",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "Coordenador ou predio nao encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/contas/{conta}": {
+            "get": {
+                "tags": [
+                    "/contas"
+                ],
+                "summary": "mostrar uma conta",
+                "operationId": "077f84b878e9c4e69e8e1535a6d55a90",
+                "parameters": [
+                    {
+                        "name": "conta",
+                        "in": "path",
+                        "description": "id da conta",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "conta não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -1856,40 +1880,6 @@
                 "responses": {
                     "200": {
                         "description": "sucesso"
-                    },
-                    "404": {
-                        "description": "pagamento não encontrado"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "/pagamentos"
-                ],
-                "summary": "deletar pagamento",
-                "operationId": "f19a9d9c565df40b563f8313d178fa57",
-                "parameters": [
-                    {
-                        "name": "pagamento",
-                        "in": "path",
-                        "description": "id da pagamento",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "pagamento deletado com sucesso!"
                     },
                     "404": {
                         "description": "pagamento não encontrado"

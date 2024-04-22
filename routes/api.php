@@ -87,7 +87,7 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('/bloco/{idBloco}', [PredioController::class, 'getAllByBloco']);
       Route::get('/{id}', [PredioController::class, 'getOne']);
       Route::put('/{id}', [PredioController::class, 'update']);
-      Route::delete('/{id}', [PredioController::class, 'delete']);
+      //Route::delete('/{id}', [PredioController::class, 'delete']);
     });
 
     // APARTAMENTOS
@@ -97,7 +97,7 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('/', [ApartamentoController::class, 'getAllByPredio']);
       Route::get('/{id}', [ApartamentoController::class, 'getOne']);
       Route::put('/{id}', [ApartamentoController::class, 'update']);
-      Route::delete('/{id}', [ApartamentoController::class, 'delete']);
+      //Route::delete('/{id}', [ApartamentoController::class, 'delete']);
     });
     /*Manuel Alfredo*/
 
@@ -141,7 +141,7 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('/', [PagamentoController::class, 'getAll']);
       Route::get('/morador/{idMorador}', [PagamentoController::class, 'getAllByPagamentos']);
       Route::get('/p/{campoDaConsulta}', [PagamentoController::class, 'getBetweenDate']);
-      Route::post('/', [PagamentoController::class, 'create']);
+      Route::post('/divida/{idDivida}', [PagamentoController::class, 'create']);
       Route::get('/{id}', [PagamentoController::class, 'getOne']);
       Route::put('/{id}', [PagamentoController::class, 'update']);
       Route::delete('/{id}', [PagamentoController::class, 'delete']);
@@ -150,13 +150,11 @@ Route::middleware('auth:sanctum')->group(function () {
     //DIVIDA
     Route::prefix('dividas')->group(function () {
       Route::get('/', [DividaController::class, 'getAll']);
-      /**[cria] um morador */
-      Route::post('/', [DividaController::class, 'create']);
       /**[pega] todas as dividas de uma conta de apartamento  - id da conta e fornecida na url */
       Route::get('/apartamento/{idapartamento}', [DividaController::class, 'getAllByApartamento']);
       Route::get('/{id}', [DividaController::class, 'getOne']);
       Route::put('/{id}', [DividaController::class, 'update']);
-      Route::delete('/{id}', [DividaController::class, 'delete']);
+      //Route::delete('/{id}', [DividaController::class, 'delete']);
     });
     //DESPESA
     Route::prefix('despesas')->group(function () {
@@ -174,7 +172,7 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('/coord', [CaixaController::class, 'getCaixa']);
       Route::get('/{id}', [CaixaController::class, 'getOne']);
       Route::put('/{id}', [CaixaController::class, 'update']);
-      Route::delete('/{id}', [CaixaController::class, 'delete']);
+     // Route::delete('/{id}', [CaixaController::class, 'delete']);
     });
     //CONTA
     Route::prefix('contas')->group(function () {

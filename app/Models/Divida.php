@@ -31,8 +31,11 @@ class Divida extends Model
         'n_codiconta',
         'create_at',
         'updated_at',
-        'd_dacrdivid'   
+        'd_dacrdivid'
         ];
-
+        public function apartamento()
+        {
+            return $this->belongsTo(Apartamento::class, 'n_codiconta', 'n_codiconta');
+        }
     use HasFactory;
 }

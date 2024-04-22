@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apartamento;
+use App\Models\Divida;
 use App\Models\Morador;
 use App\Models\Pagamento;
 use App\Utils\Util;
@@ -64,7 +65,7 @@ class PagamentoController extends Controller
    * @OA\Get(
    *     tags={"/pagamentos"},
    *     path="/pagamentos",
-   *     summary="listar pagamentos",
+   *     summary="listar pagamentos do morador logado",
    *     security={{"bearerAuth": {} }},
    *     @OA\Response(response="200", description="sucesso"),
    *     @OA\Response(response="500", description="Erro no servidor")
@@ -80,8 +81,8 @@ class PagamentoController extends Controller
       if ($user->c_nomeentid == 'tramorad' && $user->n_codientid != null) {
           $apartamento = Apartamento::where('n_codimorad', $user->n_codientid)->first();
           if ($apartamento) {
-            //$apartamento->pagamentos;
-              $data = response()->json(['pagamentos' => Pagamento::where('n_codiapart', $apartamento->n_codiapart)->get()], 200);
+              $pagamentos = $apartamento->pagamentos;
+              $data = response()->json(['pagamentos' => $pagamentos], 200);
           }else{
             $data = response()->json(['message' => 'nemhum pagamento encontrado'], 200);
           }
@@ -155,56 +156,64 @@ class PagamentoController extends Controller
    *     @OA\Response(response="500", description="Erro no servidor")
    * )
    */
-  public function create(Request $req)
+  public function create(Request $req, $idDivida)
   {
-    $isValidData = Validator::make($req->all(), [
-      'n_valopagam'  => 'required',
-      'n_vadipagam',
-      'c_descpagam'  => 'required|string',
-      'c_formpagam'  => 'required|string',
-      'd_datapagam'  => 'required',
-      'd_dacrpagam',
-      'create_at',
-      'updated_at',
-      'd_dacopagam',
-      'c_bancpagam',
-      'n_codibanco',
-      'n_estapagam',
-      'n_codicoord',
-      'n_codidivid'  => 'required',
-      'n_codiapart'  => 'required'
-    ]);
-    if ($isValidData->fails())
-      return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
+      $user = auth()->user();
+      if(!$user){
+        return response()->json(['message' => "nao autorizado"], 404);
+      }
+      if ($user->c_nomeentid != 'tramorad') {
+        return response()->json(['message' => "nao autorizado"], 404);
+      }
+      $morador = Morador::find($user->n_codientid);
+      if(!$morador)
+         return response()->json(['message' => 'morador nao encontrado'], 404);
+      $apartamento = $morador->apartamento;
+
+      $isValidData = Validator::make($req->all(), [
+        'valor'  => 'required',
+        'n_vadipagam',
+        'descricao'  => 'required|string',
+        'forma'  => 'required|string',
+        'data'  => 'required',
+        'banco',
+        'ID_divida'  => 'required'
+      ]);
+      if ($isValidData->fails())
+        return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
+
+        $dividas = $apartamento->dividas;
+        $divida = null;
+
+        foreach($dividas as $d){
+            if($d->n_codidivid == $idDivida){
+              $divida = $d;
+              break;
+            }
+        }
+
+      if (!$divida)
+          return response()->json(['message' => 'Divida nao encontrada'], 404);
 
     try {
-      Pagamento::create($req->all());
+      $dataPagamento = [
+        'n_valopagam'  => $req->valor,
+        'n_vadipagam'  => $divida->n_valtdivid,
+        'c_descpagam'  => $req->descricao,
+        'c_formpagam'  => $req->forma,
+        'd_datapagam'  => $req->data,
+        'c_bancpagam'  => $req->banco,
+        'n_codiapart'  => $apartamento->n_codiapart,
+        'n_codidivid'  => $idDivida
+      ];
+      Pagamento::create($dataPagamento);
       // dd($data);
-      return response()->json(['message' => "Pagamento criado com sucesso!"], 201);;
+      return response()->json(['message' => "Divida liquidada. Pagamento criado com sucesso!"], 201);;
     } catch (QueryException $e) {
       return response()->json(['message' => $e->getMessage()], 500);
     }
   }
 
-
-  /**
-   * @OA\Delete(
-   *     tags={"/pagamentos"},
-   *     path="/pagamentos/{pagamento}",
-   *     summary="deletar pagamento",
-   *       security={{"bearerAuth": {} }},
-   *       @OA\Parameter(
-   *         name="pagamento",
-   *         in="path",
-   *         description="id da pagamento",
-   *         required=false,
-   *         @OA\Schema(type="int")
-   *     ),
-   *     @OA\Response(response="200", description="pagamento deletado com sucesso!"),
-   *     @OA\Response(response="404", description="pagamento não encontrado"),
-   *     @OA\Response(response="500", description="Erro no servidor")
-   * )
-   */
   public function delete($id)
   {
     try {

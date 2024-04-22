@@ -128,25 +128,7 @@ class ApartamentoController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-     /**
-    * @OA\Delete(
-        *     tags={"/apartamentos"},
-        *     path="/apartamentos/{idApartamento}",
-        *     summary="apagar um apartamento",
-        *       security={{"bearerAuth": {} }},
-        *       @OA\Parameter(
-        *         name="idApartamento",
-        *         in="path",
-        *         description="id do apartamento",
-        *         required=false,
-        *         @OA\Schema(type="int")
-        *     ),
-        *     @OA\Response(response="200", description="morador deletado com sucesso!"),
-        *     @OA\Response(response="404", description="apartamento não encontrada"),
-        *     @OA\Response(response="405", description="apartamento com morador, não deletado"),
-        *     @OA\Response(response="500", description="Erro no servidor")
-        * )
-     */
+
     public function delete($id)
     {
         try {

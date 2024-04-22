@@ -58,24 +58,7 @@ class CaixaController extends Controller
         return response()->json(['message' => $e->getMessage()], 500);
     }
   }
-    /**
-    * @OA\Delete(
-        *     tags={"/caixas"},
-        *     path="/caixas/{idCaixa}",
-        *     summary="deletar uma Caixa",
-        *       security={{"bearerAuth": {} }},
-        *       @OA\Parameter(
-        *         name="idCaixa",
-        *         in="path",
-        *         description="id da Caixa",
-        *         required=false,
-        *         @OA\Schema(type="int")
-        *     ),
-        *     @OA\Response(response="200", description="caixa deletado com sucesso!"),
-        *     @OA\Response(response="404", description="caixa não encontrado"),
-        *     @OA\Response(response="500", description="Erro no servidor")
-        * )
-     */
+
     public function delete($id)
     {
 
