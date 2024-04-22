@@ -21,11 +21,24 @@ use function PHPUnit\Framework\isNull;
 class UserController extends Controller
 {
 
+  public static function criar($login, $password, $n_codimorad, $email){
+    $dadosUser = [
+      'c_logiusuar' => $login,
+      'c_senhusuar' => Hash::make($password),
+      'n_codientid' => $n_codimorad,
+      'c_nomeentid' => 'tramorad',
+      'c_emaiusuar' => $email
+  ];
+
+    //criar usuario
+    return User::create($dadosUser);
+}
 /**
  * @OA\Post(
- *     path="/api/create",
+ *     path="/auth/",
  *     tags={"Users"},
- *     summary="Cria um novo usuário",
+ *     summary="Cria um novo usuário para o coordenador",
+ *     security={{"bearerAuth": {} }},
  *     description="Cria um novo usuário com base nos dados fornecidos",
  *     operationId="createUser",
  *     @OA\RequestBody(
@@ -175,5 +188,78 @@ class UserController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
+    }
+
+
+    /**
+ * @OA\Post(
+ *     path="/auth/morador/usuario",
+ *     tags={"Users"},
+ *     summary="Cria um novo usuário para o moradror",
+ *     security={{"bearerAuth": {} }},
+ *     description="Cria um novo usuário com base nos dados fornecidos",
+ *     operationId="createUser",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         description="Dados do usuário a serem criados",
+ *         @OA\JsonContent(
+ *             required={"login", "email", "password", "tipo", "codiApartamento"},
+ *             @OA\Property(property="login", type="string", example="example_user", description="Login do usuário"),
+ *             @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do usuário"),
+ *             @OA\Property(property="password", type="string", example="password123", description="Senha do usuário")
+ *         )
+ *     ),
+ *     @OA\Response(response="201", description="Usuário criado com sucesso"),
+ *     @OA\Response(response="412", description="Erro ao validar os dados"),
+ *     @OA\Response(response="404", description="Apartamento não encontrado"),
+ *     @OA\Response(response="500", description="Erro interno do servidor")
+ * )
+ */
+    public function create_morad(Request $req){
+
+      $isValidData = Validator::make($req->all(), [
+        //dados do usuario
+        "login" => 'required|string',
+        "email" => 'required|string',
+        "password" => 'required|string'
+    ]);
+
+    if ($isValidData->fails()) {
+        return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
+    }
+    $user = auth()->user();
+    if(!$user)
+          return response()->json(['message' => "nao autorizado"], 401);
+
+    if($user->c_nomeentid != 'tramorad')
+        return response()->json(['message' => "nao autorizado"], 401);
+
+    try{
+        $morad = Morador::find($user->n_codientid);
+
+        if(!$morad){
+          return response()->json(['message' => "morador nao encontrado"], 404);
+        }
+
+        $nUsuario = $morad->usuarios->count();
+        /* *///criar um usuario
+        if($nUsuario > 3){
+          return response()->json(['message' => "Morador possui 3 usuarios. Número limite"], 400);
+        }
+         $dadosUser = [
+          'c_logiusuar' => $req->login,
+          'c_senhusuar' => Hash::make($req->password),
+          'n_codientid' => $morad->n_codimorad,
+          'c_nomeentid' => 'tramorad',
+          'c_emaiusuar' => $req->email
+      ];
+
+        //criar usuario
+        User::create($dadosUser);
+
+        return response()->json(['message' => "usuario para morador criado com sucesso!"], 201);
+    } catch (\Illuminate\Database\QueryException $e) {
+        return response()->json(['message' => $e->getMessage()], 500);
+    }
     }
 }

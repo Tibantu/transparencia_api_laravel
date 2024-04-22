@@ -38,6 +38,7 @@ Route::prefix('auth')->group(function () {
   Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
   Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
   Route::post('/', [UserController::class, 'create']);
+  Route::post('/morador/usuario', [UserController::class, 'create_morad'])->middleware('auth:sanctum');;
 });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -104,7 +105,7 @@ Route::middleware('auth:sanctum')->group(function () {
       //Route::get('/', [MoradorController::class, 'getAll']);
       /**[cria] um morador */
       Route::post('/apartamento/{idApartamento}', [MoradorController::class, 'create']);
-      Route::get('/predio/{idPredio}', [MoradorController::class, 'getAllByMoradores']);
+      Route::get('/', [MoradorController::class, 'getAllByMoradores']);
       Route::get('/{id}', [MoradorController::class, 'getOne']);
       Route::put('/{id}', [MoradorController::class, 'update']);
       Route::delete('/{id}', [MoradorController::class, 'delete']);

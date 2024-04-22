@@ -43,17 +43,6 @@
                 ],
                 "summary": "Registrar um apartamento",
                 "operationId": "506959e7e38588b60a370abc0a440936",
-                "parameters": [
-                    {
-                        "name": "idPredio",
-                        "in": "path",
-                        "description": "id do predio onde será registrado o apartamento",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    }
-                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1408,24 +1397,13 @@
                 ]
             }
         },
-        "/moradores/predio/{idPredio}": {
+        "/moradores": {
             "get": {
                 "tags": [
                     "/moradores"
                 ],
                 "summary": "listar moradores de um predio",
-                "operationId": "2b31d433a603bdf9fb1e4b6326b310d6",
-                "parameters": [
-                    {
-                        "name": "idPredio",
-                        "in": "path",
-                        "description": "id do predio",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    }
-                ],
+                "operationId": "02f5c86a12bd7f835b5016fbabef04c3",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -1444,13 +1422,13 @@
                 ]
             }
         },
-        "/moradores/apartamento/{idAparta}": {
+        "/moradores/apartamento/{idApartamento}": {
             "post": {
                 "tags": [
                     "/moradores"
                 ],
                 "summary": "Registrar morador",
-                "operationId": "f18f944bd5dcfc9ae8a83787816f3924",
+                "operationId": "820fc83977aefd4cab4a761787124797",
                 "parameters": [
                     {
                         "name": "idAparta",
@@ -1467,22 +1445,41 @@
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "login",
+                                    "email",
+                                    "password",
+                                    "apelido",
+                                    "nome"
+                                ],
                                 "properties": {
-                                    "c_nomemorad": {
+                                    "nome": {
                                         "description": "nome do morador",
                                         "type": "string"
                                     },
-                                    "c_apelmorad": {
+                                    "apelido": {
                                         "description": "ultimo nome do morador",
                                         "type": "string"
                                     },
-                                    "n_codiapart": {
-                                        "description": "id do apartamento a vincular com o morador",
-                                        "type": "integer"
-                                    },
-                                    "c_bilhmorad": {
+                                    "bi": {
                                         "description": "bilhete de identidade do morador",
                                         "type": "string"
+                                    },
+                                    "login": {
+                                        "description": "Login do usuário",
+                                        "type": "string",
+                                        "example": "example_user"
+                                    },
+                                    "email": {
+                                        "description": "Email do usuário",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "example@example.com"
+                                    },
+                                    "password": {
+                                        "description": "Senha do usuário",
+                                        "type": "string",
+                                        "example": "password123"
                                     }
                                 },
                                 "type": "object"
@@ -2458,12 +2455,12 @@
                 ]
             }
         },
-        "/api/create": {
+        "/auth/": {
             "post": {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Cria um novo usuário",
+                "summary": "Cria um novo usuário para o coordenador",
                 "description": "Cria um novo usuário com base nos dados fornecidos",
                 "operationId": "createUser",
                 "requestBody": {
@@ -2543,7 +2540,77 @@
                     "500": {
                         "description": "Erro interno do servidor"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/morador/usuario": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Cria um novo usuário para o moradror",
+                "description": "Cria um novo usuário com base nos dados fornecidos",
+                "operationId": "createUser",
+                "requestBody": {
+                    "description": "Dados do usuário a serem criados",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "login",
+                                    "email",
+                                    "password",
+                                    "tipo",
+                                    "codiApartamento"
+                                ],
+                                "properties": {
+                                    "login": {
+                                        "description": "Login do usuário",
+                                        "type": "string",
+                                        "example": "example_user"
+                                    },
+                                    "email": {
+                                        "description": "Email do usuário",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "example@example.com"
+                                    },
+                                    "password": {
+                                        "description": "Senha do usuário",
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "Apartamento não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },

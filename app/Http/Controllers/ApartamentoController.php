@@ -16,11 +16,15 @@ use function PHPUnit\Framework\isNull;
 
 class ApartamentoController extends Controller
 {
+
   /**METODOTOS PRIVADO*/
+
   private function getPredio(){
 
-      //dd(auth()->user());
-      $user = auth()->user();
+    $user = auth()->user();
+    if(!$user){
+      return response()->json(['message' => "nao autorizado"], 404);
+    }
 
       $predio = [];
       if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
@@ -58,6 +62,10 @@ class ApartamentoController extends Controller
     public function getAllByPredio()
     {
         try {
+          $predio = $this->getPredio();//Predio::with('apartamentos.moradores')->find($idPredio);
+          if(!$predio){
+            return response()->json(['message' => 'Não es coordenador do predio'], 404);
+          }
                 $apartamentos = $this->getPredio()->apartamentos;
                 $data = response()->json(['apartamentos' => $apartamentos], 200);
               //}
@@ -72,13 +80,6 @@ class ApartamentoController extends Controller
         *     path="/apartamentos",
         *     summary="Registrar um apartamento",
         *     security={{"bearerAuth": {} }},
-        *     @OA\Parameter(
-        *         name="idPredio",
-        *         in="path",
-        *         description="id do predio onde será registrado o apartamento",
-        *         required=false,
-        *         @OA\Schema(type="int")
-        *     ),
         *     @OA\RequestBody(
         *       required=true,
         *       @OA\JsonContent(
@@ -95,7 +96,7 @@ class ApartamentoController extends Controller
         *     @OA\Response(response="500", description="Erro no servidor")
         * )
      */
-    public function create(Request $req/*, $idPredio*/)
+    public function create(Request $req)
     {
 
         $isValidData = Validator::make($req->all(), [

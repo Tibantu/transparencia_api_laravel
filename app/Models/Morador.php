@@ -25,9 +25,14 @@ class Morador extends Model
             return $this->belongsTo(Apartamento::class, 'n_codimorad', 'n_codimorad');
         }
         public function pagamentos()
-    {
+        {
         return $this->hasMany(Pagamento::class, 'n_codiapart', 'n_codiapart');
-    }
+        }
+        public function usuarios()
+        {
+            // Relacionamento para buscar os usuários associados a este morador
+            return $this->hasMany(User::class, 'n_codientid', 'n_codimorad')->where('c_nomeentid', 'tramorad');
+        }
 
     use HasFactory;
 }

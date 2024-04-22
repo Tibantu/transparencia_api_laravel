@@ -47,7 +47,7 @@ class AuthController extends Controller
 
        if (!$user)
            return response()->json(['message' => 'username inválido'], 401);
-       return response()->json(['message' => "username válido"], 200);
+       return response()->json(['message' => "username válido"], 202);
 
    }
 
