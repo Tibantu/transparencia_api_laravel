@@ -13,30 +13,28 @@ class TaxaController extends Controller
     /**
     * @OA\Get(
         *     tags={"/taxas"},
-        *     path="/taxas/predio/coord/{idCoordenador}",
-        *     summary="mostrar um Taxa",
+        *     path="/taxas",
+        *     summary="mostrar um Taxas do coordenador logado",
         *     security={{ "bearerAuth": {}}},
-        *     @OA\Parameter(
-        *         name="idCoordenador",
-        *         in="path",
-        *         description="id do coordenador do predio",
-        *         required=false,
-        *         @OA\Schema(type="int")
-        *     ),
         *     @OA\Response(response="200", description="sucesso"),
         *     @OA\Response(response="404", description="coordenador não encontrado"),
         *     @OA\Response(response="500", description="Erro no servidor")
         * )
      */
-    public function getAllByPredio($idCoordenador)
+    public function getAllByPredio()
     {
+        $user = auth()->user();
+        if($user->c_nomeentid != 'tracoord')
+              return response()->json(['message' => "não es um  coordenador"], 404);
+        if($user->n_codientid == null)
+              return response()->json(['message' => "credencias inválida"], 404);
+
         try {
-            $coordenador = Coordenador::find($idCoordenador);
+            $coordenador = Coordenador::find($user->n_codientid);
             if (!$coordenador)
-            {
                 return response()->json(['message' => "coordenador não encontrado"], 404);
-            }
-            $taxas = Taxa::where('n_codicoord', '=', $idCoordenador)->get();
+
+            $taxas = $coordenador->taxas;
             return response()->json(['taxas' => $taxas], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
@@ -72,27 +70,41 @@ class TaxaController extends Controller
 */
     public function create(Request $req)
     {
+      $user = auth()->user();
+      if($user->c_nomeentid != 'tracoord')
+            return response()->json(['message' => "não es um  coordenador"], 404);
+      if($user->n_codientid == null)
+            return response()->json(['message' => "credencias inválida"], 404);
+
         $isValidData = Validator::make($req->all(),
         [
-            'c_desctaxa' => 'required|string',
-            'n_valotaxa' => 'required|float',
-            'n_vmultaxa',
-            'n_permtaxa',
-            'n_diaetaxa',
-            'create_at',
-            'updated_at',
-            'd_dacrtaxa',
-            'd_denvtaxa',
-            'c_freqtaxa' => 'required',
-            'n_praztaxa',
-            'c_constaxa',
-            'n_codicoord'=> 'required|integer',
+            'descricao' => 'required|string',
+            'valor_taxa' => 'required|float',
+            'percentagem_valor_multa' => 'int',
+            'dia_envio' => 'int',
+            'data_envio' => 'date',
+            'frequencia_envio' => 'required|string',
+            'prazo' => 'int'
         ]);
-        if ($isValidData->fails())
+    if ($isValidData->fails())
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
-
     try {
-        //TODO verificar a existencia do coordenador
+
+      $dataTaxa = [
+        'c_desctaxa' => 'required|string',
+        'n_valotaxa' => 'required|float',
+        'n_vmultaxa',
+        'n_permtaxa',
+        'n_diaetaxa',
+        'create_at',
+        'updated_at',
+        'd_dacrtaxa',
+        'd_denvtaxa',
+        'c_freqtaxa' => 'required',
+        'n_praztaxa',
+        'c_constaxa',
+        'n_codicoord'=> 'required|integer',
+      ];
         Taxa::create($req->all());
         // dd($data);
         return response()->json(['message' => "Taxa criado com sucesso!"], 201);;

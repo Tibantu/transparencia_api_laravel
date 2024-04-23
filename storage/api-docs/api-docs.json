@@ -747,40 +747,6 @@
                         "bearerAuth": []
                     }
                 ]
-            },
-            "delete": {
-                "tags": [
-                    "/caixas"
-                ],
-                "summary": "deletar uma Caixa",
-                "operationId": "d12558a4e0a1e566aae29afe92fa9ef9",
-                "parameters": [
-                    {
-                        "name": "idCaixa",
-                        "in": "path",
-                        "description": "id da Caixa",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "caixa deletado com sucesso!"
-                    },
-                    "404": {
-                        "description": "caixa não encontrado"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         },
         "/caixas/{caixa}": {
@@ -1736,7 +1702,7 @@
                 "tags": [
                     "/pagamentos"
                 ],
-                "summary": "listar pagamentos",
+                "summary": "listar pagamentos do morador logado",
                 "operationId": "4cbf0188e3153262e28320385f3e1621",
                 "responses": {
                     "200": {
@@ -2179,24 +2145,13 @@
                 ]
             }
         },
-        "/taxas/predio/coord/{idCoordenador}": {
+        "/taxas": {
             "get": {
                 "tags": [
                     "/taxas"
                 ],
-                "summary": "mostrar um Taxa",
-                "operationId": "b603da47e5e707cff1d87d6ec0570173",
-                "parameters": [
-                    {
-                        "name": "idCoordenador",
-                        "in": "path",
-                        "description": "id do coordenador do predio",
-                        "required": false,
-                        "schema": {
-                            "type": "int"
-                        }
-                    }
-                ],
+                "summary": "mostrar um Taxas do coordenador logado",
+                "operationId": "0233b9f252829e2d127eaadc5f5d7660",
                 "responses": {
                     "200": {
                         "description": "sucesso"
@@ -2213,9 +2168,7 @@
                         "bearerAuth": []
                     }
                 ]
-            }
-        },
-        "/taxas": {
+            },
             "post": {
                 "tags": [
                     "/taxas"

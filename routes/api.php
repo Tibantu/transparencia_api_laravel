@@ -127,10 +127,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //TAXA
     Route::prefix('taxas')->group(function () {
-      Route::get('/', [TaxaController::class, 'getAll']);
+      Route::get('/', [TaxaController::class, 'getAllByPredio']);
       Route::post('/', [TaxaController::class, 'create']);
       /**[pega] todas as taxas de um predio  - id do predio e fornecida na url */
-      Route::get('/predio/coord/{idCoordenador}', [TaxaController::class, 'getAllByPredio']);
+      //Route::get('/predio/coord/{idCoordenador}', [TaxaController::class, 'getAllByPredio']);
       Route::get('/{id}', [TaxaController::class, 'getOne']);
       Route::put('/{id}', [TaxaController::class, 'update']);
       Route::delete('/{id}', [TaxaController::class, 'delete']);

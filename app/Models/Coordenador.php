@@ -34,6 +34,9 @@ class Coordenador extends Model
         }*/
         return $this->belongsTo(Predio::class, 'n_codicoord', 'n_codicoord');
     }
-
+    public function taxas()
+    {
+        return $this->hasMany(Taxa::class, 'n_codicoord', 'n_codicoord');
+    }
     use HasFactory;
 }
