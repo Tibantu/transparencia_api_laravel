@@ -49,16 +49,14 @@ class TaxaController extends Controller
         *     @OA\RequestBody(
         *       required=true,
         *       @OA\JsonContent(
-        *          required={"c_desctaxa","n_valotaxa","n_permtaxa","d_denvtaxa","c_freqtaxa"},
+        *          required={"descricao","valor_taxa","percentagem_valor_multa","data_envio","frequencia_envio"},
         *          type="object",
-        *          @OA\Property(property="c_desctaxa",type="string",description="descricão da taxa"),
-        *          @OA\Property(property="n_valotaxa",type="float",description="valor da taxa"),
-        *          @OA\Property(property="n_vmultaxa",type="int",description="valor da multa"),
-        *          @OA\Property(property="n_permtaxa",type="float",description="valor da multa, percentagem"),
-        *          @OA\Property(property="d_denvtaxa",type="date",description="data de início de envio da taxa"),
-        *          @OA\Property(property="c_freqtaxa",type="string",description="frequência de envio da taxa"),
-        *          @OA\Property(property="n_praztaxa",type="int",description="prazo em dias, para o pagamento da taxa"),
-        *          @OA\Property(property="n_codicoord",type="int",description="id do coordenador do que criou a taxa"),
+        *          @OA\Property(property="descricao",type="string",description="descricão da taxa"),
+        *          @OA\Property(property="valor_taxa",type="float",description="valor da taxa"),
+        *          @OA\Property(property="percentagem_valor_multa",type="float",description="valor da multa, percentagem"),
+        *          @OA\Property(property="data_envio",type="date",description="data de início de envio da taxa"),
+        *          @OA\Property(property="frequencia_envio",type="string",description="frequência de envio da taxa"),
+        *          @OA\Property(property="prazo",type="Integer",description="prazo em dias, para o pagamento da taxa"),
         *       )
         *     ),
         *
@@ -75,38 +73,35 @@ class TaxaController extends Controller
             return response()->json(['message' => "não es um  coordenador"], 404);
       if($user->n_codientid == null)
             return response()->json(['message' => "credencias inválida"], 404);
+        $coordenador = Coordenador::find($user->n_codientid);
+      if(!$coordenador)
+            return response()->json(['message' => "coordenador inválida"], 404);
 
         $isValidData = Validator::make($req->all(),
         [
             'descricao' => 'required|string',
-            'valor_taxa' => 'required|float',
-            'percentagem_valor_multa' => 'int',
-            'dia_envio' => 'int',
+            'valor_taxa' => 'required|Numeric',
+            'percentagem_valor_multa' => 'Integer',
+            'dia_envio' => 'Integer',
             'data_envio' => 'date',
             'frequencia_envio' => 'required|string',
-            'prazo' => 'int'
+            'prazo' => 'Integer'
         ]);
     if ($isValidData->fails())
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
     try {
 
       $dataTaxa = [
-        'c_desctaxa' => 'required|string',
-        'n_valotaxa' => 'required|float',
-        'n_vmultaxa',
-        'n_permtaxa',
-        'n_diaetaxa',
-        'create_at',
-        'updated_at',
-        'd_dacrtaxa',
-        'd_denvtaxa',
-        'c_freqtaxa' => 'required',
-        'n_praztaxa',
-        'c_constaxa',
-        'n_codicoord'=> 'required|integer',
+        'c_desctaxa' => $req->descricao,
+        'n_valotaxa' => $req->valor_taxa,
+        'n_permtaxa' => $req->percentagem_valor_multa,
+        'n_diaetaxa' =>$req->dia_envio,
+        'd_denvtaxa' =>$req->data_envio,
+        'c_freqtaxa' =>$req->frequencia_envio,
+        'n_praztaxa' =>$req->prazo,
+        'n_codicoord'=>$coordenador->n_codicoord
       ];
-        Taxa::create($req->all());
-        // dd($data);
+        Taxa::create($dataTaxa);
         return response()->json(['message' => "Taxa criado com sucesso!"], 201);;
     } catch (\Illuminate\Database\QueryException $e) {
         return response()->json(['message' => $e->getMessage()], 500);

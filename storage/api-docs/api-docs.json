@@ -2181,44 +2181,36 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "c_desctaxa",
-                                    "n_valotaxa",
-                                    "n_permtaxa",
-                                    "d_denvtaxa",
-                                    "c_freqtaxa"
+                                    "descricao",
+                                    "valor_taxa",
+                                    "percentagem_valor_multa",
+                                    "data_envio",
+                                    "frequencia_envio"
                                 ],
                                 "properties": {
-                                    "c_desctaxa": {
+                                    "descricao": {
                                         "description": "descricão da taxa",
                                         "type": "string"
                                     },
-                                    "n_valotaxa": {
+                                    "valor_taxa": {
                                         "description": "valor da taxa",
                                         "type": "float"
                                     },
-                                    "n_vmultaxa": {
-                                        "description": "valor da multa",
-                                        "type": "int"
-                                    },
-                                    "n_permtaxa": {
+                                    "percentagem_valor_multa": {
                                         "description": "valor da multa, percentagem",
                                         "type": "float"
                                     },
-                                    "d_denvtaxa": {
+                                    "data_envio": {
                                         "description": "data de início de envio da taxa",
                                         "type": "date"
                                     },
-                                    "c_freqtaxa": {
+                                    "frequencia_envio": {
                                         "description": "frequência de envio da taxa",
                                         "type": "string"
                                     },
-                                    "n_praztaxa": {
+                                    "prazo": {
                                         "description": "prazo em dias, para o pagamento da taxa",
-                                        "type": "int"
-                                    },
-                                    "n_codicoord": {
-                                        "description": "id do coordenador do que criou a taxa",
-                                        "type": "int"
+                                        "type": "Integer"
                                     }
                                 },
                                 "type": "object"
