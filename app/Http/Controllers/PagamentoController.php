@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Apartamento;
+use App\Models\Coordenador;
 use App\Models\Divida;
 use App\Models\Morador;
 use App\Models\Pagamento;
+use App\Models\Predio;
 use App\Utils\Util;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -29,6 +31,29 @@ class PagamentoController extends Controller
       'd_dacopagam' =>array($this, 'getConsultaDePagamentoEntreAsData'),
     ];
   }
+  private function getPredio(){
+
+    //dd(auth()->user());
+    $user = auth()->user();
+
+    $predio = null;
+    if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
+      $coord = Coordenador::find($user->n_codientid);
+      if(!$coord){
+        return response()->json(['message' => "Coordenador não encontrado"], 404);
+      }
+      if($coord->c_nomeentid != 'trapredi'){
+        return response()->json(['message' => "Não es coordenador do predio"], 404);
+      }
+      $predio = Predio::find($coord->n_codientid);
+      if(!$predio){
+        return response()->json(['message' => "Predio não encontrado"], 404);
+      }
+      //$apartamentos = $predio->apartamentos;
+    }
+    return $predio;
+}
+
 
 
   private function getConsultaDePagamentoEntreAsData(Request $req, ...$args){
@@ -86,7 +111,20 @@ class PagamentoController extends Controller
           }else{
             $data = response()->json(['message' => 'nemhum pagamento encontrado'], 200);
           }
+      }else{
+          //SE FOR UM COORD MOSTRAR TODOS OS PAGAMENTOS DO PREDIO
+          $predio = $this->getPredio();//Predio::with('apartamentos.moradores')->find($idPredio);
+          if(!$predio){
+            return response()->json(['message' => 'Não es coordenador do predio'], 404);
+          }
+          $todosPagamentos = collect();
+          $apartamentos = $this->getPredio()->apartamentos;
+          foreach ($apartamentos as $apartamento) {
+            // Adicione os pagamentos do apartamento à coleção de todos os pagamentos
+            $data = response()->json(['pagamentos' => $todosPagamentos->merge($apartamento->pagamentos)], 200);
+          }
       }
+
 
       return $data;
 
@@ -145,7 +183,6 @@ class PagamentoController extends Controller
    *          @OA\Property(property="c_descpagam",type="float",description="descrição do pagamento"),
    *          @OA\Property(property="c_formpagam",type="int",description="forma de pagamento"),
    *          @OA\Property(property="d_datapagam",type="float",description="data de pagamento"),
-   *          @OA\Property(property="n_codidivid",type="date",description="id divida"),
    *          @OA\Property(property="n_codiapart",type="string",description="id apartamento"),
    *       )
    *     ),
@@ -170,14 +207,14 @@ class PagamentoController extends Controller
          return response()->json(['message' => 'morador nao encontrado'], 404);
       $apartamento = $morador->apartamento;
 
+
       $isValidData = Validator::make($req->all(), [
         'valor'  => 'required',
         'n_vadipagam',
         'descricao'  => 'required|string',
         'forma'  => 'required|string',
         'data'  => 'required',
-        'banco',
-        'ID_divida'  => 'required'
+        'banco'
       ]);
       if ($isValidData->fails())
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
@@ -208,7 +245,7 @@ class PagamentoController extends Controller
       ];
       Pagamento::create($dataPagamento);
       // dd($data);
-      return response()->json(['message' => "Divida liquidada. Pagamento criado com sucesso!"], 201);;
+      return response()->json(['message' => "Pagamento criado com sucesso!"], 201);;
     } catch (QueryException $e) {
       return response()->json(['message' => $e->getMessage()], 500);
     }
