@@ -22,9 +22,9 @@ class Apartamento extends Model
         'n_codimorad'
     ];
 
-    public function moradores()
+    public function morador()
     {
-        return $this->hasMany(Morador::class, 'n_codimorad', 'n_codimorad');
+        return $this->belongsTo(Morador::class, 'n_codimorad', 'n_codimorad');
     }
     public function pagamentos()
     {

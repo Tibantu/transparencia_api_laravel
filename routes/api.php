@@ -143,6 +143,7 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('/p/{campoDaConsulta}', [PagamentoController::class, 'getBetweenDate']);
       Route::post('/divida/{idDivida}', [PagamentoController::class, 'create']);
       Route::get('/{id}', [PagamentoController::class, 'getOne']);
+      Route::put('/confirm/{id}', [PagamentoController::class, 'update_confirm']);
       Route::put('/{id}', [PagamentoController::class, 'update']);
       Route::delete('/{id}', [PagamentoController::class, 'delete']);
     });

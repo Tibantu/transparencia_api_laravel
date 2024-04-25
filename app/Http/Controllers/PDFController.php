@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Apartamento;
 use App\Models\Divida;
+use App\Models\Morador;
 use App\Models\Pagamento;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\Request;
@@ -61,30 +62,46 @@ class PDFController extends Controller
   public function getPagamentoPDF($id)
   {
     try {
-      //$data = response()->json(['pagamentos' => Pagamento::all()], 200);
+      //apen3a1s p3ar3a mor3ador
       $user = auth()->user();
       //dd($user);
       if ($user->c_nomeentid == 'tramorad' && $user->n_codientid != null) {
-          $pagamento = Pagamento::find($id);
-        //  dd("nnnnn");
-          if(!$pagamento){
+          $morador = Morador::find($user->n_codientid);
+
+          if(!$morador){
+            return response()->json(['message' => "Morador não encontrado"], 404);
+          }
+          $apartamento = $morador->apartamento;
+          $pagamentos = $apartamento->pagamentos;
+          $pagamento_selecionado = null;
+          foreach ($pagamentos as $pagamento) {
+            if($pagamento->n_codipagam == $id){
+              $pagamento_selecionado = $pagamento;
+              break;
+            }
+          }
+
+          if(!$pagamento_selecionado){
             return response()->json(['message' => "Pagamento não encontrado"], 404);
           }
-          $divida = Divida::find($pagamento->n_codidivid);
+          $divida = $pagamento_selecionado->divida;
+
           if(!$divida){
             return response()->json(['message' => "divida não encontrada"], 404);
           }
           $data  = [
-            'morador' => '$user->c_logiusuar',
-            'data_pagamento' => '$pagamento->d_datapagam',
-            'valor_pago' => '$pagamento->n_valopagam',
-            'valor_pendente' => '$divida->n_vapedivid',
-            'valor_da_divida' => '$divida->n_valtdivid',
-            'descricao' => '$divida->c_descdivid',
-            'id' => '$pagamento->n_codipagam'
+            'morador' => $user->c_logiusuar,
+            'data_pagamento' => $pagamento->d_datapagam,
+            'valor_pago' => $pagamento->n_valopagam,
+            'valor_pendente' => $divida->n_vapedivid,
+            'valor_da_divida' => $divida->n_valtdivid,
+            'descricao' => $divida->c_descdivid,
+            'id' => $pagamento->n_codipagam
             ];
 
-            $pdf = FacadePdf::loadView('models_pdf.pdfrecibo01', ['data' => $data]);
+          if($pagamento_selecionado->n_estapagam != 1)
+              return response()->json(['message' => "Pagamento não confirmado. Recibo não disponivel"], 500);
+          $pdf = FacadePdf::loadView('models_pdf.pdfrecibo01', ['data' => $data]);
           if(!$pdf)
               return response()->json(['message' => "Erro no servidor"], 500);
           //return $pdf->download();

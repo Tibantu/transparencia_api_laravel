@@ -37,5 +37,9 @@ class Divida extends Model
         {
             return $this->belongsTo(Apartamento::class, 'n_codiconta', 'n_codiconta');
         }
+        public function pagamentos()
+        {
+            return $this->hasMany(Pagamento::class, 'n_codidivid', 'n_codidivid');
+        }
     use HasFactory;
 }

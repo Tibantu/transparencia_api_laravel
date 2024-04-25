@@ -33,7 +33,10 @@ class Pagamento extends Model
         {
             return $this->belongsTo(Apartamento::class, 'n_codiapart', 'n_codiapart');
         }
-
+        public function divida()
+        {
+            return $this->hasOne(Divida::class, 'n_codidivid', 'n_codidivid');
+        }
         public function morador()
         {
             return $this->belongsTo(Morador::class, 'n_codimorad', 'n_codimorad');

@@ -99,7 +99,6 @@ class PagamentoController extends Controller
   public function getAll()
   {
     try {
-      //$data = response()->json(['pagamentos' => Pagamento::all()], 200);
       $user = auth()->user();
       $data = response()->json(['pagamentos' => []], 200);
 
@@ -121,8 +120,11 @@ class PagamentoController extends Controller
           $apartamentos = $this->getPredio()->apartamentos;
           foreach ($apartamentos as $apartamento) {
             // Adicione os pagamentos do apartamento à coleção de todos os pagamentos
-            $data = response()->json(['pagamentos' => $todosPagamentos->merge($apartamento->pagamentos)], 200);
+            //$data = response()->json(['pagamentos' => $todosPagamentos->merge($apartamento->pagamentos)], 200);
+            $todosPagamentos = $todosPagamentos->merge($apartamento->pagamentos);
           }
+          $data = response()->json(['pagamentos' => $todosPagamentos], 200);
+
       }
 
 
@@ -261,6 +263,42 @@ class PagamentoController extends Controller
       return response()->json(['message' => "Pagamento deletado com sucesso!"], 200);
     } catch (QueryException $e) {
       return response()->json(['message' => "Hello " . $e->getMessage()], 500);
+    }
+  }
+  //1SW3AGGER
+  public function update_confirm($id)
+  {
+    try {
+          $user = auth()->user();
+
+          $predio = $this->getPredio();//Predio::with('apartamentos.moradores')->find($idPredio);
+          if(!$predio){
+            return response()->json(['message' => 'Não es coordenador do predio'], 404);
+          }
+          //SE FOR UM COORD MOSTRAR TODOS OS PAGAMENTOS DO PREDIO
+
+          $todosPagamentos = collect();
+          $apartamentos = $this->getPredio()->apartamentos;
+          foreach ($apartamentos as $apartamento) {
+            // Adicione os pagamentos do apartamento à coleção de todos os pagamentos
+            $todosPagamentos = $todosPagamentos->merge($apartamento->pagamentos);
+          }
+          $pagamento_selecionado = null;
+          foreach ($todosPagamentos as $pagamento) {
+              if($pagamento->n_codipagam == $id){
+                $pagamento_selecionado = $pagamento;
+                break;
+              }
+          }
+          if(!$pagamento_selecionado){
+            return response()->json(['message' => "Pagamento não encontrado."], 404);
+          }
+          if($pagamento_selecionado->n_estapagam != 1)
+            $pagamento_selecionado->update(['n_estapagam'=> 1, 'n_codicoord' => $user->n_codientid]);
+
+      return response()->json(['message' => "Pagamento confirmado com sucesso"], 200);
+    } catch (QueryException $e) {
+      return response()->json(['message' => $e->getMessage()], 500);
     }
   }
   public function update(Request $req, $id)
