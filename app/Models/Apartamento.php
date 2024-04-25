@@ -26,6 +26,10 @@ class Apartamento extends Model
     {
         return $this->belongsTo(Morador::class, 'n_codimorad', 'n_codimorad');
     }
+    public function predio()
+    {
+        return $this->belongsTo(Predio::class, 'n_codipredi', 'n_codipredi');
+    }
     public function pagamentos()
     {
         return $this->hasMany(Pagamento::class, 'n_codiapart', 'n_codiapart');

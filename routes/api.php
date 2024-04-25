@@ -12,6 +12,7 @@ use App\Http\Controllers\CoordenadorController;
 use App\Http\Controllers\DespesaController;
 use App\Http\Controllers\DividaController;
 use App\Http\Controllers\EnderecoController;
+use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\MoradorController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PDFController;
@@ -95,6 +96,7 @@ Route::middleware('auth:sanctum')->group(function () {
       //Route::get('/', [ApartamentoController::class, 'getAll']);
       Route::post('/', [ApartamentoController::class, 'create']);
       Route::get('/', [ApartamentoController::class, 'getAllByPredio']);
+      Route::get('/morador', [ApartamentoController::class, 'getOneApartamento']);
       Route::get('/{id}', [ApartamentoController::class, 'getOne']);
       Route::put('/{id}', [ApartamentoController::class, 'update']);
       //Route::delete('/{id}', [ApartamentoController::class, 'delete']);
@@ -194,6 +196,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('documentos')->group(function () {
       Route::get('/recibo', [PDFController::class, 'downloadPDF']);
       Route::get('/pagamento/recibo/{idPagamento}', [PDFController::class, 'getPagamentoPDF']);
-
+      Route::get('/coord/recibo/pagamento/{idPagamento}', [PDFController::class, 'getPagamentoCoordPDF']);
     });
+
+        //Funcionario
+        Route::prefix('funcionarios')->group(function () {
+          //Route::get('/', [MoradorController::class, 'getAll']);
+          /**[cria] um morador */
+          Route::post('/', [FuncionarioController::class, 'create']);
+          Route::get('/', [FuncionarioController::class, 'getAllByFuncionarios']);
+          Route::get('/{id}', [MoradorController::class, 'getOne']);
+          Route::put('/{id}', [MoradorController::class, 'update']);
+          Route::delete('/{id}', [MoradorController::class, 'delete']);
+        });
 });

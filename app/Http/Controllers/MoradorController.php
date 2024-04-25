@@ -104,11 +104,11 @@ class MoradorController extends Controller
             "bi" => 'string',
                   //dados do usuario
             "login" => 'required|string',
-            "email" => 'required|string',
+            "email" => 'required|email',
             "password" => 'required|string'
         ]);
         if ($isValidData->fails())
-        return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
+            return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
 
     try {
       $predio = $this->getPredio();//Predio::with('apartamentos.moradores')->find($idPredio);

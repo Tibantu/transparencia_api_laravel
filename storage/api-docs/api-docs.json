@@ -187,6 +187,31 @@
                 ]
             }
         },
+        "/apartamentos/morador": {
+            "get": {
+                "tags": [
+                    "/apartamentos"
+                ],
+                "summary": "mostrar apartamento do morador logado",
+                "operationId": "90fa27a9c3ac56cbb029452b1040538d",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "404": {
+                        "description": "apartamento não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/auth/username": {
             "post": {
                 "tags": [
@@ -1387,6 +1412,112 @@
                 ]
             }
         },
+        "/funcionarios": {
+            "get": {
+                "tags": [
+                    "/funcionarios"
+                ],
+                "summary": "listar funcionarios de um predio, morador ou cordenadores do predio tenhem acesso a esta rota",
+                "operationId": "6fbb402b3d35ff4eeaf8728dbdebe928",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "404": {
+                        "description": "predio ou funcionarios não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "/funcionarios"
+                ],
+                "summary": "Registrar morador",
+                "operationId": "b1108a5e16c2dde161c7ab7696e5e00f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "login",
+                                    "funcao",
+                                    "salario",
+                                    "apelido",
+                                    "nome"
+                                ],
+                                "properties": {
+                                    "nome": {
+                                        "description": "nome do funcionario",
+                                        "type": "string"
+                                    },
+                                    "apelido": {
+                                        "description": "ultimo nome do funcionario",
+                                        "type": "string"
+                                    },
+                                    "salario": {
+                                        "description": "valor do salario mensal em AKZ do funcionario",
+                                        "type": "string"
+                                    },
+                                    "funcao": {
+                                        "description": "funcao do funcionario",
+                                        "type": "string",
+                                        "example": "example_user"
+                                    },
+                                    "email": {
+                                        "description": "Email do funcionario",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "example@example.com"
+                                    },
+                                    "telefone": {
+                                        "description": "telefone do funcionario",
+                                        "type": "string",
+                                        "example": "92222956"
+                                    },
+                                    "telefone_alternativo": {
+                                        "description": "telefone alternativo do funcionario",
+                                        "type": "string",
+                                        "example": "92222956"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "morador cadastrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "apartamento não encontrado"
+                    },
+                    "405": {
+                        "description": "apartamento oucupado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/moradores": {
             "get": {
                 "tags": [
@@ -1639,16 +1770,30 @@
                 ]
             }
         },
-        "/documentos/recibo": {
+        "/documentos/coord/recibo/pagamento/{idPagamento}": {
             "get": {
                 "tags": [
                     "/documentos"
                 ],
-                "summary": "stream do documento",
-                "operationId": "f95e5cb736fbf9dc35e7409568c7387a",
+                "summary": "mostrar recibo do pagamento, apenas para Coordenadores",
+                "operationId": "9c1ab405ca7d99ae73fb8dfa0c6051e9",
+                "parameters": [
+                    {
+                        "name": "idPagamento",
+                        "in": "path",
+                        "description": "id do pagamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "pagamento não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -1666,7 +1811,7 @@
                 "tags": [
                     "/documentos"
                 ],
-                "summary": "mostrar pagamento",
+                "summary": "mostrar recibo do pagamento, apenas para moradores",
                 "operationId": "86ad1182fa1d665fe458d9f0712e9adb",
                 "parameters": [
                     {
@@ -1753,10 +1898,6 @@
                                     "d_datapagam": {
                                         "description": "data de pagamento",
                                         "type": "float"
-                                    },
-                                    "n_codidivid": {
-                                        "description": "id divida",
-                                        "type": "date"
                                     },
                                     "n_codiapart": {
                                         "description": "id apartamento",

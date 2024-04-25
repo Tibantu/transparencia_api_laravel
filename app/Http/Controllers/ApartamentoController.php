@@ -7,6 +7,7 @@ use App\Models\Centralidade;
 use App\Models\Apartamento;
 use App\Models\Conta;
 use App\Models\Coordenador;
+use App\Models\Morador;
 use App\Models\Predio;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -22,11 +23,8 @@ class ApartamentoController extends Controller
   private function getPredio(){
 
     $user = auth()->user();
-    if(!$user){
-      return response()->json(['message' => "nao autorizado"], 404);
-    }
 
-      $predio = [];
+      $predio = null;
       if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
         $coord = Coordenador::find($user->n_codientid);
         if(!$coord){
@@ -43,7 +41,15 @@ class ApartamentoController extends Controller
       }
       return $predio;
   }
+  private function getMorador(){
+  $user = auth()->user();
 
+    $morador = null;
+    if ($user->c_nomeentid == 'tramorad' && $user->n_codientid != null) {
+      $morador = Morador::find($user->n_codientid);
+    }
+    return $morador;
+}
   /** */
 
 
@@ -212,6 +218,34 @@ class ApartamentoController extends Controller
                 return response()->json(['message' => "Apartamento não encontrada!"], 404);
             }
             return response()->json($Apartamento, 200);
+        } catch (QueryException $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+    * @OA\Get(
+        *     tags={"/apartamentos"},
+        *     path="/apartamentos/morador",
+        *     summary="mostrar apartamento do morador logado",
+        *     security={{ "bearerAuth": {}}},
+        *     @OA\Response(response="200", description=""),
+        *     @OA\Response(response="404", description="apartamento não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+     */
+    public function getOneApartamento()
+    {
+        try {
+            $morador = $this->getMorador();
+            if (!$morador) {
+              return response()->json(['message' => "morador não encontrada!"], 404);
+            }
+            $apartamento = $this->getMorador()->apartamento;
+            if (!$apartamento) {
+                return response()->json(['message' => "Apartamento não encontrada!"], 404);
+            }
+            return response()->json(['apartamento' => $apartamento ], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
