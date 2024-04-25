@@ -42,5 +42,9 @@ class Apartamento extends Model
     {
         return $this->hasMany(Divida::class, 'n_codiconta', 'n_codiconta');
     }
+    public function notificacoes()
+    {
+        return $this->belongsToMany(Notificacao::class, 'apartamento_notificacao', 'n_codiapart', 'n_codinotif');
+    }
     use HasFactory;
 }

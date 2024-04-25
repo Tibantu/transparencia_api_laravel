@@ -36,12 +36,13 @@ class Predio extends Model
                     ->where('c_nomeentid', 'trapredi');
     }
     public function coordenador(){
+
       return $this->hasOne(Coordenador::class, 'n_codicoord', 'n_codicoord')->where('c_nomeentid', 'trapredi');
     }
+
     public function funcionarios()
     {
-        return $this->hasMany(Funcionario::class, 'n_codipredi', 'n_codientid')
-                    ->where('c_nomeentid', 'trafunci');
+        return $this->hasMany(Funcionario::class, 'n_codientid', 'n_codipredi');
     }
 
     use HasFactory;

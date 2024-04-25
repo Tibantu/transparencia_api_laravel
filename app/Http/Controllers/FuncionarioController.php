@@ -62,9 +62,11 @@ class FuncionarioController extends Controller
           try {
             $predio = $this->getPredio();
             $funcionarios = null;
+
             if($predio)
             {
               $funcionarios = $predio->funcionarios;
+
             }else{
                 $morador = $this->getMorador();
                 if(!$morador){
@@ -75,6 +77,7 @@ class FuncionarioController extends Controller
                   return response()->json(['message' => 'predio nao encontrado'], 404);
                 }
                 $funcionarios =  $predio->funcionarios;
+               // dd($funcionarios);
             }
 
             if(!$funcionarios){

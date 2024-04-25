@@ -14,6 +14,7 @@ use App\Http\Controllers\DividaController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\MoradorController;
+use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PredioController;
@@ -199,14 +200,23 @@ Route::middleware('auth:sanctum')->group(function () {
       Route::get('/coord/recibo/pagamento/{idPagamento}', [PDFController::class, 'getPagamentoCoordPDF']);
     });
 
-        //Funcionario
-        Route::prefix('funcionarios')->group(function () {
-          //Route::get('/', [MoradorController::class, 'getAll']);
-          /**[cria] um morador */
-          Route::post('/', [FuncionarioController::class, 'create']);
-          Route::get('/', [FuncionarioController::class, 'getAllByFuncionarios']);
-          Route::get('/{id}', [MoradorController::class, 'getOne']);
-          Route::put('/{id}', [MoradorController::class, 'update']);
-          Route::delete('/{id}', [MoradorController::class, 'delete']);
-        });
+    //Funcionario
+    Route::prefix('funcionarios')->group(function () {
+      //Route::get('/', [MoradorController::class, 'getAll']);
+      /**[cria] um morador */
+      Route::post('/', [FuncionarioController::class, 'create']);
+      Route::get('/', [FuncionarioController::class, 'getAllByFuncionarios']);
+      Route::get('/{id}', [MoradorController::class, 'getOne']);//*
+      Route::put('/{id}', [MoradorController::class, 'update']);//*
+      Route::delete('/{id}', [MoradorController::class, 'delete']);//*
+    });
+
+    //Notificacao
+    Route::prefix('notificacoes')->group(function () {
+      Route::post('/', [NotificacaoController::class, 'create']);
+      Route::get('/', [NotificacaoController::class, 'getAllByNotificacoes']);
+      Route::get('/{id}', [MoradorController::class, 'getOne']);//*
+      Route::put('/{id}', [MoradorController::class, 'update']);//*
+      Route::delete('/{id}', [MoradorController::class, 'delete']);//*
+    });
 });

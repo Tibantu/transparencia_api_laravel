@@ -23,9 +23,9 @@ class Funcionario extends Model
     'c_nomeentid'
   ];
 
-  public function predios()
+  public function predio()
   {
-      return $this->belongsTo(Predio::class, 'n_codientid', 'n_codipredi');
+      return $this->belongsTo(Predio::class, 'n_codientid', 'n_codipredi')->where('c_nomeentid', 'trapredi');
   }
     use HasFactory;
 }
