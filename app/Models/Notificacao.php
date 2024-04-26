@@ -27,4 +27,5 @@ class Notificacao extends Model
   }
 
   use HasFactory;
+
 }

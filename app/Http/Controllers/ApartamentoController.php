@@ -17,7 +17,16 @@ use function PHPUnit\Framework\isNull;
 
 class ApartamentoController extends Controller
 {
-
+  /**
+  *             @OA\Schema(
+  *                     schema="Apartamento",
+  *                     title="Apartamento",
+  *                     required={"porta", "tipo"},
+  *                     @OA\Property(property="porta",type="string",description="identificaçao da porta do apartamento", example="A-22"),
+  *                     @OA\Property(property="tipo",type="string",enum={"T1","T2","T3","T4","T5","T6","T6","T7","T8"}, description="tipologia segundo a quantidade de quarto"),
+  *                     @OA\Property(property="andar",type="integer",description="andar do apartamento no prédio"),
+  *             )
+  */
   /**METODOTOS PRIVADO*/
 
   private function getPredio(){
@@ -88,12 +97,11 @@ class ApartamentoController extends Controller
         *     security={{"bearerAuth": {} }},
         *     @OA\RequestBody(
         *       required=true,
-        *       @OA\JsonContent(
-        *          type="object",
-        *          @OA\Property(property="c_portapart",type="string",description="porta do apartamento"),
-        *          @OA\Property(property="c_tipoapart",type="string",description="tipo do apartamento"),
-        *          @OA\Property(property="n_nandapart",type="int",description="andar do apartamento"),
-        *       )
+        *         description="Cria apartamentos para o prédio",
+        *         @OA\MediaType(
+        *             mediaType="multipart/form-data",
+        *             @OA\Schema(ref="#/components/schemas/Apartamento")
+        *         )
         *     ),
         *
         *     @OA\Response(response="201", description="apartamento cadastrado com sucesso"),
@@ -106,8 +114,9 @@ class ApartamentoController extends Controller
     {
 
         $isValidData = Validator::make($req->all(), [
-            'c_portapart'=> 'required|string|max:5',
-            'c_tipoapart'=> 'required|string|max:5'
+            'porta'=> 'required|string|max:5',
+            'tipo'=>  'required|string|max:5',
+            'andar'=> 'integer|max:5',
         ]);
         try {
             $predio = $this->getPredio();//Predio::find($idPredio);
@@ -122,7 +131,11 @@ class ApartamentoController extends Controller
                 ];
                 $conta = Conta::create($dataConta);
 
-            $data = $req->all();
+            $data = [
+              'c_portapart' => $req->porta,
+              'c_tipoapart' => $req->tipo,
+              'c_tipoapart' => $req->andar
+            ];
 
             $data['n_codipredi'] = (int) $predio->n_codipredi;
             $data['n_codiconta'] = (int) $conta->n_codiconta;

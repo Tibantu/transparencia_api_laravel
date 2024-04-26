@@ -213,7 +213,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Notificacao
     Route::prefix('notificacoes')->group(function () {
-      Route::post('/', [NotificacaoController::class, 'create']);
+      Route::post('/{apartamento_ids}', [NotificacaoController::class, 'create']);
       Route::get('/', [NotificacaoController::class, 'getAllByNotificacoes']);
       Route::get('/{id}', [MoradorController::class, 'getOne']);//*
       Route::put('/{id}', [MoradorController::class, 'update']);//*

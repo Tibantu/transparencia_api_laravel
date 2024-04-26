@@ -44,25 +44,12 @@
                 "summary": "Registrar um apartamento",
                 "operationId": "506959e7e38588b60a370abc0a440936",
                 "requestBody": {
+                    "description": "Cria apartamentos para o prédio",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "properties": {
-                                    "c_portapart": {
-                                        "description": "porta do apartamento",
-                                        "type": "string"
-                                    },
-                                    "c_tipoapart": {
-                                        "description": "tipo do apartamento",
-                                        "type": "string"
-                                    },
-                                    "n_nandapart": {
-                                        "description": "andar do apartamento",
-                                        "type": "int"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/Apartamento"
                             }
                         }
                     }
@@ -1775,7 +1762,7 @@
                 "tags": [
                     "/notificacoes"
                 ],
-                "summary": "listar notificacoes de um apartamento",
+                "summary": "listar notificacoes de um apartamento, apenas para morador",
                 "operationId": "660653a22aa43afb8763f4f82825e18f",
                 "responses": {
                     "200": {
@@ -1783,6 +1770,59 @@
                     },
                     "404": {
                         "description": "predio ou funcionarios não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/notificacoes/{apartamento_ids}": {
+            "post": {
+                "tags": [
+                    "/notificacoes"
+                ],
+                "summary": "Registrar notificacoes apanas para coordenador",
+                "operationId": "5b0ccd4edaf485b7b2c9084c6d4436f6",
+                "parameters": [
+                    {
+                        "name": "apartamento_ids",
+                        "in": "path",
+                        "description": "lista dos IDs dos apartamentos pra serem notificado. Separados por virgula",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Cria notificação para apartamentos oucupados",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Notificacao"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "morador cadastrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "apartamento não encontrado"
+                    },
+                    "405": {
+                        "description": "apartamento oucupado"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -2716,6 +2756,65 @@
         }
     },
     "components": {
+        "schemas": {
+            "Apartamento": {
+                "title": "Apartamento",
+                "required": [
+                    "porta",
+                    "tipo"
+                ],
+                "properties": {
+                    "porta": {
+                        "description": "identificaçao da porta do apartamento",
+                        "type": "string",
+                        "example": "A-22"
+                    },
+                    "tipo": {
+                        "description": "tipologia segundo a quantidade de quarto",
+                        "type": "string",
+                        "enum": [
+                            "T1",
+                            "T2",
+                            "T3",
+                            "T4",
+                            "T5",
+                            "T6",
+                            "T6",
+                            "T7",
+                            "T8"
+                        ]
+                    },
+                    "andar": {
+                        "description": "andar do apartamento no prédio",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Notificacao": {
+                "title": "Notificacao",
+                "required": [
+                    "mensagem",
+                    "tipo"
+                ],
+                "properties": {
+                    "mensagem": {
+                        "type": "string",
+                        "example": "reuniao no data 20/05/2025"
+                    },
+                    "tipo": {
+                        "description": "Tipo de notificação (valores permitidos: aviso, geral, notificação)",
+                        "type": "string",
+                        "enum": [
+                            "aviso",
+                            "geral",
+                            "notificação"
+                        ]
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
