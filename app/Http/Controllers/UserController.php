@@ -20,6 +20,43 @@ use function PHPUnit\Framework\isNull;
 
 class UserController extends Controller
 {
+  /**
+  *             @OA\Schema(
+  *                     schema="User",
+  *                     title="User",
+  *                     required={"login", "email", "password"},
+  *                     @OA\Property(property="login", type="string", example="example_user", description="nome de acesso do usuário"),
+  *                     @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do usuário"),
+  *                     @OA\Property(property="password", type="string", example="password123", description="Senha do usuário")
+  *               )
+  */
+
+  /**
+  *             @OA\Schema(
+  *                     schema="Coordenador",
+  *                     title="Coordenador",
+  *                     required={"nome", "apelido", "descricao_do_predio", "entrada_do_predio", "login", "email", "password"},
+  *                     @OA\Property(property="nome", type="string", example="Manuel Alfredo",description="nome do coordenador"),
+  *                     @OA\Property(property="apelido", type="string", example="Tunguno",description="ultimo nome do coordenador"),
+  *                     @OA\Property(property="login", type="string", example="example_user", description="nome de acesso do usuário"),
+  *                     @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do usuário"),
+  *                     @OA\Property(property="password", type="string", example="password123", description="Senha do usuário"),
+  *                     @OA\Property(property="descricao_do_bloco", type="string", example="K",description="identificacao do bloco, no caso de nao passares pela url (náo registrado)"),
+  *                     @OA\Property(property="descricao_do_predio", type="string",example="A-22", description="identificacao do prédios"),
+  *                     @OA\Property(property="entrada_do_predio", type="string", example="1", description="identificacao da entrada do predio, no caso de prédios gémios"),
+  *               )
+  */
+
+
+  /**
+  *             @OA\Schema(
+  *                     schema="Predio",
+  *                     title="Predio",
+  *                     required={"descricao_do_predio", "entrada_do_predio"},
+  *                     @OA\Property(property="descricao_do_predio", type="string", description="identificacao do prédios"),
+  *                     @OA\Property(property="entrada_do_predio", type="string", example="A", description="identificacao da entrada do predio, no caso de prédios gémios"),
+  *               )
+  */
 
   public static function criar($login, $password, $n_codimorad, $email){
     $dadosUser = [
@@ -35,26 +72,37 @@ class UserController extends Controller
 }
 /**
  * @OA\Post(
- *     path="/auth/",
+ *     path="/auth/centr/{idCentr}/bloco/{idbloco}'",
  *     tags={"Users"},
- *     summary="Cria um novo usuário para o coordenador",
+ *     summary="Cria um coordenador e o prédio",
  *     security={{"bearerAuth": {} }},
- *     description="Cria um novo usuário com base nos dados fornecidos",
+ *     description="",
  *     operationId="createUser",
+ *     @OA\Parameter(
+ *        name="idCentr",
+ *        in="path",
+ *        description="id da centralidade",
+ *        required=false,
+ *        @OA\Schema(
+ *            type="int"
+ *        )
+ *     ),
+ *     @OA\Parameter(
+ *        name="idbloco",
+ *        in="path",
+ *        description="id do bloco",
+ *        required=false,
+ *        @OA\Schema(
+ *            type="int"
+ *        )
+ *     ),
  *     @OA\RequestBody(
  *         required=true,
- *         description="Dados do usuário a serem criados",
- *         @OA\JsonContent(
- *             required={"login", "email", "password", "tipo", "codiApartamento"},
- *             @OA\Property(property="login", type="string", example="example_user", description="Login do usuário"),
- *             @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do usuário"),
- *             @OA\Property(property="password", type="string", example="password123", description="Senha do usuário"),
- *             @OA\Property(property="tipo", type="string", enum={"tracoord", "tramorad"}, description="Tipo de usuário (coordenador ou morador)"),
- *             @OA\Property(property="remember_token", type="string", description="Token de lembrete opcional"),
- *             @OA\Property(property="tipoDeEntidadeACoordenar", type="string", enum={"trapredi", "trabloco"}, description="Tipo de entidade a ser coordenada (opcional)"),
- *             @OA\Property(property="codiEntidade", type="integer", description="ID da entidade (opcional)"),
- *             @OA\Property(property="codiApartamento", type="integer", description="ID do apartamento (obrigatório para tramorad)")
- *         )
+ *         description="Dados necessario",
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(ref="#/components/schemas/Coordenador")
+ *          )
  *     ),
  *     @OA\Response(response="201", description="Usuário criado com sucesso"),
  *     @OA\Response(response="412", description="Erro ao validar os dados"),
@@ -67,7 +115,7 @@ class UserController extends Controller
 
 
 
-    public function create(Request $req)
+    public function create(Request $req, $id_centralidade, $id_bloco)
     {
         $isValidData = Validator::make($req->all(), [
             //dados do usuario
@@ -78,12 +126,11 @@ class UserController extends Controller
             "nome" => 'required|string',
             "apelido" => 'required|string',
             //dados do predio
-            "descricao_do_bloco" => 'string',
+            "descricao_do_bloco" => 'max:6' ,
             //"id_bloco" => 'string', // vai no ; se for vasio criar um bloco na centralidade com a descricao_do_bloco
             //dados do predio
-            "descricao_do_predio" => 'required|string',
-            "entrada_do_predio" => 'required|string',
-            "id_centralidade" => 'required|int'
+            "descricao_do_predio" => 'required|string|max:6',
+            "entrada_do_predio" => 'required|string|max:6'
         ]);
 
         if ($isValidData->fails()) {
@@ -93,11 +140,11 @@ class UserController extends Controller
         try {
 /* *///criar um bloco, apenas se id_bloco for vasio
 
-          $bloco = [];
-          //dd($req->id_bloco);
-          if(isNull($req->id_bloco) && $req->descricao_do_bloco != "")
+          $bloco = null;
+
+          if($req->descricao_do_bloco != null)
           {
-                $centralidadde = Centralidade::find($req->id_centralidade);
+                $centralidadde = Centralidade::find($id_centralidade);
                 if (!$centralidadde)
                     return response()->json(['message' => "Centralidade não encontrada!"], 404);
 
@@ -111,24 +158,26 @@ class UserController extends Controller
                     //criar o bloco
                 $dadosBloco = [
                     'c_descbloco' => $req->descricao_do_bloco,
-                    'n_codicentr' => $req->id_centralidade,
+                    'n_codicentr' => $id_centralidade,
                     'n_codicaixa' => $caixaBloco->n_codicaixa
                 ];
 
                 $bloco = Bloco::create($dadosBloco);
+                if (!$bloco)
+                    return response()->json(['message' => "Bloco não encontrada!"], 404);
+
                 $dataCaixaBloco['n_codientid'] = (int) $bloco->n_codibloco;
                 $caixaBloco->update($dataCaixaBloco);
           }else{
-            $bloco = Bloco::find($req->id_bloco);
+            $bloco = Bloco::find($id_bloco);
           }
 
 /* */
 
 /* *///criar um predio
 
-        $bloco = Bloco::find($bloco->n_codibloco);
         if (!$bloco)
-            return response()->json(['message' => "Bloco não encontrado!"], 404);
+           return response()->json(['message' => "Bloco não encontrado!"], 404);
 
         /*Criar um caixa para o predio*/
         $dataCaixaPredi = [
@@ -197,16 +246,14 @@ class UserController extends Controller
  *     tags={"Users"},
  *     summary="Cria um novo usuário para o moradror",
  *     security={{"bearerAuth": {} }},
- *     description="Cria um novo usuário com base nos dados fornecidos",
+ *     description="Cria um novo usuário para o morador com base nos dados fornecidos",
  *     operationId="createUser",
  *     @OA\RequestBody(
  *         required=true,
  *         description="Dados do usuário a serem criados",
- *         @OA\JsonContent(
- *             required={"login", "email", "password", "tipo", "codiApartamento"},
- *             @OA\Property(property="login", type="string", example="example_user", description="Login do usuário"),
- *             @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do usuário"),
- *             @OA\Property(property="password", type="string", example="password123", description="Senha do usuário")
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(ref="#/components/schemas/User")
  *         )
  *     ),
  *     @OA\Response(response="201", description="Usuário criado com sucesso"),
@@ -220,7 +267,7 @@ class UserController extends Controller
       $isValidData = Validator::make($req->all(), [
         //dados do usuario
         "login" => 'required|string',
-        "email" => 'required|string',
+        "email" => 'required|email',
         "password" => 'required|string'
     ]);
 

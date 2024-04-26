@@ -13,6 +13,22 @@ use Illuminate\Support\Facades\Validator;
 
 class MoradorController extends Controller
 {
+
+  /**
+  *             @OA\Schema(
+  *                     schema="Morador",
+  *                     title="Morador",
+  *                     required={"nome", "apelido", "login", "email", "password"},
+  *                     @OA\Property(property="nome",type="string",description="nome do morador"),
+  *                     @OA\Property(property="apelido",type="string",description="ultimo nome do morador"),
+  *                     @OA\Property(property="bi",type="string",description="bilhete de identidade do morador"),
+  *                     @OA\Property(property="login", type="string", example="example_user", description="Login do usuário"),
+  *                     @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do usuário"),
+  *                     @OA\Property(property="password", type="string", example="password123", description="Senha do usuário")
+  *               )
+  */
+
+
   private function getPredio(){
 
     //dd(auth()->user());
@@ -38,7 +54,7 @@ class MoradorController extends Controller
 
     /**
     * @OA\Get(
-        *     tags={"/moradores"},
+        *     tags={"moradores"},
         *     path="/moradores",
         *     summary="listar moradores de um predio",
         *     security={{ "bearerAuth": {}}},
@@ -64,7 +80,7 @@ class MoradorController extends Controller
 
 /**
     * @OA\Post(
-        *     tags={"/moradores"},
+        *     tags={"moradores"},
         *     path="/moradores/apartamento/{idApartamento}",
         *     summary="Registrar morador",
         *     security={{"bearerAuth": {} }},
@@ -77,16 +93,10 @@ class MoradorController extends Controller
         *     ),
         *     @OA\RequestBody(
         *       required=true,
-        *       @OA\JsonContent(
-        *          type="object",
-        *          required={"login", "email", "password", "apelido", "nome"},
-        *          @OA\Property(property="nome",type="string",description="nome do morador"),
-        *          @OA\Property(property="apelido",type="string",description="ultimo nome do morador"),
-        *          @OA\Property(property="bi",type="string",description="bilhete de identidade do morador"),
-      *            @OA\Property(property="login", type="string", example="example_user", description="Login do usuário"),
-      *            @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do usuário"),
-      *            @OA\Property(property="password", type="string", example="password123", description="Senha do usuário")
-        *       )
+        *         @OA\MediaType(
+        *             mediaType="multipart/form-data",
+        *             @OA\Schema(ref="#/components/schemas/Morador")
+        *         )
         *     ),
         *
         *     @OA\Response(response="201", description="morador cadastrado com sucesso"),
@@ -158,7 +168,7 @@ class MoradorController extends Controller
 
  /**
     * @OA\Delete(
-        *     tags={"/moradores"},
+        *     tags={"moradores"},
         *     path="/moradores/{morador}",
         *     summary="apagar um morador",
         *       security={{"bearerAuth": {} }},
@@ -197,7 +207,7 @@ class MoradorController extends Controller
     }
 /**
     * @OA\Put(
-        *     tags={"/moradores"},
+        *     tags={"moradores"},
         *     path="/moradores/{morador}",
         *     summary="atualizar morador",
         *     security={{"bearerAuth": {} }},
@@ -241,7 +251,7 @@ class MoradorController extends Controller
     }
 /**
     * @OA\Get(
-        *     tags={"/moradores"},
+        *     tags={"moradores"},
         *     path="/moradores/{morador}",
         *     summary="mostrar morador",
         *     security={{ "bearerAuth": {}}},

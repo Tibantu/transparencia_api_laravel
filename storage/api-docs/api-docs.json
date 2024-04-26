@@ -1508,7 +1508,7 @@
         "/moradores": {
             "get": {
                 "tags": [
-                    "/moradores"
+                    "moradores"
                 ],
                 "summary": "listar moradores de um predio",
                 "operationId": "02f5c86a12bd7f835b5016fbabef04c3",
@@ -1533,7 +1533,7 @@
         "/moradores/apartamento/{idApartamento}": {
             "post": {
                 "tags": [
-                    "/moradores"
+                    "moradores"
                 ],
                 "summary": "Registrar morador",
                 "operationId": "820fc83977aefd4cab4a761787124797",
@@ -1551,46 +1551,9 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "required": [
-                                    "login",
-                                    "email",
-                                    "password",
-                                    "apelido",
-                                    "nome"
-                                ],
-                                "properties": {
-                                    "nome": {
-                                        "description": "nome do morador",
-                                        "type": "string"
-                                    },
-                                    "apelido": {
-                                        "description": "ultimo nome do morador",
-                                        "type": "string"
-                                    },
-                                    "bi": {
-                                        "description": "bilhete de identidade do morador",
-                                        "type": "string"
-                                    },
-                                    "login": {
-                                        "description": "Login do usuário",
-                                        "type": "string",
-                                        "example": "example_user"
-                                    },
-                                    "email": {
-                                        "description": "Email do usuário",
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "example@example.com"
-                                    },
-                                    "password": {
-                                        "description": "Senha do usuário",
-                                        "type": "string",
-                                        "example": "password123"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/Morador"
                             }
                         }
                     }
@@ -1622,7 +1585,7 @@
         "/moradores/{morador}": {
             "get": {
                 "tags": [
-                    "/moradores"
+                    "moradores"
                 ],
                 "summary": "mostrar morador",
                 "operationId": "9796196643e376e11eeaaf354433146f",
@@ -1656,7 +1619,7 @@
             },
             "put": {
                 "tags": [
-                    "/moradores"
+                    "moradores"
                 ],
                 "summary": "atualizar morador",
                 "operationId": "48ae04774d78a54f26cabd9e3f194428",
@@ -1721,7 +1684,7 @@
             },
             "delete": {
                 "tags": [
-                    "/moradores"
+                    "moradores"
                 ],
                 "summary": "apagar um morador",
                 "operationId": "5b7d5fe60385c7f7b6441a10a0238afa",
@@ -2596,74 +2559,41 @@
                 ]
             }
         },
-        "/auth/": {
+        "/auth/centr/{idCentr}/bloco/{idbloco}'": {
             "post": {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Cria um novo usuário para o coordenador",
-                "description": "Cria um novo usuário com base nos dados fornecidos",
+                "summary": "Cria um coordenador e o prédio",
+                "description": "",
                 "operationId": "createUser",
+                "parameters": [
+                    {
+                        "name": "idCentr",
+                        "in": "path",
+                        "description": "id da centralidade",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    },
+                    {
+                        "name": "idbloco",
+                        "in": "path",
+                        "description": "id do bloco",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
                 "requestBody": {
-                    "description": "Dados do usuário a serem criados",
+                    "description": "Dados necessario",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "required": [
-                                    "login",
-                                    "email",
-                                    "password",
-                                    "tipo",
-                                    "codiApartamento"
-                                ],
-                                "properties": {
-                                    "login": {
-                                        "description": "Login do usuário",
-                                        "type": "string",
-                                        "example": "example_user"
-                                    },
-                                    "email": {
-                                        "description": "Email do usuário",
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "example@example.com"
-                                    },
-                                    "password": {
-                                        "description": "Senha do usuário",
-                                        "type": "string",
-                                        "example": "password123"
-                                    },
-                                    "tipo": {
-                                        "description": "Tipo de usuário (coordenador ou morador)",
-                                        "type": "string",
-                                        "enum": [
-                                            "tracoord",
-                                            "tramorad"
-                                        ]
-                                    },
-                                    "remember_token": {
-                                        "description": "Token de lembrete opcional",
-                                        "type": "string"
-                                    },
-                                    "tipoDeEntidadeACoordenar": {
-                                        "description": "Tipo de entidade a ser coordenada (opcional)",
-                                        "type": "string",
-                                        "enum": [
-                                            "trapredi",
-                                            "trabloco"
-                                        ]
-                                    },
-                                    "codiEntidade": {
-                                        "description": "ID da entidade (opcional)",
-                                        "type": "integer"
-                                    },
-                                    "codiApartamento": {
-                                        "description": "ID do apartamento (obrigatório para tramorad)",
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/Coordenador"
                             }
                         }
                     }
@@ -2695,40 +2625,15 @@
                     "Users"
                 ],
                 "summary": "Cria um novo usuário para o moradror",
-                "description": "Cria um novo usuário com base nos dados fornecidos",
+                "description": "Cria um novo usuário para o morador com base nos dados fornecidos",
                 "operationId": "createUser",
                 "requestBody": {
                     "description": "Dados do usuário a serem criados",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "required": [
-                                    "login",
-                                    "email",
-                                    "password",
-                                    "tipo",
-                                    "codiApartamento"
-                                ],
-                                "properties": {
-                                    "login": {
-                                        "description": "Login do usuário",
-                                        "type": "string",
-                                        "example": "example_user"
-                                    },
-                                    "email": {
-                                        "description": "Email do usuário",
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "example@example.com"
-                                    },
-                                    "password": {
-                                        "description": "Senha do usuário",
-                                        "type": "string",
-                                        "example": "password123"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/User"
                             }
                         }
                     }
@@ -2791,6 +2696,47 @@
                 },
                 "type": "object"
             },
+            "Morador": {
+                "title": "Morador",
+                "required": [
+                    "nome",
+                    "apelido",
+                    "login",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "nome": {
+                        "description": "nome do morador",
+                        "type": "string"
+                    },
+                    "apelido": {
+                        "description": "ultimo nome do morador",
+                        "type": "string"
+                    },
+                    "bi": {
+                        "description": "bilhete de identidade do morador",
+                        "type": "string"
+                    },
+                    "login": {
+                        "description": "Login do usuário",
+                        "type": "string",
+                        "example": "example_user"
+                    },
+                    "email": {
+                        "description": "Email do usuário",
+                        "type": "string",
+                        "format": "email",
+                        "example": "example@example.com"
+                    },
+                    "password": {
+                        "description": "Senha do usuário",
+                        "type": "string",
+                        "example": "password123"
+                    }
+                },
+                "type": "object"
+            },
             "Notificacao": {
                 "title": "Notificacao",
                 "required": [
@@ -2810,6 +2756,141 @@
                             "geral",
                             "notificação"
                         ]
+                    }
+                },
+                "type": "object"
+            },
+            "Pagamento": {
+                "title": "Pagamento",
+                "required": [
+                    "nome",
+                    "apelido",
+                    "login",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "n_valopagam": {
+                        "description": "valor do pagamento",
+                        "type": "string"
+                    },
+                    "c_descpagam": {
+                        "description": "descrição do pagamento",
+                        "type": "float"
+                    },
+                    "c_formpagam": {
+                        "description": "forma de pagamento",
+                        "type": "int"
+                    },
+                    "d_datapagam": {
+                        "description": "data de pagamento",
+                        "type": "float"
+                    },
+                    "n_codiapart": {
+                        "description": "id apartamento",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "required": [
+                    "login",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "login": {
+                        "description": "nome de acesso do usuário",
+                        "type": "string",
+                        "example": "example_user"
+                    },
+                    "email": {
+                        "description": "Email do usuário",
+                        "type": "string",
+                        "format": "email",
+                        "example": "example@example.com"
+                    },
+                    "password": {
+                        "description": "Senha do usuário",
+                        "type": "string",
+                        "example": "password123"
+                    }
+                },
+                "type": "object"
+            },
+            "Coordenador": {
+                "title": "Coordenador",
+                "required": [
+                    "nome",
+                    "apelido",
+                    "descricao_do_predio",
+                    "entrada_do_predio",
+                    "login",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "nome": {
+                        "description": "nome do coordenador",
+                        "type": "string",
+                        "example": "Manuel Alfredo"
+                    },
+                    "apelido": {
+                        "description": "ultimo nome do coordenador",
+                        "type": "string",
+                        "example": "Tunguno"
+                    },
+                    "login": {
+                        "description": "nome de acesso do usuário",
+                        "type": "string",
+                        "example": "example_user"
+                    },
+                    "email": {
+                        "description": "Email do usuário",
+                        "type": "string",
+                        "format": "email",
+                        "example": "example@example.com"
+                    },
+                    "password": {
+                        "description": "Senha do usuário",
+                        "type": "string",
+                        "example": "password123"
+                    },
+                    "descricao_do_bloco": {
+                        "description": "identificacao do bloco, no caso de nao passares pela url (náo registrado)",
+                        "type": "string",
+                        "example": "K"
+                    },
+                    "descricao_do_predio": {
+                        "description": "identificacao do prédios",
+                        "type": "string",
+                        "example": "A-22"
+                    },
+                    "entrada_do_predio": {
+                        "description": "identificacao da entrada do predio, no caso de prédios gémios",
+                        "type": "string",
+                        "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "Predio": {
+                "title": "Predio",
+                "required": [
+                    "descricao_do_predio",
+                    "entrada_do_predio"
+                ],
+                "properties": {
+                    "descricao_do_predio": {
+                        "description": "identificacao do prédios",
+                        "type": "string"
+                    },
+                    "entrada_do_predio": {
+                        "description": "identificacao da entrada do predio, no caso de prédios gémios",
+                        "type": "string",
+                        "example": "A"
                     }
                 },
                 "type": "object"

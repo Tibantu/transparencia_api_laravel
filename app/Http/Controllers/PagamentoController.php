@@ -19,6 +19,20 @@ use PhpParser\Node\Expr\Throw_;
 
 class PagamentoController extends Controller
 {
+
+    /**
+  *             @OA\Schema(
+  *                     schema="Pagamento",
+  *                     title="Pagamento",
+  *                     required={"nome", "apelido", "login", "email", "password"},
+  *                     @OA\Property(property="n_valopagam",type="string",description="valor do pagamento"),
+  *                     @OA\Property(property="c_descpagam",type="float",description="descrição do pagamento"),
+  *                     @OA\Property(property="c_formpagam",type="int",description="forma de pagamento"),
+  *                     @OA\Property(property="d_datapagam",type="float",description="data de pagamento"),
+  *                     @OA\Property(property="n_codiapart",type="string",description="id apartamento"),
+  *               )
+  */
+
   public array $camposAceitaveisNaConsulta = ['d_datapagam', 'd_dacrpagam', 'd_dacopagam'];
   private array $listaDeActionsPorCampo;
 
@@ -212,7 +226,6 @@ class PagamentoController extends Controller
 
       $isValidData = Validator::make($req->all(), [
         'valor'  => 'required',
-        'n_vadipagam',
         'descricao'  => 'required|string',
         'forma'  => 'required|string',
         'data'  => 'required',
@@ -245,7 +258,7 @@ class PagamentoController extends Controller
         'n_codiapart'  => $apartamento->n_codiapart,
         'n_codidivid'  => $idDivida
       ];
-      Pagamento::create($dataPagamento);
+      Pagamento::create([$dataPagamento]);
       // dd($data);
       return response()->json(['message' => "Pagamento criado com sucesso!"], 201);;
     } catch (QueryException $e) {

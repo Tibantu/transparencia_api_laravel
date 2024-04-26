@@ -40,7 +40,7 @@ Route::prefix('auth')->group(function () {
 
   Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
   Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
-  Route::post('/', [UserController::class, 'create']);
+  Route::post('/centr/{idCentr}/bloco/{idbloco}', [UserController::class, 'create']);
   Route::post('/morador/usuario', [UserController::class, 'create_morad'])->middleware('auth:sanctum');;
 });
 
