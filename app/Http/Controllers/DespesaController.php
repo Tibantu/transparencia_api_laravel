@@ -11,6 +11,19 @@ use Illuminate\Support\Facades\Validator;
 
 class DespesaController extends Controller
 {
+
+  /**
+  *             @OA\Schema(
+  *                     schema="Despesa",
+  *                     title="Despesa",
+  *                     required={"objectivo", "valor", "fonte", "data"},
+  *                     @OA\Property(property="objectivo",type="string",description="objectivo da despesa",example="pagamento do jardineiro para para mes de abril"),
+  *                     @OA\Property(property="valor",type="number",description="valores da despesa"),
+  *                     @OA\Property(property="fonte",type="int",default="caixa" ,description="fonte dos valores", enum={"caixa","BFA","BAI","BIC","BPC","BCA","BIR","BNI","BPR","BDA","BMF","BPPH","SBA","BPA","BCI","BANC"}),
+  *                     @OA\Property(property="data",type="string", format="date",description="data do saque dos valores")
+  *             )
+  */
+
 /**
     * @OA\Get(
         *     tags={"/despesas"},
@@ -53,14 +66,11 @@ class DespesaController extends Controller
         *     security={{"bearerAuth": {} }},
         *     @OA\RequestBody(
         *       required=true,
-        *       @OA\JsonContent(
-        *          type="object",
-        *          @OA\Property(property="c_objedespe",type="string",description="objectivo da despesa"),
-        *          @OA\Property(property="n_codicoord",type="int",description="id do coordenador que criou a despesa"),
-        *          @OA\Property(property="n_valodespe",type="float",description="valores da deespesa"),
-        *          @OA\Property(property="c_fontdespe",type="int",default="caixa" ,description="fonte dos valores"),
-        *          @OA\Property(property="d_dasadespe",type="date",description="data do saque dos valores")
-        *       )
+        *         description="Cria despesa para justificar algum gasto",
+        *         @OA\MediaType(
+        *             mediaType="multipart/form-data",
+        *             @OA\Schema(ref="#/components/schemas/Despesa")
+        *         )
         *     ),
         *
         *     @OA\Response(response="201", description="despesa cadastrado com sucesso"),
@@ -71,21 +81,32 @@ class DespesaController extends Controller
     public function create(Request $req)
     {
         $isValidData = Validator::make($req->all(), [
-        'c_objedespe'=> 'required',
-        'n_codicoord'=> 'required',
-        'n_valodespe'=> 'required',
-        'create_at',
-        'updated_at',
-        'c_objedespe',
-        'c_fontdespe'=> 'required',
-        'd_dacrdespe',
-        'd_dasadespe'=> 'required',
+        'objectivo'=> 'required|string',
+        'valor'=> 'required|numeric',
+        'fonte'=> 'required',
+        'data'=> 'required|date',
         ]);
         if ($isValidData->fails())
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
 
     try {
-        Despesa::create($req->all());
+        $user = auth()->user();
+
+        if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
+            $coordenador = Coordenador::find($user->n_codientid);
+            if (!$coordenador) {
+                return $data = response()->json(['message' => 'Coordenador nao encontrado'], 404);
+            }
+
+            Despesa::create([
+              'c_objedespe'=> $req->objectivo,
+              'n_codicoord'=> $coordenador->n_codicoord,
+              'n_valodespe'=> $req->valor,
+              'c_fontdespe'=> $req->fonte,
+              'd_dasadespe'=> $req->data,
+              ]);
+        }
+
         return response()->json(['message' => "Despesa criada com sucesso!"], 201);;
     } catch (QueryException $e) {
         return response()->json(['message' => $e->getMessage()], 500);

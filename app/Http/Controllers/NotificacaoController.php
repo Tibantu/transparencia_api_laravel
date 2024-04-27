@@ -72,7 +72,7 @@ class NotificacaoController extends Controller
 
     /**
     * @OA\Get(
-        *     tags={"/notificacoes"},
+        *     tags={"notificacoes"},
         *     path="/notificacoes",
         *     summary="listar notificacoes de um apartamento, apenas para morador",
         *     security={{ "bearerAuth": {}}},
@@ -110,7 +110,7 @@ class NotificacaoController extends Controller
 
             /**
     * @OA\Post(
-        *     tags={"/notificacoes"},
+        *     tags={"notificacoes"},
         *     path="/notificacoes/{apartamento_ids}",
         *     summary="Registrar notificacoes apanas para coordenador",
         *     security={{"bearerAuth": {} }},

@@ -16,7 +16,7 @@
         "/apartamentos": {
             "get": {
                 "tags": [
-                    "/apartamentos"
+                    "apartamentos"
                 ],
                 "summary": "mostrar apartamentos do predio ",
                 "operationId": "af649ce50f97801faddd840beb5ad522",
@@ -39,7 +39,7 @@
             },
             "post": {
                 "tags": [
-                    "/apartamentos"
+                    "apartamentos"
                 ],
                 "summary": "Registrar um apartamento",
                 "operationId": "506959e7e38588b60a370abc0a440936",
@@ -78,7 +78,7 @@
         "/apartamentos/predio/{idPredio}": {
             "put": {
                 "tags": [
-                    "/apartamentos"
+                    "apartamentos"
                 ],
                 "summary": "Registrar uma apartamento",
                 "operationId": "38f966dce8be6540d9049fd197d3d0fe",
@@ -141,7 +141,7 @@
         "/apartamentos/{idApartamento}": {
             "get": {
                 "tags": [
-                    "/apartamentos"
+                    "apartamentos"
                 ],
                 "summary": "mostrar apartamento",
                 "operationId": "e34e1b20f401c40f21b13b1c4ed14432",
@@ -177,7 +177,7 @@
         "/apartamentos/morador": {
             "get": {
                 "tags": [
-                    "/apartamentos"
+                    "apartamentos"
                 ],
                 "summary": "mostrar apartamento do morador logado",
                 "operationId": "90fa27a9c3ac56cbb029452b1040538d",
@@ -1092,34 +1092,12 @@
                 "summary": "Registrar uma despesa",
                 "operationId": "2ea97f891fe1e2ed64b933a0510d478a",
                 "requestBody": {
+                    "description": "Cria despesa para justificar algum gasto",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "properties": {
-                                    "c_objedespe": {
-                                        "description": "objectivo da despesa",
-                                        "type": "string"
-                                    },
-                                    "n_codicoord": {
-                                        "description": "id do coordenador que criou a despesa",
-                                        "type": "int"
-                                    },
-                                    "n_valodespe": {
-                                        "description": "valores da deespesa",
-                                        "type": "float"
-                                    },
-                                    "c_fontdespe": {
-                                        "description": "fonte dos valores",
-                                        "type": "int",
-                                        "default": "caixa"
-                                    },
-                                    "d_dasadespe": {
-                                        "description": "data do saque dos valores",
-                                        "type": "date"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/Despesa"
                             }
                         }
                     }
@@ -1432,67 +1410,22 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
-                                "required": [
-                                    "login",
-                                    "funcao",
-                                    "salario",
-                                    "apelido",
-                                    "nome"
-                                ],
-                                "properties": {
-                                    "nome": {
-                                        "description": "nome do funcionario",
-                                        "type": "string"
-                                    },
-                                    "apelido": {
-                                        "description": "ultimo nome do funcionario",
-                                        "type": "string"
-                                    },
-                                    "salario": {
-                                        "description": "valor do salario mensal em AKZ do funcionario",
-                                        "type": "string"
-                                    },
-                                    "funcao": {
-                                        "description": "funcao do funcionario",
-                                        "type": "string",
-                                        "example": "example_user"
-                                    },
-                                    "email": {
-                                        "description": "Email do funcionario",
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "example@example.com"
-                                    },
-                                    "telefone": {
-                                        "description": "telefone do funcionario",
-                                        "type": "string",
-                                        "example": "92222956"
-                                    },
-                                    "telefone_alternativo": {
-                                        "description": "telefone alternativo do funcionario",
-                                        "type": "string",
-                                        "example": "92222956"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/Funcionario"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "morador cadastrado com sucesso"
+                        "description": "funcionario cadastrado com sucesso"
                     },
                     "412": {
                         "description": "Erro ao validar os dados"
                     },
                     "404": {
-                        "description": "apartamento não encontrado"
-                    },
-                    "405": {
-                        "description": "apartamento oucupado"
+                        "description": "prédio não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -1723,7 +1656,7 @@
         "/notificacoes": {
             "get": {
                 "tags": [
-                    "/notificacoes"
+                    "notificacoes"
                 ],
                 "summary": "listar notificacoes de um apartamento, apenas para morador",
                 "operationId": "660653a22aa43afb8763f4f82825e18f",
@@ -1748,7 +1681,7 @@
         "/notificacoes/{apartamento_ids}": {
             "post": {
                 "tags": [
-                    "/notificacoes"
+                    "notificacoes"
                 ],
                 "summary": "Registrar notificacoes apanas para coordenador",
                 "operationId": "5b0ccd4edaf485b7b2c9084c6d4436f6",
@@ -1873,7 +1806,7 @@
         "/pagamentos": {
             "get": {
                 "tags": [
-                    "/pagamentos"
+                    "pagamentos"
                 ],
                 "summary": "listar pagamentos do morador logado",
                 "operationId": "4cbf0188e3153262e28320385f3e1621",
@@ -1890,78 +1823,12 @@
                         "bearerAuth": []
                     }
                 ]
-            },
-            "post": {
-                "tags": [
-                    "/pagamentos"
-                ],
-                "summary": "registrar pagamento",
-                "operationId": "ff537f8ae5880fc79db2a2fa849864fb",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "n_valopagam",
-                                    "c_descpagam",
-                                    "c_formpagam",
-                                    "d_datapagam",
-                                    "n_codiapart",
-                                    "n_codidivid"
-                                ],
-                                "properties": {
-                                    "n_valopagam": {
-                                        "description": "valor do pagamento",
-                                        "type": "string"
-                                    },
-                                    "c_descpagam": {
-                                        "description": "descrição do pagamento",
-                                        "type": "float"
-                                    },
-                                    "c_formpagam": {
-                                        "description": "forma de pagamento",
-                                        "type": "int"
-                                    },
-                                    "d_datapagam": {
-                                        "description": "data de pagamento",
-                                        "type": "float"
-                                    },
-                                    "n_codiapart": {
-                                        "description": "id apartamento",
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "pagamento registrado com sucesso"
-                    },
-                    "412": {
-                        "description": "Erro ao validar os dados"
-                    },
-                    "404": {
-                        "description": "Morador não encontrado"
-                    },
-                    "500": {
-                        "description": "Erro no servidor"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         },
         "/pagamentos/morador/{idMorador}": {
             "get": {
                 "tags": [
-                    "/pagamentos"
+                    "pagamentos"
                 ],
                 "summary": "mostrar pagamento",
                 "operationId": "03677fb8a7f864cf0963f69a5a84878a",
@@ -1994,10 +1861,60 @@
                 ]
             }
         },
+        "/pagamentos/divida/{idDivida}": {
+            "post": {
+                "tags": [
+                    "pagamentos"
+                ],
+                "summary": "registrar pagamento",
+                "operationId": "dce27e3339f65114342e5c997418acf7",
+                "parameters": [
+                    {
+                        "name": "idDivida",
+                        "in": "path",
+                        "description": "ID da Divida selecionada a liquidar",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Cria pagamento para liquidar dívida selecionada",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Pagamento"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "pagamento registrado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "Morador não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/pagamentos/{pagamento}": {
             "get": {
                 "tags": [
-                    "/pagamentos"
+                    "pagamentos"
                 ],
                 "summary": "mostrar pagamento",
                 "operationId": "f290d3cb729519acd8d39baf2d70fc88",
@@ -2033,7 +1950,7 @@
         "/pagamentos/p/{campoDaConsulta}": {
             "get": {
                 "tags": [
-                    "/pagamentos"
+                    "pagamentos"
                 ],
                 "summary": "consultar pagamentos no intervalo das datas inicial e final, de alguma propriedade do tipo date do pagamento",
                 "operationId": "0b2be3ee3b2e43ddcd51c6ed12a7d2e9",
@@ -2059,7 +1976,8 @@
                         "description": "data [inícial] X do pagamento no fotmato: Ano-mes-dia",
                         "required": false,
                         "schema": {
-                            "type": "date"
+                            "type": "string",
+                            "format": "date"
                         }
                     },
                     {
@@ -2068,7 +1986,8 @@
                         "description": "data [final] X do pagamento no fotmato: Ano-mes-dia",
                         "required": false,
                         "schema": {
-                            "type": "date"
+                            "type": "string",
+                            "format": "date"
                         }
                     }
                 ],
@@ -2690,8 +2609,104 @@
                         ]
                     },
                     "andar": {
-                        "description": "andar do apartamento no prédio",
+                        "description": "andar do prédio onde está o apartamento",
                         "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Despesa": {
+                "title": "Despesa",
+                "required": [
+                    "objectivo",
+                    "valor",
+                    "fonte",
+                    "data"
+                ],
+                "properties": {
+                    "objectivo": {
+                        "description": "objectivo da despesa",
+                        "type": "string",
+                        "example": "pagamento do jardineiro para para mes de abril"
+                    },
+                    "valor": {
+                        "description": "valores da despesa",
+                        "type": "number"
+                    },
+                    "fonte": {
+                        "description": "fonte dos valores",
+                        "type": "int",
+                        "default": "caixa",
+                        "enum": [
+                            "caixa",
+                            "BFA",
+                            "BAI",
+                            "BIC",
+                            "BPC",
+                            "BCA",
+                            "BIR",
+                            "BNI",
+                            "BPR",
+                            "BDA",
+                            "BMF",
+                            "BPPH",
+                            "SBA",
+                            "BPA",
+                            "BCI",
+                            "BANC"
+                        ]
+                    },
+                    "data": {
+                        "description": "data do saque dos valores",
+                        "type": "string",
+                        "format": "date"
+                    }
+                },
+                "type": "object"
+            },
+            "Funcionario": {
+                "title": "Funcionario",
+                "required": [
+                    "nome",
+                    "apelido",
+                    "salario",
+                    "funcao",
+                    "email",
+                    "telefone"
+                ],
+                "properties": {
+                    "nome": {
+                        "description": "nome do funcionario",
+                        "type": "string",
+                        "example": "Matias Amaral"
+                    },
+                    "apelido": {
+                        "description": "ultimo nome do funcionario",
+                        "type": "string"
+                    },
+                    "salario": {
+                        "description": "valor do salario mensal do funcionario em AKZ",
+                        "type": "number"
+                    },
+                    "funcao": {
+                        "description": "funcao do funcionario",
+                        "type": "string",
+                        "example": "example_user"
+                    },
+                    "email": {
+                        "description": "Email do funcionario",
+                        "type": "string",
+                        "format": "email",
+                        "example": "example@example.com"
+                    },
+                    "telefone": {
+                        "description": "telefone do funcionario",
+                        "type": "string",
+                        "example": "92222956"
+                    },
+                    "telefone_alternativo": {
+                        "description": "telefone alternativo do funcionario",
+                        "type": "string"
                     }
                 },
                 "type": "object"
@@ -2763,32 +2778,53 @@
             "Pagamento": {
                 "title": "Pagamento",
                 "required": [
-                    "nome",
-                    "apelido",
-                    "login",
-                    "email",
-                    "password"
+                    "descricao",
+                    "valor",
+                    "forma_pagamemto",
+                    "data_pagamemto"
                 ],
                 "properties": {
-                    "n_valopagam": {
+                    "valor": {
                         "description": "valor do pagamento",
-                        "type": "string"
+                        "type": "number"
                     },
-                    "c_descpagam": {
+                    "descricao": {
                         "description": "descrição do pagamento",
-                        "type": "float"
-                    },
-                    "c_formpagam": {
-                        "description": "forma de pagamento",
-                        "type": "int"
-                    },
-                    "d_datapagam": {
-                        "description": "data de pagamento",
-                        "type": "float"
-                    },
-                    "n_codiapart": {
-                        "description": "id apartamento",
                         "type": "string"
+                    },
+                    "forma_pagamemto": {
+                        "description": "forma de pagamento",
+                        "type": "string",
+                        "enum": [
+                            "transferência",
+                            "cash"
+                        ]
+                    },
+                    "data_pagamemto": {
+                        "description": "data de pagamento",
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "banco": {
+                        "description": "denominacao do banco para onde transferio, se a forma de pagamento foi transferência",
+                        "type": "string",
+                        "enum": [
+                            "BFA",
+                            "BAI",
+                            "BIC",
+                            "BPC",
+                            "BCA",
+                            "BIR",
+                            "BNI",
+                            "BPR",
+                            "BDA",
+                            "BMF",
+                            "BPPH",
+                            "SBA",
+                            "BPA",
+                            "BCI",
+                            "BANC"
+                        ]
                     }
                 },
                 "type": "object"

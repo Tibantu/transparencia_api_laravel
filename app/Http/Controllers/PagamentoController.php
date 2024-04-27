@@ -24,12 +24,12 @@ class PagamentoController extends Controller
   *             @OA\Schema(
   *                     schema="Pagamento",
   *                     title="Pagamento",
-  *                     required={"nome", "apelido", "login", "email", "password"},
-  *                     @OA\Property(property="n_valopagam",type="string",description="valor do pagamento"),
-  *                     @OA\Property(property="c_descpagam",type="float",description="descrição do pagamento"),
-  *                     @OA\Property(property="c_formpagam",type="int",description="forma de pagamento"),
-  *                     @OA\Property(property="d_datapagam",type="float",description="data de pagamento"),
-  *                     @OA\Property(property="n_codiapart",type="string",description="id apartamento"),
+  *                     required={"descricao", "valor", "forma_pagamemto", "data_pagamemto"},
+  *                     @OA\Property(property="valor",type="number",description="valor do pagamento"),
+  *                     @OA\Property(property="descricao",type="string",description="descrição do pagamento"),
+  *                     @OA\Property(property="forma_pagamemto",type="string", enum={"transferência","cash"},description="forma de pagamento"),
+  *                     @OA\Property(property="data_pagamemto",type="string", format="date",description="data de pagamento"),
+  *                     @OA\Property(property="banco",type="string",   enum={"BFA","BAI","BIC","BPC","BCA","BIR","BNI","BPR","BDA","BMF","BPPH","SBA","BPA","BCI","BANC"},description="denominacao do banco para onde transferio, se a forma de pagamento foi transferência"),
   *               )
   */
 
@@ -102,7 +102,7 @@ class PagamentoController extends Controller
   }
   /**
    * @OA\Get(
-   *     tags={"/pagamentos"},
+   *     tags={"pagamentos"},
    *     path="/pagamentos",
    *     summary="listar pagamentos do morador logado",
    *     security={{"bearerAuth": {} }},
@@ -152,7 +152,7 @@ class PagamentoController extends Controller
 
     /**
    * @OA\Get(
-   *     tags={"/pagamentos"},
+   *     tags={"pagamentos"},
    *     path="/pagamentos/morador/{idMorador}",
    *     summary="mostrar pagamento",
    *     security={{ "bearerAuth": {}}},
@@ -186,21 +186,26 @@ class PagamentoController extends Controller
 
   /**
    * @OA\Post(
-   *     tags={"/pagamentos"},
-   *     path="/pagamentos",
+   *     tags={"pagamentos"},
+   *     path="/pagamentos/divida/{idDivida}",
    *     summary="registrar pagamento",
    *     security={{"bearerAuth": {} }},
+   *     @OA\Parameter(
+   *         name="idDivida",
+   *         in="path",
+   *         description="ID da Divida selecionada a liquidar",
+   *         required=true,
+   *         @OA\Schema(
+   *             type="integer"
+   *         )
+   *     ),
    *     @OA\RequestBody(
    *       required=true,
-   *       @OA\JsonContent(
-   *          required={"n_valopagam","c_descpagam","c_formpagam","d_datapagam","n_codiapart","n_codidivid"},
-   *          type="object",
-   *          @OA\Property(property="n_valopagam",type="string",description="valor do pagamento"),
-   *          @OA\Property(property="c_descpagam",type="float",description="descrição do pagamento"),
-   *          @OA\Property(property="c_formpagam",type="int",description="forma de pagamento"),
-   *          @OA\Property(property="d_datapagam",type="float",description="data de pagamento"),
-   *          @OA\Property(property="n_codiapart",type="string",description="id apartamento"),
-   *       )
+   *         description="Cria pagamento para liquidar dívida selecionada",
+   *         @OA\MediaType(
+   *             mediaType="multipart/form-data",
+   *             @OA\Schema(ref="#/components/schemas/Pagamento")
+   *         )
    *     ),
    *
    *     @OA\Response(response="201", description="pagamento registrado com sucesso"),
@@ -225,11 +230,10 @@ class PagamentoController extends Controller
 
 
       $isValidData = Validator::make($req->all(), [
-        'valor'  => 'required',
+        'valor'  => 'required|numeric',
         'descricao'  => 'required|string',
         'forma'  => 'required|string',
-        'data'  => 'required',
-        'banco'
+        'data'  => 'required|date'
       ]);
       if ($isValidData->fails())
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
@@ -330,7 +334,7 @@ class PagamentoController extends Controller
   }
   /**
    * @OA\Get(
-   *     tags={"/pagamentos"},
+   *     tags={"pagamentos"},
    *     path="/pagamentos/{pagamento}",
    *     summary="mostrar pagamento",
    *     security={{ "bearerAuth": {}}},
@@ -377,7 +381,7 @@ class PagamentoController extends Controller
 
   /**
    * @OA\GET(
-   *     tags={"/pagamentos"},
+   *     tags={"pagamentos"},
    *     path="/pagamentos/p/{campoDaConsulta}",
    *     summary="consultar pagamentos no intervalo das datas inicial e final, de alguma propriedade do tipo date do pagamento",
    *       security={{"bearerAuth": {} }},
@@ -396,14 +400,14 @@ class PagamentoController extends Controller
    *         in="query",
    *         description="data [inícial] X do pagamento no fotmato: Ano-mes-dia",
    *         required=false,
-   *         @OA\Schema(type="date")
+   *         @OA\Schema(type="string", format="date")
    *     ),
    *       @OA\Parameter(
    *         name="df",
    *         in="query",
    *         description="data [final] X do pagamento no fotmato: Ano-mes-dia",
    *         required=false,
-   *         @OA\Schema(type="date")
+   *         @OA\Schema(type="string", format="date")
    *     ),
    *     @OA\Response(response="200", description=""),
    *     @OA\Response(response="412", description="O campo  X Não é permitido."),

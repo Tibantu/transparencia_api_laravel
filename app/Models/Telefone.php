@@ -8,19 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Telefone extends Model
 {
   protected $table = "tratelef";
-  protected $primaryKey = 'n_codifunci';
+  protected $primaryKey = 'n_coditelef';
   public $timestamps = false;
   protected $fillable = [
-    'n_codifunci',
-    'c_nomefunci',
-     'c_apelfunci',
-     'create_at',
-     'updated_at',
-     'c_actifunci',
-     'n_salafunci',
-     'd_dacrfunci',
-     'n_codientid',
-     'c_nomeentid'
+    'n_coditelef',
+    'c_numetelef',
+    'c_emaitelef',
+    'n_codientid',
+    'c_nomeentid',
+    'c_numatelef'
   ];
 
     use HasFactory;

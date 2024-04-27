@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Validator;
 
 class FuncionarioController extends Controller
 {
+
+  /**
+  *             @OA\Schema(
+  *                     schema="Funcionario",
+  *                     title="Funcionario",
+  *                     required={"nome", "apelido", "salario", "funcao","email", "telefone"},
+  *                     @OA\Property(property="nome",type="string",example="Matias Amaral",description="nome do funcionario"),
+  *                     @OA\Property(property="apelido",type="string",description="ultimo nome do funcionario"),
+  *                     @OA\Property(property="salario",type="number",description="valor do salario mensal do funcionario em AKZ"),
+  *                     @OA\Property(property="funcao", type="string", example="example_user", description="funcao do funcionario"),
+  *                     @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do funcionario"),
+  *                     @OA\Property(property="telefone", type="string", example="92222956", description="telefone do funcionario"),
+        *               @OA\Property(property="telefone_alternativo", type="string", description="telefone alternativo do funcionario")
+  *               )
+  */
   /**METODOTOS PRIVADO*/
 
   private function getPredio(){
@@ -97,23 +112,15 @@ class FuncionarioController extends Controller
         *     security={{"bearerAuth": {} }},
         *     @OA\RequestBody(
         *       required=true,
-        *       @OA\JsonContent(
-        *          type="object",
-        *          required={"login", "funcao", "salario", "apelido", "nome"},
-        *          @OA\Property(property="nome",type="string",description="nome do funcionario"),
-        *          @OA\Property(property="apelido",type="string",description="ultimo nome do funcionario"),
-        *          @OA\Property(property="salario",type="string",description="valor do salario mensal em AKZ do funcionario"),
-        *            @OA\Property(property="funcao", type="string", example="example_user", description="funcao do funcionario"),
-        *            @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do funcionario"),
-        *            @OA\Property(property="telefone", type="string", example="92222956", description="telefone do funcionario"),
-        *            @OA\Property(property="telefone_alternativo", type="string", example="92222956", description="telefone alternativo do funcionario")
-        *       )
+        *         @OA\MediaType(
+        *             mediaType="multipart/form-data",
+        *             @OA\Schema(ref="#/components/schemas/Funcionario")
+        *         )
         *     ),
         *
-        *     @OA\Response(response="201", description="morador cadastrado com sucesso"),
+        *     @OA\Response(response="201", description="funcionario cadastrado com sucesso"),
         *     @OA\Response(response="412", description="Erro ao validar os dados"),
-        *     @OA\Response(response="404", description="apartamento não encontrado"),
-        *     @OA\Response(response="405", description="apartamento oucupado"),
+        *     @OA\Response(response="404", description="prédio não encontrado"),
         *     @OA\Response(response="500", description="Erro no servidor")
         * )
      */
@@ -121,19 +128,18 @@ class FuncionarioController extends Controller
     {
       $isValidData = Validator::make($req->all(), [
           //dados do funcionario
-          "nome" => 'required|string',
+            "nome" => 'required|string',
             "apelido" => 'required|string',
-            "salario" => 'required|integer',
+            "salario" => 'required|numeric',
             "funcao" => 'required|string',
            //dados de contacto
             "telefone" => 'required|string',
-            "telefone_alternativo" => 'string',
             "email" => 'string'
         ]);
 
         if ($isValidData->fails())
             return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
-
+            //dd($req->email);
             try {
               $predio = $this->getPredio();
               if(!$predio){

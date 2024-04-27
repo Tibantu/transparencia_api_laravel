@@ -24,7 +24,7 @@ class ApartamentoController extends Controller
   *                     required={"porta", "tipo"},
   *                     @OA\Property(property="porta",type="string",description="identificaçao da porta do apartamento", example="A-22"),
   *                     @OA\Property(property="tipo",type="string",enum={"T1","T2","T3","T4","T5","T6","T6","T7","T8"}, description="tipologia segundo a quantidade de quarto"),
-  *                     @OA\Property(property="andar",type="integer",description="andar do apartamento no prédio"),
+  *                     @OA\Property(property="andar",type="integer",description="andar do prédio onde está o apartamento"),
   *             )
   */
   /**METODOTOS PRIVADO*/
@@ -65,7 +65,7 @@ class ApartamentoController extends Controller
 
     /**
     * @OA\Get(
-        *     tags={"/apartamentos"},
+        *     tags={"apartamentos"},
         *     path="/apartamentos",
         *     summary="mostrar apartamentos do predio ",
         *     security={{"bearerAuth": {} }},
@@ -91,7 +91,7 @@ class ApartamentoController extends Controller
     }
     /**
     * @OA\Post(
-        *     tags={"/apartamentos"},
+        *     tags={"apartamentos"},
         *     path="/apartamentos",
         *     summary="Registrar um apartamento",
         *     security={{"bearerAuth": {} }},
@@ -115,8 +115,7 @@ class ApartamentoController extends Controller
 
         $isValidData = Validator::make($req->all(), [
             'porta'=> 'required|string|max:5',
-            'tipo'=>  'required|string|max:5',
-            'andar'=> 'integer|max:5',
+            'tipo'=>  'required|string|max:5'
         ]);
         try {
             $predio = $this->getPredio();//Predio::find($idPredio);
@@ -134,7 +133,7 @@ class ApartamentoController extends Controller
             $data = [
               'c_portapart' => $req->porta,
               'c_tipoapart' => $req->tipo,
-              'c_tipoapart' => $req->andar
+              'n_andapredi' => $req->andar
             ];
 
             $data['n_codipredi'] = (int) $predio->n_codipredi;
@@ -164,7 +163,7 @@ class ApartamentoController extends Controller
     }
         /**
     * @OA\Put(
-        *     tags={"/apartamentos"},
+        *     tags={"apartamentos"},
         *     path="/apartamentos/predio/{idPredio}",
         *     summary="Registrar uma apartamento",
         *     security={{"bearerAuth": {} }},
@@ -207,7 +206,7 @@ class ApartamentoController extends Controller
     }
 /**
     * @OA\Get(
-        *     tags={"/apartamentos"},
+        *     tags={"apartamentos"},
         *     path="/apartamentos/{idApartamento}",
         *     summary="mostrar apartamento",
         *     security={{ "bearerAuth": {}}},
@@ -238,7 +237,7 @@ class ApartamentoController extends Controller
 
     /**
     * @OA\Get(
-        *     tags={"/apartamentos"},
+        *     tags={"apartamentos"},
         *     path="/apartamentos/morador",
         *     summary="mostrar apartamento do morador logado",
         *     security={{ "bearerAuth": {}}},
