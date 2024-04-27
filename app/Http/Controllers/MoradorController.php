@@ -13,22 +13,6 @@ use Illuminate\Support\Facades\Validator;
 
 class MoradorController extends Controller
 {
-
-  /**
-  *             @OA\Schema(
-  *                     schema="Morador",
-  *                     title="Morador",
-  *                     required={"nome", "apelido", "login", "email", "password"},
-  *                     @OA\Property(property="nome",type="string",description="nome do morador"),
-  *                     @OA\Property(property="apelido",type="string",description="ultimo nome do morador"),
-  *                     @OA\Property(property="bi",type="string",description="bilhete de identidade do morador"),
-  *                     @OA\Property(property="login", type="string", example="example_user", description="Login do usuário"),
-  *                     @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do usuário"),
-  *                     @OA\Property(property="password", type="string", example="password123", description="Senha do usuário")
-  *               )
-  */
-
-
   private function getPredio(){
 
     //dd(auth()->user());

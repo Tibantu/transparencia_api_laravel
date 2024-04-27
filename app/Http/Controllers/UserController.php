@@ -20,44 +20,6 @@ use function PHPUnit\Framework\isNull;
 
 class UserController extends Controller
 {
-  /**
-  *             @OA\Schema(
-  *                     schema="User",
-  *                     title="User",
-  *                     required={"login", "email", "password"},
-  *                     @OA\Property(property="login", type="string", example="example_user", description="nome de acesso do usuário"),
-  *                     @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do usuário"),
-  *                     @OA\Property(property="password", type="string", example="password123", description="Senha do usuário")
-  *               )
-  */
-
-  /**
-  *             @OA\Schema(
-  *                     schema="Coordenador",
-  *                     title="Coordenador",
-  *                     required={"nome", "apelido", "descricao_do_predio", "entrada_do_predio", "login", "email", "password"},
-  *                     @OA\Property(property="nome", type="string", example="Manuel Alfredo",description="nome do coordenador"),
-  *                     @OA\Property(property="apelido", type="string", example="Tunguno",description="ultimo nome do coordenador"),
-  *                     @OA\Property(property="login", type="string", example="example_user", description="nome de acesso do usuário"),
-  *                     @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do usuário"),
-  *                     @OA\Property(property="password", type="string", example="password123", description="Senha do usuário"),
-  *                     @OA\Property(property="descricao_do_bloco", type="string", example="K",description="identificacao do bloco, no caso de nao passares pela url (náo registrado)"),
-  *                     @OA\Property(property="descricao_do_predio", type="string",example="A-22", description="identificacao do prédios"),
-  *                     @OA\Property(property="entrada_do_predio", type="string", example="1", description="identificacao da entrada do predio, no caso de prédios gémios"),
-  *               )
-  */
-
-
-  /**
-  *             @OA\Schema(
-  *                     schema="Predio",
-  *                     title="Predio",
-  *                     required={"descricao_do_predio", "entrada_do_predio"},
-  *                     @OA\Property(property="descricao_do_predio", type="string", description="identificacao do prédios"),
-  *                     @OA\Property(property="entrada_do_predio", type="string", example="A", description="identificacao da entrada do predio, no caso de prédios gémios"),
-  *               )
-  */
-
   public static function criar($login, $password, $n_codimorad, $email){
     $dadosUser = [
       'c_logiusuar' => $login,

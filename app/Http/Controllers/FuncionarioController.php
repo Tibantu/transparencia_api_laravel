@@ -14,21 +14,6 @@ use Illuminate\Support\Facades\Validator;
 
 class FuncionarioController extends Controller
 {
-
-  /**
-  *             @OA\Schema(
-  *                     schema="Funcionario",
-  *                     title="Funcionario",
-  *                     required={"nome", "apelido", "salario", "funcao","email", "telefone"},
-  *                     @OA\Property(property="nome",type="string",example="Matias Amaral",description="nome do funcionario"),
-  *                     @OA\Property(property="apelido",type="string",description="ultimo nome do funcionario"),
-  *                     @OA\Property(property="salario",type="number",description="valor do salario mensal do funcionario em AKZ"),
-  *                     @OA\Property(property="funcao", type="string", example="example_user", description="funcao do funcionario"),
-  *                     @OA\Property(property="email", type="string", format="email", example="example@example.com", description="Email do funcionario"),
-  *                     @OA\Property(property="telefone", type="string", example="92222956", description="telefone do funcionario"),
-        *               @OA\Property(property="telefone_alternativo", type="string", description="telefone alternativo do funcionario")
-  *               )
-  */
   /**METODOTOS PRIVADO*/
 
   private function getPredio(){

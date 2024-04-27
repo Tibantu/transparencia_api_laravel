@@ -12,7 +12,7 @@ class TaxaController extends Controller
 {
     /**
     * @OA\Get(
-        *     tags={"/taxas"},
+        *     tags={"taxas"},
         *     path="/taxas",
         *     summary="mostrar um Taxas do coordenador logado",
         *     security={{ "bearerAuth": {}}},
@@ -42,22 +42,17 @@ class TaxaController extends Controller
     }
 /**
     * @OA\Post(
-        *     tags={"/taxas"},
+        *     tags={"taxas"},
         *     path="/taxas",
         *     summary="registrar taxa",
         *     security={{"bearerAuth": {} }},
         *     @OA\RequestBody(
         *       required=true,
-        *       @OA\JsonContent(
-        *          required={"descricao","valor_taxa","percentagem_valor_multa","data_envio","frequencia_envio"},
-        *          type="object",
-        *          @OA\Property(property="descricao",type="string",description="descricão da taxa"),
-        *          @OA\Property(property="valor_taxa",type="float",description="valor da taxa"),
-        *          @OA\Property(property="percentagem_valor_multa",type="float",description="valor da multa, percentagem"),
-        *          @OA\Property(property="data_envio",type="date",description="data de início de envio da taxa"),
-        *          @OA\Property(property="frequencia_envio",type="string",description="frequência de envio da taxa"),
-        *          @OA\Property(property="prazo",type="Integer",description="prazo em dias, para o pagamento da taxa"),
-        *       )
+        *         description="Cria Taxas com cobrancas periódicas",
+        *         @OA\MediaType(
+        *             mediaType="multipart/form-data",
+        *             @OA\Schema(ref="#/components/schemas/Taxa")
+        *         )
         *     ),
         *
         *     @OA\Response(response="201", description="taxa registrada com sucesso"),
@@ -81,11 +76,8 @@ class TaxaController extends Controller
         [
             'descricao' => 'required|string',
             'valor_taxa' => 'required|Numeric',
-            'percentagem_valor_multa' => 'Integer',
-            'dia_envio' => 'Integer',
-            'data_envio' => 'date',
-            'frequencia_envio' => 'required|string',
-            'prazo' => 'Integer'
+            'data_envio' => 'required|date',
+            'frequencia_envio' => 'required|string'
         ]);
     if ($isValidData->fails())
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
@@ -110,7 +102,7 @@ class TaxaController extends Controller
 
  /**
     * @OA\Delete(
-        *     tags={"/taxas"},
+        *     tags={"taxas"},
         *     path="/taxas/{taxa}",
         *     summary="deletar taxa",
         *       security={{"bearerAuth": {} }},
@@ -140,7 +132,7 @@ class TaxaController extends Controller
     }
 /**
     * @OA\Put(
-        *     tags={"/taxas"},
+        *     tags={"taxas"},
         *     path="/taxas/{taxa}",
         *     summary="atualizar taxa",
         *     security={{"bearerAuth": {} }},
@@ -188,7 +180,7 @@ class TaxaController extends Controller
     }
 /**
     * @OA\Get(
-        *     tags={"/taxas"},
+        *     tags={"taxas"},
         *     path="/taxas/{taxa}",
         *     summary="mostrar um Taxa",
         *     security={{ "bearerAuth": {}}},

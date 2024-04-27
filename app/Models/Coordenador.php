@@ -29,10 +29,11 @@ class Coordenador extends Model
     }
     public function predio()
     {
-        /*if($this->c_nomeentid != 'trapredi'){
-          return null;
-        }*/
         return $this->belongsTo(Predio::class, 'n_codicoord', 'n_codicoord');
+    }
+    public function bancos()
+    {
+        return $this->hasMany(Banco::class, 'n_codicoord', 'n_codicoord');
     }
     public function taxas()
     {

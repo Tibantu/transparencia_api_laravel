@@ -11,22 +11,9 @@ use Illuminate\Support\Facades\Validator;
 
 class DespesaController extends Controller
 {
-
-  /**
-  *             @OA\Schema(
-  *                     schema="Despesa",
-  *                     title="Despesa",
-  *                     required={"objectivo", "valor", "fonte", "data"},
-  *                     @OA\Property(property="objectivo",type="string",description="objectivo da despesa",example="pagamento do jardineiro para para mes de abril"),
-  *                     @OA\Property(property="valor",type="number",description="valores da despesa"),
-  *                     @OA\Property(property="fonte",type="int",default="caixa" ,description="fonte dos valores", enum={"caixa","BFA","BAI","BIC","BPC","BCA","BIR","BNI","BPR","BDA","BMF","BPPH","SBA","BPA","BCI","BANC"}),
-  *                     @OA\Property(property="data",type="string", format="date",description="data do saque dos valores")
-  *             )
-  */
-
 /**
     * @OA\Get(
-        *     tags={"/despesas"},
+        *     tags={"despesas"},
         *     path="/despesas",
         *     summary="listar despesas",
         *     security={{"bearerAuth": {} }},
@@ -60,7 +47,7 @@ class DespesaController extends Controller
 
             /**
     * @OA\Post(
-        *     tags={"/despesas"},
+        *     tags={"despesas"},
         *     path="/despesas",
         *     summary="Registrar uma despesa",
         *     security={{"bearerAuth": {} }},
@@ -114,7 +101,7 @@ class DespesaController extends Controller
 }
    /**
     * @OA\Delete(
-        *     tags={"/despesas"},
+        *     tags={"despesas"},
         *     path="/despesas/{despesa}",
         *     summary="apagar uma despesas",
         *       security={{"bearerAuth": {} }},
@@ -158,7 +145,7 @@ class DespesaController extends Controller
     }
         /**
     * @OA\Get(
-        *     tags={"/despesas"},
+        *     tags={"despesas"},
         *     path="/despesas/{despesa}",
         *     summary="mostrar um despesa",
         *     security={{ "bearerAuth": {}}},

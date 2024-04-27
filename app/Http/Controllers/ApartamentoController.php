@@ -17,16 +17,6 @@ use function PHPUnit\Framework\isNull;
 
 class ApartamentoController extends Controller
 {
-  /**
-  *             @OA\Schema(
-  *                     schema="Apartamento",
-  *                     title="Apartamento",
-  *                     required={"porta", "tipo"},
-  *                     @OA\Property(property="porta",type="string",description="identificaçao da porta do apartamento", example="A-22"),
-  *                     @OA\Property(property="tipo",type="string",enum={"T1","T2","T3","T4","T5","T6","T6","T7","T8"}, description="tipologia segundo a quantidade de quarto"),
-  *                     @OA\Property(property="andar",type="integer",description="andar do prédio onde está o apartamento"),
-  *             )
-  */
   /**METODOTOS PRIVADO*/
 
   private function getPredio(){

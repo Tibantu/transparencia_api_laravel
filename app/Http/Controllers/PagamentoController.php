@@ -20,19 +20,6 @@ use PhpParser\Node\Expr\Throw_;
 class PagamentoController extends Controller
 {
 
-    /**
-  *             @OA\Schema(
-  *                     schema="Pagamento",
-  *                     title="Pagamento",
-  *                     required={"descricao", "valor", "forma_pagamemto", "data_pagamemto"},
-  *                     @OA\Property(property="valor",type="number",description="valor do pagamento"),
-  *                     @OA\Property(property="descricao",type="string",description="descrição do pagamento"),
-  *                     @OA\Property(property="forma_pagamemto",type="string", enum={"transferência","cash"},description="forma de pagamento"),
-  *                     @OA\Property(property="data_pagamemto",type="string", format="date",description="data de pagamento"),
-  *                     @OA\Property(property="banco",type="string",   enum={"BFA","BAI","BIC","BPC","BCA","BIR","BNI","BPR","BDA","BMF","BPPH","SBA","BPA","BCI","BANC"},description="denominacao do banco para onde transferio, se a forma de pagamento foi transferência"),
-  *               )
-  */
-
   public array $camposAceitaveisNaConsulta = ['d_datapagam', 'd_dacrpagam', 'd_dacopagam'];
   private array $listaDeActionsPorCampo;
 

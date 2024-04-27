@@ -13,7 +13,7 @@ class BancoController extends Controller
 {
     /**
     * @OA\Get(
-        *     tags={"/bancos"},
+        *     tags={"bancos"},
         *     path="/bancos",
         *     summary="listar bancos",
         *     security={{"bearerAuth": {} }},
@@ -25,26 +25,21 @@ class BancoController extends Controller
     {
         try {
             $user = auth()->user();
-            $data = response()->json(['bancos' => []], 200);
+            $bancos = null;
 
             if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
               $coordenador = Coordenador::find($user->n_codientid);
-              if (!$coordenador) {
-                return $data = response()->json(['message' => 'Coordenador nao encontrado'], 404);
-            }else{
-              $predio = Predio::where('n_codicoord', $user->n_codientid);
+              if (!$coordenador)
+                  return $data = response()->json(['message' => 'Coordenador nao encontrado'], 404);
+
+                  $bancos = $coordenador->bancos;
+
             }
 
-            if (!$predio) {
-              return $data = response()->json(['message' => 'predio nao encontrado'], 404);
-            }
+            if (!$bancos)
+                  return response()->json(['message' => 'nao autorizado'], 404);
+            return response()->json(['bancos' => $bancos], 200);
 
-              $bancos = $predio->bancos;
-
-              $data = response()->json(['bancos' => $bancos], 200);
-            }
-
-            return $data;
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -52,20 +47,18 @@ class BancoController extends Controller
 
     /**
     * @OA\Post(
-        *     tags={"/bancos"},
+        *     tags={"bancos"},
         *     path="/bancos",
         *     summary="Cadastrar bancos",
         *     description="cadastrar bancos normalmente pertence a um coordenador",
         *     security={{"bearerAuth": {} }},
         *     @OA\RequestBody(
         *       required=true,
-        *       @OA\JsonContent(
-        *          type="object",
-        *          @OA\Property(property="c_entibanco",type="string",default="BAI",description="entidade bancária a simular"),
-        *          @OA\Property(property="n_codicoord",type="int",description="id do coordenador"),
-        *          @OA\Property(property="n_codientid",type="int",default=null,description="id da entidade proprietario do banco se não for um coordenador"),
-        *          @OA\Property(property="c_nomeentid",type="string",default=null,description="nome da entidade proprietario do banco se não for um coordenador")
-        *       )
+        *         description="Cria banco para coordenador",
+        *         @OA\MediaType(
+        *             mediaType="multipart/form-data",
+        *             @OA\Schema(ref="#/components/schemas/Banco")
+        *         )
         *     ),
         *
         *     @OA\Response(response="201", description="Banco cadastrado com sucesso"),
@@ -77,28 +70,27 @@ class BancoController extends Controller
     {
         $isValidData = Validator::make($req->all(),
         [
-            'c_entibanco' => 'required|string',
-            'c_descbanco',
-            'n_saldbanco',
-            'd_dacrbanco',
-            'n_codicoord',
-            'n_codientid',
-            'c_nomeentid',
-            'create_at',
-            'updated_at'
+            'banco' => 'required|string'
         ]);
         if ($isValidData->fails())
             return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
 
     try {
-        $predio = Predio::find($req->input('n_codipredi'));
-        $data = $req->all();
-        $data['n_codientid'] = (int) $predio->n_codipredi;
-        $data['n_codicoord'] = (int) $predio->n_codicoord;
-        $data['c_nomeentid'] = 'trapredi';
+        $user = auth()->user();
 
-        Banco::create($data);
-        // dd($data);
+        if ($user->c_nomeentid == 'tracoord' && $user->n_codientid != null) {
+          $coordenador = Coordenador::find($user->n_codientid);
+        }
+        if (!$coordenador)
+        return $data = response()->json(['message' => 'Coordenador nao encontrado'], 404);
+
+        Banco::create(        [
+          'c_entibanco' => $req->banco,
+          'c_descbanco' => $req->descricao,
+          'n_saldbanco' => $req->saldo,
+          'n_codicoord' => $coordenador->n_codicoord
+      ]);
+
         return response()->json(['message' => "Banco criado com sucesso!"], 201);;
     } catch (\Illuminate\Database\QueryException $e) {
         return response()->json(['message' => $e->getMessage()], 500);
@@ -107,7 +99,7 @@ class BancoController extends Controller
 
     /**
     * @OA\Delete(
-        *     tags={"/bancos"},
+        *     tags={"bancos"},
         *     path="/bancos/{banco}",
         *     summary="apagar um banco",
         *     security={{"bearerAuth": {} }},
@@ -151,7 +143,7 @@ class BancoController extends Controller
     }
         /**
     * @OA\Get(
-        *     tags={"/bancos"},
+        *     tags={"bancos"},
         *     path="/bancos/{banco}",
         *     summary="mostrar um banco",
         *     security={{ "bearerAuth": {}}},

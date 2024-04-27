@@ -12,16 +12,6 @@ use Illuminate\Support\Facades\Validator;
 
 class NotificacaoController extends Controller
 {
-  /**
-  *             @OA\Schema(
-  *                     schema="Notificacao",
-  *                     title="Notificacao",
-  *                     required={"mensagem", "tipo"},
-  *                     @OA\Property(property="mensagem", type="string", example="reuniao no data 20/05/2025"),
-  *                     @OA\Property(property="tipo", type="string", enum={"aviso","geral","notificação"}, description="Tipo de notificação (valores permitidos: aviso, geral, notificação)"),
-  *               )
-  */
-
   /**METODOTOS PRIVADO*/
 
   private function validaIDs($partamentosIds, $apartamentos) {
