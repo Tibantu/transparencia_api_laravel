@@ -663,7 +663,7 @@
         "/caixas/coord": {
             "get": {
                 "tags": [
-                    "/caixas"
+                    "caixas"
                 ],
                 "summary": "listar caixas do predio do cooord logado",
                 "operationId": "340b456e3d17693b1f9b5d2cb79be852",
@@ -688,7 +688,7 @@
         "/caixas/{caixa}": {
             "get": {
                 "tags": [
-                    "/caixas"
+                    "caixas"
                 ],
                 "summary": "mostrar um Taxa",
                 "operationId": "f10b96de9c6913b2546c072228c5e3bb",
@@ -905,7 +905,7 @@
         "/contas/morador": {
             "get": {
                 "tags": [
-                    "/contas"
+                    "contas"
                 ],
                 "summary": "listar conta do apartamento do morador logado",
                 "operationId": "14bfe72b0c847a48851376897f31567e",
@@ -930,7 +930,7 @@
         "/contas/{conta}": {
             "get": {
                 "tags": [
-                    "/contas"
+                    "contas"
                 ],
                 "summary": "mostrar uma conta",
                 "operationId": "077f84b878e9c4e69e8e1535a6d55a90",
@@ -1117,7 +1117,7 @@
         "/dividas": {
             "get": {
                 "tags": [
-                    "/dividas"
+                    "dividas"
                 ],
                 "summary": "listar dividas do morador logado",
                 "operationId": "b4538aab95009042d55dbf029c06272f",
@@ -1136,16 +1136,16 @@
                 ]
             }
         },
-        "/dividas/apartamento/{idApartamento}": {
+        "/dividas/apartamento/{idapartamento}": {
             "get": {
                 "tags": [
-                    "/dividas"
+                    "dividas"
                 ],
-                "summary": "mostrar divida do apartamento",
-                "operationId": "97eed662cca3c2b333f6394a3c20e9a7",
+                "summary": "LISTAR DIVIDAS PARA O COORDENADOR",
+                "operationId": "6deb24c4aab0f50abdae6693e542188d",
                 "parameters": [
                     {
-                        "name": "apartamento",
+                        "name": "idapartamento",
                         "in": "path",
                         "description": "id do apartamento",
                         "required": false,
@@ -1159,7 +1159,7 @@
                         "description": "sucesso"
                     },
                     "404": {
-                        "description": "apartamento não encontrado"
+                        "description": "caixa não encontrado"
                     },
                     "500": {
                         "description": "Erro no servidor"
@@ -1175,7 +1175,7 @@
         "/dividas/{divida}": {
             "get": {
                 "tags": [
-                    "/dividas"
+                    "dividas"
                 ],
                 "summary": "mostrar divida",
                 "operationId": "925c0a4bf777c22392daa1ac813ab416",

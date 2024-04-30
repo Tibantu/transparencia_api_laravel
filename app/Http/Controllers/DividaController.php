@@ -12,7 +12,7 @@ class DividaController extends Controller
 {
     /**
      * @OA\Get(
-     *     tags={"/dividas"},
+     *     tags={"dividas"},
      *     path="/dividas",
      *     summary="listar dividas do morador logado",
      *     security={{"bearerAuth": {} }},
@@ -22,18 +22,21 @@ class DividaController extends Controller
      */
     public function getAll()
     {
-
+//PARA O MORADOR
         try {
               $user = auth()->user();
               $data = response()->json(['message' => 'nao autorizado'], 200);
 
               if ($user->c_nomeentid == 'tramorad' && $user->n_codientid != null) {
                   $apartamento = Apartamento::where('n_codimorad', $user->n_codientid)->first();
-                  if ($apartamento) {
-                      $data = response()->json(['dividas' => $apartamento->dividas], 200);
-                  }else{
-                    $data = response()->json(['message' => 'nemhuma dívida encontrada'], 200);
-                  }
+                  if (!$apartamento)
+                      return response()->json(['message' => "apartamento não encontrada!"], 404);
+                  $dividas = $apartamento->dividas()->paginate(5);
+                  if (!$dividas)
+                    return response()->json(['message' => "dividas não encontrada!"], 404);
+
+                  $data = response()->json(['dividas' => $dividas ], 200);
+
               }
 
               return $data;
@@ -42,36 +45,43 @@ class DividaController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-    /**
-     * @OA\Get(
-     *     tags={"/dividas"},
-     *     path="/dividas/apartamento/{idApartamento}",
-     *     summary="mostrar divida do apartamento",
-     *     security={{ "bearerAuth": {}}},
-     *     @OA\Parameter(
-     *         name="apartamento",
-     *         in="path",
-     *         description="id do apartamento",
-     *         required=false,
-     *         @OA\Schema(type="int")
-     *     ),
-     *     @OA\Response(response="200", description="sucesso"),
-     *     @OA\Response(response="404", description="apartamento não encontrado"),
-     *     @OA\Response(response="500", description="Erro no servidor"),
-     * )
+
+   /**
+    * @OA\Get(
+        *     tags={"dividas"},
+        *     path="/dividas/apartamento/{idapartamento}",
+        *     summary="LISTAR DIVIDAS PARA O COORDENADOR",
+        *     security={{ "bearerAuth": {}}},
+        *     @OA\Parameter(
+        *         name="idapartamento",
+        *         in="path",
+        *         description="id do apartamento",
+        *         required=false,
+        *         @OA\Schema(type="int")
+        *     ),
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="404", description="caixa não encontrado"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
      */
     public function getAllByApartamento($idApartamento)
     {
-        try {
+//PARA O COORDENADOR
+      try {
             $apartamento = Apartamento::find($idApartamento);
+
             if (!$apartamento)
                 return response()->json(['message' => "Apartamento não encontrado!"], 404);
+            $dividas = $apartamento->dividas()->paginate(5);
+                //echo "a3p3art: ".$apartamento;
+            if (!$dividas)
+                return response()->json(['message' => "dividas não encontrada!"], 404);
 
-            return response()->json(['dividas' => Divida::where('n_codiconta', '=', $apartamento->n_codiconta)->get()], 404);
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-    }
+            return response()->json(['dividas' => $dividas], 200);
+      } catch (QueryException $e) {
+          return response()->json(['message' => $e->getMessage()], 500);
+      }
+  }
 
     public function delete($id)
     {
@@ -101,7 +111,7 @@ class DividaController extends Controller
     }
     /**
      * @OA\Get(
-     *     tags={"/dividas"},
+     *     tags={"dividas"},
      *     path="/dividas/{divida}",
      *     summary="mostrar divida",
      *     security={{ "bearerAuth": {}}},

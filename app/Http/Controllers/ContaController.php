@@ -12,7 +12,7 @@ class ContaController extends Controller
 
 /**
     * @OA\Get(
-        *     tags={"/contas"},
+        *     tags={"contas"},
         *     path="/contas/morador",
         *     summary="listar conta do apartamento do morador logado",
         *     security={{"bearerAuth": {} }},
@@ -27,23 +27,24 @@ class ContaController extends Controller
     //dd("ola");
     try {
       $user = auth()->user();
+      $conta = null;
 
-      $data = response()->json(['message' => "nao autorizado"], 404);
       if ($user->c_nomeentid == 'tramorad' && $user->n_codientid != null) {
           $morador = Morador::find($user->n_codientid);
           if (!$morador) {
-              return $data = response()->json(['message' => 'morador nao encontrado'], 404);
+              return response()->json(['message' => 'morador nao encontrado'], 404);
           }
+          $conta = $morador->apartamento->conta;
       }
-      $conta = $morador->apartamento->conta;
+      else
+      {
+        return response()->json(['message' => "nao autorizado"], 404);
+      }
 
-          if (!$conta) {
-            return $data = response()->json(['message' => 'conta nao encontrado'], 404);
-          }
-          $data = response()->json(['conta' => $conta], 200);
-
-
-      return $data;
+      if (!$conta) {
+        return $data = response()->json(['message' => 'conta nao encontrada'], 404);
+      }
+      return response()->json(['conta' => $conta], 200);
 
     } catch (QueryException $e) {
         return response()->json(['message' => $e->getMessage()], 500);
@@ -51,7 +52,7 @@ class ContaController extends Controller
   }
  /**
     * @OA\Get(
-        *     tags={"/contas"},
+        *     tags={"contas"},
         *     path="/contas/{conta}",
         *     summary="mostrar uma conta",
         *     security={{ "bearerAuth": {}}},
@@ -70,11 +71,11 @@ class ContaController extends Controller
     public function getOne($id)
     {
         try {
-            $Caixa = Conta::find($id);
-            if (!$Caixa) {
-                return response()->json(['message' => "Conta não encontrada!"], 404);
+            $conta = Conta::find($id);
+            if (!$conta) {
+                return response()->json(['message' => "conta não encontrada"], 404);
             }
-            return response()->json($Caixa, 200);
+            return response()->json($conta, 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

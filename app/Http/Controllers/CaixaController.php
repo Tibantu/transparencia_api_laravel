@@ -13,7 +13,7 @@ class CaixaController extends Controller
 
 /**
     * @OA\Get(
-        *     tags={"/caixas"},
+        *     tags={"caixas"},
         *     path="/caixas/coord",
         *     summary="listar caixas do predio do cooord logado",
         *     security={{"bearerAuth": {} }},
@@ -95,7 +95,7 @@ class CaixaController extends Controller
    }
     /**
     * @OA\Get(
-        *     tags={"/caixas"},
+        *     tags={"caixas"},
         *     path="/caixas/{caixa}",
         *     summary="mostrar um Taxa",
         *     security={{ "bearerAuth": {}}},

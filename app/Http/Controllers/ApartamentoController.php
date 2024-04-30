@@ -71,7 +71,7 @@ class ApartamentoController extends Controller
           if(!$predio){
             return response()->json(['message' => 'Não es coordenador do predio'], 404);
           }
-                $apartamentos = $this->getPredio()->apartamentos;
+                $apartamentos = $predio->apartamentos;
                 $data = response()->json(['apartamentos' => $apartamentos], 200);
               //}
                 return $data;
