@@ -219,8 +219,8 @@ class PagamentoController extends Controller
       $isValidData = Validator::make($req->all(), [
         'valor'  => 'required|numeric',
         'descricao'  => 'required|string',
-        'forma'  => 'required|string',
-        'data'  => 'required|date'
+        'forma_pagamemto'  => 'required|string',
+        'data_pagamemto'  => 'required|date'
       ]);
       if ($isValidData->fails())
         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 400);
@@ -243,14 +243,15 @@ class PagamentoController extends Controller
         'n_valopagam'  => $req->valor,
         'n_vadipagam'  => $divida->n_valtdivid,
         'c_descpagam'  => $req->descricao,
-        'c_formpagam'  => $req->forma,
-        'd_datapagam'  => $req->data,
+        'c_formpagam'  => $req->forma_pagamemto,
+        'd_datapagam'  => $req->data_pagamemto,
         'c_bancpagam'  => $req->banco,
         'n_codiapart'  => $apartamento->n_codiapart,
         'n_codidivid'  => $idDivida
       ];
-      Pagamento::create([$dataPagamento]);
-      // dd($data);
+
+      Pagamento::create($dataPagamento);
+
       return response()->json(['message' => "Pagamento criado com sucesso!"], 201);;
     } catch (QueryException $e) {
       return response()->json(['message' => $e->getMessage()], 500);
@@ -269,7 +270,27 @@ class PagamentoController extends Controller
       return response()->json(['message' => "Hello " . $e->getMessage()], 500);
     }
   }
-  //1SW3AGGER
+
+
+    /**
+   * @OA\PUT(
+   *     tags={"pagamentos"},
+   *     path="/pagamentos/confirm/{pagamento}",
+   *     summary="confirmar pagamento, apenas para coordenador",
+   *     security={{ "bearerAuth": {}}},
+   *     @OA\Parameter(
+   *         name="pagamento",
+   *         in="path",
+   *         description="id do pagamento",
+   *         required=false,
+   *         @OA\Schema(type="int")
+   *     ),
+   *     @OA\Response(response="200", description="sucesso"),
+   *     @OA\Response(response="404", description="Não es coordenador do predio"),
+   *     @OA\Response(response="500", description="Erro no servidor")
+   * )
+   */
+
   public function update_confirm($id)
   {
     try {

@@ -1835,6 +1835,42 @@
                 ]
             }
         },
+        "/pagamentos/confirm/{pagamento}": {
+            "put": {
+                "tags": [
+                    "pagamentos"
+                ],
+                "summary": "confirmar pagamento, apenas para coordenador",
+                "operationId": "cdad04a5b541914981ce30f9d10d49a1",
+                "parameters": [
+                    {
+                        "name": "pagamento",
+                        "in": "path",
+                        "description": "id do pagamento",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "404": {
+                        "description": "Não es coordenador do predio"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/pagamentos/{pagamento}": {
             "get": {
                 "tags": [

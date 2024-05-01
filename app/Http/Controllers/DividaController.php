@@ -36,7 +36,6 @@ class DividaController extends Controller
                     return response()->json(['message' => "dividas não encontrada!"], 404);
 
                   $data = response()->json(['dividas' => $dividas ], 200);
-
               }
 
               return $data;
