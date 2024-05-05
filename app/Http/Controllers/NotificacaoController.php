@@ -85,7 +85,7 @@ class NotificacaoController extends Controller
                   return response()->json(['message' => 'apartamento nao encontrado'], 404);
                 }
                 $notificacoes =  $apartamento->notificacoes;
-                dd($notificacoes);
+               // dd($notificacoes);
 
 
             if(!$notificacoes){

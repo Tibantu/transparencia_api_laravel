@@ -18,6 +18,7 @@ use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\PredioController;
+use App\Http\Controllers\REDISController;
 use App\Http\Controllers\TaxaController;
 use App\Http\Controllers\UserController;
 use Barryvdh\DomPDF\PDF;
@@ -27,6 +28,8 @@ use Illuminate\Support\Facades\Password;
 /*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   return response()->json(['message' => 'nao autorizado'], 500);
 });*/
+
+Route::get('/blogs/{id}', [REDISController::class, 'index']);
 
 /* recuperar 1senha */
 //Usuario
