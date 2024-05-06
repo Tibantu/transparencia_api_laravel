@@ -8,6 +8,7 @@ use App\Models\Notificacao;
 use App\Models\Predio;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class NotificacaoController extends Controller
@@ -55,7 +56,9 @@ class NotificacaoController extends Controller
 
       $morador = null;
       if ($user->c_nomeentid == 'tramorad' && $user->n_codientid != null) {
+
         $morador = Morador::find($user->n_codientid);
+
       }
       return $morador;
   }
@@ -84,7 +87,7 @@ class NotificacaoController extends Controller
                 if(!$apartamento){
                   return response()->json(['message' => 'apartamento nao encontrado'], 404);
                 }
-                $notificacoes =  $apartamento->notificacoes;
+                $notificacoes = $apartamento->notificacoes()->paginate(5);
                // dd($notificacoes);
 
 

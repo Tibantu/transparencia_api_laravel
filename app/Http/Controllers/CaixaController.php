@@ -7,6 +7,7 @@ use App\Models\Coordenador;
 use App\Models\Predio;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
 class CaixaController extends Controller
 {
@@ -114,7 +115,25 @@ class CaixaController extends Controller
     public function getOne($id)
     {
         try {
-            $Caixa = Caixa::find($id);
+
+
+          $caixa = null;
+          $cachedCaixa = Redis::get('caixa_' . $id);
+
+          if($cachedCaixa) {
+              //  echo "Cache REDIS";
+                $caixa = json_decode($cachedCaixa, FALSE);
+              }else{
+              //  echo "Database";
+                $caixa = Caixa::find($id);
+                if (!$caixa) {
+                  return response()->json(['message' => "Caixa não encontrada!"], 404);
+                }
+                $caixaJson = json_encode($caixa);
+                Redis::set('caixa_' . $id, $caixaJson);
+          }
+
+          $Caixa = Caixa::find($id);
             if (!$Caixa) {
                 return response()->json(['message' => "Caixa não encontrada!"], 404);
             }

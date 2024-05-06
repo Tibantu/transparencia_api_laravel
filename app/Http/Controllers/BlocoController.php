@@ -11,6 +11,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use \Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Redis;
 
 class BlocoController extends Controller
 {
@@ -211,11 +212,23 @@ public function getAllByCentr($idCentralidade)
     public function getOne($id)
     {
         try {
+
+          $bloco = null;
+          $cachedBloco = Redis::get('bloco_' . $id);
+
+          if($cachedBloco) {
+          //  echo "Cache REDIS";
+            $bloco = json_decode($cachedBloco, FALSE);
+          }else{
+          //  echo "Database";
             $bloco = Bloco::find($id);
             if (!$bloco) {
-                return response()->json(['message' => "Bloco não encontrada!"], 404);
+              return response()->json(['message' => "Bloco não encontrado!"], 404);
             }
-            return response()->json($bloco, 200);
+            $blocoJson = json_encode($bloco);
+            Redis::set('bloco_' . $id, $blocoJson);
+          }
+            return response()->json(['bloco' => $bloco], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

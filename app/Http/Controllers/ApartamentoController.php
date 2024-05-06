@@ -12,6 +12,7 @@ use App\Models\Predio;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use \Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Redis;
 
 use function PHPUnit\Framework\isNull;
 
@@ -215,11 +216,23 @@ class ApartamentoController extends Controller
     public function getOne($id)
     {
         try {
-            $Apartamento = Apartamento::find($id);
-            if (!$Apartamento) {
-                return response()->json(['message' => "Apartamento não encontrada!"], 404);
+          $apartamento = null;
+          $cachedApartamento = Redis::get('apartamento_' . $id);
+
+          if($cachedApartamento) {
+          //  echo "Cache REDIS";
+            $apartamento = json_decode($cachedApartamento, FALSE);
+          }else{
+          //  echo "Database";
+            $apartamento = Apartamento::find($id);
+            if (!$apartamento) {
+              return response()->json(['message' => "Apartamento não encontrada!"], 404);
             }
-            return response()->json($Apartamento, 200);
+            $apartamentoJson = json_encode($apartamento);
+            Redis::set('apartamento_' . $id, $apartamentoJson);
+          }
+
+            return response()->json(['apartamento' => $apartamento], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }

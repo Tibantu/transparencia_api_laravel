@@ -7,6 +7,7 @@ use App\Models\Coordenador;
 use App\Models\Predio;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class BancoController extends Controller
@@ -162,11 +163,23 @@ class BancoController extends Controller
     public function getOne($id)
     {
         try {
-            $Banco = Banco::find($id);
-            if (!$Banco) {
-                return response()->json(['message' => "Banco não encontrado!"], 404);
-            }
-            return response()->json($Banco, 200);
+
+          $banco = null;
+          $cachedBanco = Redis::get('banco_' . $id);
+
+          if($cachedBanco) {
+              //  echo "Cache REDIS";
+                $banco = json_decode($cachedBanco, FALSE);
+              }else{
+              //  echo "Database";
+                $banco = Banco::find($id);
+                if (!$banco) {
+                  return response()->json(['message' => "Banco não encontrada!"], 404);
+                }
+                $bancoJson = json_encode($banco);
+                Redis::set('banco_' . $id, $bancoJson);
+          }
+            return response()->json(['banco' => $banco], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
