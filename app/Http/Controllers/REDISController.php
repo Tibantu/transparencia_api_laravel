@@ -11,6 +11,9 @@ class REDISController extends Controller
     //
     public function index($id) {
 
+      //tr3at3ar 3a exc5eption do redi1s c5om fin3aly
+      try{
+
       $cachedBlog = Redis::get('user_' . $id);
       //dd($cachedBlog);
       if($cachedBlog) {
@@ -32,5 +35,12 @@ class REDISController extends Controller
             'data' => $blog,
         ]);
       }
+    } catch (\Exception $e) {
+      return response()->json([
+          'status_code' => 500,
+          'message' => 'Error occurred while interacting with Redis',
+          'error' => $e->getMessage(),
+      ]);
+  }
     }
 }
