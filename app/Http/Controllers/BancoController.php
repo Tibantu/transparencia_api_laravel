@@ -162,26 +162,44 @@ class BancoController extends Controller
      */
     public function getOne($id)
     {
-        try {
+      $cachedBanco = null;
+      try {
 
-          $banco = null;
-          $cachedBanco = Redis::get('banco_' . $id);
+            $cachedBanco = Redis::get('banco_' . $id);
+            if($cachedBanco) {
 
-          if($cachedBanco) {
-              //  echo "Cache REDIS";
-                $banco = json_decode($cachedBanco, FALSE);
-              }else{
-              //  echo "Database";
-                $banco = Banco::find($id);
-                if (!$banco) {
-                  return response()->json(['message' => "Banco não encontrada!"], 404);
+              $banco = json_decode($cachedBanco, FALSE);
+              return response()->json([
+                  'status_code' => 201,
+                  'message' => 'Fetched from redis',
+                  'banco' => $banco,
+              ]);
+            }else {
+              $banco = Banco::find($id);
+              if (!$banco)
+                  return response()->json(['message' => "Banco não encontrado"], 404);
+              else{
+                  $bancoJson = json_encode($banco);
+                  Redis::set('banco_' . $id, $bancoJson);
                 }
-                $bancoJson = json_encode($banco);
-                Redis::set('banco_' . $id, $bancoJson);
+            }
+
+            } catch (QueryException $e) {
+              return response()->json(['message' => $e->getMessage()], 500);
+          }catch(\Exception $e){
+
+          }finally{
+
+            if(!$cachedBanco) {
+                $banco = Banco::find($id);
+                if (!$banco)
+                  return response()->json(['message' => "Banco não encontrado"], 404);
+                return response()->json([
+                    'status_code' => 201,
+                    'message' => 'Fetched from database',
+                    'banco' => $banco,
+              ]);
+            }
           }
-            return response()->json(['banco' => $banco], 200);
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
     }
 }

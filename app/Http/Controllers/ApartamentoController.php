@@ -215,29 +215,46 @@ class ApartamentoController extends Controller
      */
     public function getOne($id)
     {
-        try {
-          $apartamento = null;
-          $cachedApartamento = Redis::get('apartamento_' . $id);
+      $cachedApartamento = null;
+      try {
 
-          if($cachedApartamento) {
-          //  echo "Cache REDIS";
-            $apartamento = json_decode($cachedApartamento, FALSE);
-          }else{
-          //  echo "Database";
-            $apartamento = Apartamento::find($id);
-            if (!$apartamento) {
-              return response()->json(['message' => "Apartamento não encontrada!"], 404);
+            $cachedApartamento = Redis::get('apartamento_' . $id);
+            if($cachedApartamento) {
+
+              $apartamento = json_decode($cachedApartamento, FALSE);
+              return response()->json([
+                  'status_code' => 201,
+                  'message' => 'Fetched from redis',
+                  'apartamento' => $apartamento,
+              ]);
+            }else {
+              $apartamento = Apartamento::find($id);
+              if (!$apartamento)
+                  return response()->json(['message' => "Apartamento não encontrado"], 404);
+              else{
+                  $apartamentoJson = json_encode($apartamento);
+                  Redis::set('apartamento_' . $id, $apartamentoJson);
+                }
             }
-            $apartamentoJson = json_encode($apartamento);
-            Redis::set('apartamento_' . $id, $apartamentoJson);
+
+            } catch (QueryException $e) {
+              return response()->json(['message' => $e->getMessage()], 500);
+          }catch(\Exception $e){
+
+          }finally{
+
+            if(!$cachedApartamento) {
+                $apartamento = Apartamento::find($id);
+                if (!$apartamento)
+                  return response()->json(['message' => "Apartamento não encontrado"], 404);
+                return response()->json([
+                    'status_code' => 201,
+                    'message' => 'Fetched from database',
+                    'apartamento' => $apartamento,
+              ]);
+            }
           }
-
-            return response()->json(['apartamento' => $apartamento], 200);
-        } catch (QueryException $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
         }
-    }
-
     /**
     * @OA\Get(
         *     tags={"apartamentos"},
@@ -265,4 +282,4 @@ class ApartamentoController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-}
+  }

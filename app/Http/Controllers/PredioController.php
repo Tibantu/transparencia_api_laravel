@@ -10,6 +10,7 @@ use App\Models\Predio;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use \Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Redis;
 
 class PredioController extends Controller
 {
@@ -209,7 +210,7 @@ class PredioController extends Controller
     }
 /**
     * @OA\Get(
-        *     tags={"/predios"},
+        *     tags={"predios"},
         *     path="/predios/{predio}",
         *     summary="mostrar um predio",
         *     security={{ "bearerAuth": {}}},
@@ -227,14 +228,43 @@ class PredioController extends Controller
      */
     public function getOne($id)
     {
+        $cachedPredio = null;
         try {
+
+          $cachedPredio = Redis::get('predio_' . $id);
+          if($cachedPredio) {
+
+            $predio = json_decode($cachedPredio, FALSE);
+            return response()->json([
+                'status_code' => 201,
+                'message' => 'Fetched from redis',
+                'predio' => $predio,
+            ]);
+          }else {
             $predio = Predio::find($id);
-            if (!$predio) {
+            if (!$predio)
                 return response()->json(['message' => "Predio não encontrado"], 404);
-            }
-            return response()->json($predio, 200);
+            else{
+                $predioJson = json_encode($predio);
+                Redis::set('predio_' . $id, $predioJson);
+              }
+          }
+
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
+        }catch(\Exception $e){
+
+        }finally{
+          if(!$cachedPredio) {
+              $predio = Predio::find($id);
+              if (!$predio)
+                return response()->json(['message' => "Predio não encontrado"], 404);
+              return response()->json([
+                  'status_code' => 201,
+                  'message' => 'Fetched from database',
+                  'predio' => $predio,
+            ]);
+          }
         }
     }
 }
