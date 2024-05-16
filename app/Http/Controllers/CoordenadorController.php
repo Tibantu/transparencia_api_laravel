@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coordenador;
+use App\Utils\MyUtils;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -27,18 +28,24 @@ class CoordenadorController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-/*
+
     public function getAllByBloco($idBloco)
     {//trazer todos os coordenadores de predios do bloco
+      //acesso apenas para coord bloco
         try {
-            Apartamento::findOrFail($idBloco);
+          $user = auth()->user();
+          $iscoordBloco = MyUtils::isCoordBloco($user);
+          if ($iscoordBloco) {
+            $coordenadores = Coordenador::where('n_codibloco', '=', $idBloco)->get();
+          }else
+          dd("NAO é coord bloco");
 
-            return Apartamento::where('n_codibloco', '=', $idBloco)->get();
+            return response()->json(['message' => $coordenadores], 200);
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-*/
+
     public function create(Request $req)
     {
         $isValidData = Validator::make($req->all(), [

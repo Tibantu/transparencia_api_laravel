@@ -27,7 +27,8 @@ class User extends Authenticatable implements CanResetPassword
         'c_senhusuar',
         'n_codientid',
         'c_emaiusuar',
-        'c_nomeentid'
+        'c_nomeentid',
+        'c_tipocoord'
     ];
 
     /**

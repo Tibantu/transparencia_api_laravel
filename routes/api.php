@@ -43,8 +43,9 @@ Route::prefix('auth')->group(function () {
 
   Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
   Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
+  Route::post('/coord_bloco/centr/{idCentr}/bloco/{idbloco}', [UserController::class, 'create_coord_bloco']);
   Route::post('/centr/{idCentr}/bloco/{idbloco}', [UserController::class, 'create']);
-  Route::post('/morador/usuario', [UserController::class, 'create_morad'])->middleware('auth:sanctum');;
+  Route::post('/morador/usuario', [UserController::class, 'create_morad'])->middleware('auth:sanctum');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -125,7 +126,7 @@ Route::middleware('auth:sanctum')->group(function () {
       /**[cria] um morador */
       Route::post('/', [CoordenadorController::class, 'create']);
       /**[pega] todos os blocos de uma centralidade  - id da centralidade e fornecida na url */
-      //Route::get('/bloco/{idbloco}', [CoordenadorController::class, 'getAllByBloco']);
+      Route::get('/bloco/{idbloco}', [CoordenadorController::class, 'getAllByBloco']);
       Route::get('/{id}', [CoordenadorController::class, 'getOne']);
       Route::put('/{id}', [CoordenadorController::class, 'update']);
       Route::delete('/{id}', [CoordenadorController::class, 'delete']);

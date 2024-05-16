@@ -32,6 +32,138 @@ class UserController extends Controller
     //criar usuario
     return User::create($dadosUser);
 }
+
+/**
+ * @OA\Post(
+ *     path="/auth/coord_bloco/centr/{idCentr}/bloco/{idbloco}'",
+ *     tags={"Users"},
+ *     summary="Cria um coordenador para um bloco",
+ *     security={{"bearerAuth": {} }},
+ *     description="",
+ *     operationId="createUser",
+ *     @OA\Parameter(
+ *        name="idCentr",
+ *        in="path",
+ *        description="id da centralidade",
+ *        required=false,
+ *        @OA\Schema(
+ *            type="int"
+ *        )
+ *     ),
+ *     @OA\Parameter(
+ *        name="idbloco",
+ *        in="path",
+ *        description="id do bloco",
+ *        required=false,
+ *        @OA\Schema(
+ *            type="int"
+ *        )
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         description="Dados necessario",
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(ref="#/components/schemas/Coordenador")
+ *          )
+ *     ),
+ *     @OA\Response(response="201", description="Usuário criado com sucesso"),
+ *     @OA\Response(response="412", description="Erro ao validar os dados"),
+ *     @OA\Response(response="404", description="Apartamento não encontrado"),
+ *     @OA\Response(response="500", description="Erro interno do servidor")
+ * )
+ */
+
+
+
+
+
+ public function create_coord_bloco(Request $req, $id_centralidade, $id_bloco)
+ {
+     $isValidData = Validator::make($req->all(), [
+         //dados do usuario
+         "login" => 'required|string',
+         "email" => 'required|string',
+         "password" => 'required|string',
+         //dados do coord
+         "nome" => 'required|string',
+         "apelido" => 'required|string'
+         //"id_bloco" => 'string', // vai no ; se for vasio criar um bloco na centralidade com a descricao_do_bloco
+     ]);
+
+     if ($isValidData->fails()) {
+         return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
+     }
+
+     try {
+/* *///criar um bloco, apenas se id_bloco for vasio
+
+       $bloco = null;
+
+       if($req->descricao_do_bloco != null)
+       {
+             $centralidadde = Centralidade::find($id_centralidade);
+             if (!$centralidadde)
+                 return response()->json(['message' => "Centralidade não encontrada!"], 404);
+
+           /*Criar um caixa para o bloco*/
+             $dataCaixaBloco = [
+               'c_nomeentid'=>'trabloco'
+             ];
+
+             $caixaBloco = Caixa::create($dataCaixaBloco);
+
+                 //criar o bloco
+             $dadosBloco = [
+                 'c_descbloco' => $req->descricao_do_bloco,
+                 'n_codicentr' => $id_centralidade,
+                 'n_codicaixa' => $caixaBloco->n_codicaixa
+             ];
+
+             $bloco = Bloco::create($dadosBloco);
+             if (!$bloco)
+                 return response()->json(['message' => "Bloco não encontrada!"], 404);
+
+             $dataCaixaBloco['n_codientid'] = (int) $bloco->n_codibloco;
+             $caixaBloco->update($dataCaixaBloco);
+       }else{
+         $bloco = Bloco::find($id_bloco);
+       }
+
+/* *///criar um coord
+
+         $dadosCoord = [
+             'c_nomecoord' => $req->nome,
+             'c_nomeentid' => 'trabloco',
+             'n_codientid' => $bloco->n_codibloco,
+             'c_apelcoord' => $req->apelido
+         ];
+       $coord = Coordenador::create($dadosCoord);
+
+       if(!$coord)
+         return response()->json(['message' => "Erro ao criar o coordenador"], 412);
+/* */
+
+/* *///criar um usuario
+         $dadosUser = [
+           'c_logiusuar' => $req->login,
+           'c_senhusuar' => Hash::make($req->password),
+           'n_codientid' => $coord->n_codicoord,
+           'c_nomeentid' => 'tracoord',
+           'c_emaiusuar' => $req->email,
+           'c_tipocoord' => 'trabloco'
+       ];
+
+         //criar usuario
+         User::create($dadosUser);
+
+         return response()->json(['message' => "usuario criado com sucesso!"], 201);
+     } catch (\Illuminate\Database\QueryException $e) {
+         return response()->json(['message' => $e->getMessage()], 500);
+     }
+ }
+
+
 /**
  * @OA\Post(
  *     path="/auth/centr/{idCentr}/bloco/{idbloco}'",
@@ -72,10 +204,6 @@ class UserController extends Controller
  *     @OA\Response(response="500", description="Erro interno do servidor")
  * )
  */
-
-
-
-
 
     public function create(Request $req, $id_centralidade, $id_bloco)
     {
@@ -200,7 +328,6 @@ class UserController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
-
 
     /**
  * @OA\Post(
