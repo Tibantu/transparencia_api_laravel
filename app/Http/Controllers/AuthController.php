@@ -47,7 +47,7 @@ class AuthController extends Controller
 
        if (!$user)
            return response()->json(['message' => 'username inválido'], 401);
-       return response()->json(['message' => "username válido"], 202);
+        return response()->json(['message' => "username válido"], 202);
 
    }
 
@@ -111,7 +111,7 @@ class AuthController extends Controller
    *       required=true,
    *       @OA\JsonContent(
    *          type="object",
-   *          @OA\Property(property="login",type="string",description="login"),
+   *          @OA\Property(property="username",type="string",description="username"),
    *          @OA\Property(property="senha",type="string",description="senha do pessoal")
    *       )
    *     ),

@@ -54,7 +54,14 @@ class MoradorController extends Controller
           if(!$predio){
             return response()->json(['message' => 'Não es coordenador do predio'], 404);
           }
-          $moradores = $predio->apartamentos->flatMap->moradores;
+          $moradores = $predio->apartamentos->filter(
+            function($apartemento)
+            {
+              return !is_null($apartemento->n_codimorad);
+            })->map(
+              function($apartemento){
+                return  $apartemento->morador;
+              });
 
           return response()->json(['moradores' => $moradores], 200);
         } catch (QueryException $e) {
@@ -69,7 +76,7 @@ class MoradorController extends Controller
         *     summary="Registrar morador",
         *     security={{"bearerAuth": {} }},
         *     @OA\Parameter(
-        *         name="idAparta",
+        *         name="idApartamento",
         *         in="path",
         *         description="id do apartamento onde sera registrado o morador",
         *         required=false,
@@ -109,18 +116,19 @@ class MoradorController extends Controller
       if(!$predio){
         return response()->json(['message' => 'Não es coordenador do predio'], 404);
       }
+
         $apartamentos = $this->getPredio()->apartamentos;
+
         $aparta = null;
         foreach ($apartamentos as $apartamento) {
-            // Verifica se o apartamento tem o ID procurado
-            if ($apartamento->n_codiapart == $idAparta) {
+          // Verifica se o apartamento tem o ID procurado
+          if ($apartamento->n_codiapart == $idAparta) {
                 // Objeto encontrado
                 $aparta = $apartamento;
                 break;
             }
         }
-        //$registro = Apartamento::where('n_codiapart',$idAparta)->first();
-        if(!$aparta)
+        if(is_null($aparta))
               return response()->json(['message' => 'apartamento não encontrado'], 404);
 
         //antes de criar o morador verificar se o apartamento está oucupado
@@ -143,7 +151,6 @@ class MoradorController extends Controller
         // atribuir o apartamento ao morador
         $aparta->n_codimorad = $morador->n_codimorad;
         $aparta->save();
-        // dd($data);
         return response()->json(['message' => "Morador criado com sucesso!"], 201);
     } catch (\Illuminate\Database\QueryException $e) {
         return response()->json(['message' => $e->getMessage()], 500);

@@ -288,8 +288,8 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "login": {
-                                        "description": "login",
+                                    "username": {
+                                        "description": "username",
                                         "type": "string"
                                     },
                                     "senha": {
@@ -1396,7 +1396,7 @@
                 "operationId": "820fc83977aefd4cab4a761787124797",
                 "parameters": [
                     {
-                        "name": "idAparta",
+                        "name": "idApartamento",
                         "in": "path",
                         "description": "id do apartamento onde sera registrado o morador",
                         "required": false,
@@ -2072,7 +2072,7 @@
         "/predios/{predio}": {
             "get": {
                 "tags": [
-                    "/predios"
+                    "predios"
                 ],
                 "summary": "mostrar um predio",
                 "operationId": "db838e6b412be057a036465d362398d7",
@@ -2397,6 +2397,66 @@
                     },
                     "500": {
                         "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/coord_bloco/centr/{idCentr}/bloco/{idbloco}'": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Cria um coordenador para um bloco",
+                "description": "",
+                "operationId": "createUser",
+                "parameters": [
+                    {
+                        "name": "idCentr",
+                        "in": "path",
+                        "description": "id da centralidade",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    },
+                    {
+                        "name": "idbloco",
+                        "in": "path",
+                        "description": "id do bloco",
+                        "required": false,
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Dados necessario",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Coordenador"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado com sucesso"
+                    },
+                    "412": {
+                        "description": "Erro ao validar os dados"
+                    },
+                    "404": {
+                        "description": "Apartamento não encontrado"
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor"
                     }
                 },
                 "security": [
