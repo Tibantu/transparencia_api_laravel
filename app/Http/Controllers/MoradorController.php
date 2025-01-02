@@ -71,92 +71,142 @@ class MoradorController extends Controller
     }
 
 /**
-    * @OA\Post(
-        *     tags={"moradores"},
-        *     path="/moradores/apartamento/{idApartamento}",
-        *     summary="Registrar morador",
-        *     security={{"bearerAuth": {} }},
-        *     @OA\Parameter(
-        *         name="idApartamento",
-        *         in="path",
-        *         description="id do apartamento onde sera registrado o morador",
-        *         required=false,
-        *         @OA\Schema(type="int")
-        *     ),
-        *     @OA\RequestBody(
-        *       required=true,
-        *         @OA\MediaType(
-        *             mediaType="multipart/form-data",
-        *             @OA\Schema(ref="#/components/schemas/Morador")
-        *         )
-        *     ),
-        *
-        *     @OA\Response(response="201", description="morador cadastrado com sucesso"),
-        *     @OA\Response(response="412", description="Erro ao validar os dados"),
-        *     @OA\Response(response="404", description="apartamento não encontrado"),
-        *     @OA\Response(response="405", description="apartamento oucupado"),
-        *     @OA\Response(response="500", description="Erro no servidor")
-        * )
-     */
-    public function create(Request $req, $idAparta)
-    {
-        $isValidData = Validator::make($req->all(), [
-            "nome" => 'required|string',
-            "apelido" => 'required|string',
-            "bi" => 'string',
-                  //dados do usuario
-            "login" => 'required|string',
-            "email" => 'required|email',
-            "password" => 'required|string'
-        ]);
-        if ($isValidData->fails())
-            return response()->json(['erros' => $isValidData->errors(), 'message' => 'erro ao validar os dados'], 412);
+ * @OA\Post(
+ *     tags={"moradores"},
+ *     path="/moradores/apartamento/{idApartamento}",
+ *     summary="Registrar morador",
+ *     security={{"bearerAuth": {}}},
+ *     @OA\Parameter(
+ *         name="idApartamento",
+ *         in="path",
+ *         description="ID do apartamento onde será registrado o morador",
+ *         required=false,
+ *         @OA\Schema(type="int")
+ *     ),
+ *     @OA\RequestBody(
+ *       required=false,
+ *         @OA\MediaType(
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(
+ *               type="object",
+ *               @OA\Property(property="nome", type="string", example="João", description="Nome do morador"),
+ *               @OA\Property(property="apelido", type="string", example="Silva", description="Apelido do morador"),
+ *               @OA\Property(property="bi", type="string", example="123456789", description="BI do morador"),
+ *               @OA\Property(property="foto", type="string", format="binary", description="Foto do morador"),
+ *               @OA\Property(property="telefone", type="string", example="+244922292854", description="Telefone do morador"),
+ *               @OA\Property(property="data_nascimento", type="string", format="date", example="1990-05-20", description="Data de nascimento do morador"),
+ *               @OA\Property(property="genero", type="string", example="Masculino", description="Gênero do morador"),
+ *               @OA\Property(property="estado_civil", type="string", example="Solteiro", description="Estado civil do morador"),
+ *               @OA\Property(property="nacionalidade", type="string", example="Angolana", description="Nacionalidade do morador"),
+ *               @OA\Property(property="identificacao_pessoal", type="string", example="123456789012", description="Identificação pessoal do morador"),
+ *               @OA\Property(property="data_entrada", type="string", format="date", example="2022-01-15", description="Data de entrada do morador"),
+ *               @OA\Property(property="login", type="string", example="joao123", description="Login do usuário"),
+ *               @OA\Property(property="email", type="string", example="joao.silva@exemplo.com", description="E-mail do usuário"),
+ *               @OA\Property(property="password", type="string", example="senha123", description="Senha do usuário")
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(response="201", description="Morador cadastrado com sucesso"),
+ *     @OA\Response(response="412", description="Erro ao validar os dados"),
+ *     @OA\Response(response="404", description="Apartamento não encontrado"),
+ *     @OA\Response(response="405", description="Apartamento ocupado"),
+ *     @OA\Response(response="500", description="Erro no servidor")
+ * )
+ */
 
-    try {
-      $predio = $this->getPredio();//Predio::with('apartamentos.moradores')->find($idPredio);
-      if(!$predio){
-        return response()->json(['message' => 'Não es coordenador do predio'], 404);
-      }
 
-        $apartamentos = $this->getPredio()->apartamentos;
 
-        $aparta = null;
-        foreach ($apartamentos as $apartamento) {
-          // Verifica se o apartamento tem o ID procurado
-          if ($apartamento->n_codiapart == $idAparta) {
-                // Objeto encontrado
-                $aparta = $apartamento;
-                break;
-            }
-        }
-        if(is_null($aparta))
-              return response()->json(['message' => 'apartamento não encontrado'], 404);
 
-        //antes de criar o morador verificar se o apartamento está oucupado
-        if($aparta->n_codimorad != null)
-            return response()->json(['message' => 'apartamento oucupado'], 404);
-            $dadosMorad = [
-              'c_nomemorad' => $req->nome,
-              'c_apelmorad' => $req->apelido,
-              'c_bilhmorad' => $req->bi
-          ];
+ public function create(Request $req, $idAparta)
+ {
+     $isValidData = Validator::make($req->all(), [
+         "nome" => 'required|string',
+         "apelido" => 'required|string',
+         "bi" => 'nullable|string',
+         // Dados do usuário
+         "login" => 'required|string',
+         "email" => 'required|email',
+         "password" => 'required|string',
+         // Dados adicionais
+         "foto" => 'nullable|string', // Foto do morador
+         "telefone" => 'nullable|string', // Telefone do morador
+         "data_nascimento" => 'nullable|date', // Data de nascimento do morador
+         "genero" => 'nullable|string', // Gênero do morador
+         "estado_civil" => 'nullable|string', // Estado civil
+         "nacionalidade" => 'nullable|string', // Nacionalidade
+         "identificacao_pessoal" => 'nullable|string', // Identificação pessoal
+         "data_entrada" => 'nullable|date' // Data de entrada do morador
+     ]);
 
-        $morador = Morador::create($dadosMorad);
+     if ($isValidData->fails()) {
+         return response()->json(['erros' => $isValidData->errors(), 'message' => 'Erro ao validar os dados'], 412);
+     }
 
-        if(!$morador)
-            return response()->json(['message' => "morador nao criado"], 401);
-        //cria3r us1ua3rio do mor3ador
-        $usuario = UserController::criar($req->login,$req->password,$morador->n_codimorad,$req->email);
-        if(!$usuario)
-            return response()->json(['message' => "Usuario nao criado"], 401);
-        // atribuir o apartamento ao morador
-        $aparta->n_codimorad = $morador->n_codimorad;
-        $aparta->save();
-        return response()->json(['message' => "Morador criado com sucesso!"], 201);
-    } catch (\Illuminate\Database\QueryException $e) {
-        return response()->json(['message' => $e->getMessage()], 500);
-    }
-}
+     try {
+         $predio = $this->getPredio(); // Predio::with('apartamentos.moradores')->find($idPredio);
+         if(!$predio) {
+             return response()->json(['message' => 'Você não é coordenador do prédio'], 404);
+         }
+
+         $apartamentos = $this->getPredio()->apartamentos;
+         $aparta = null;
+
+         foreach ($apartamentos as $apartamento) {
+             // Verifica se o apartamento tem o ID procurado
+             if ($apartamento->n_codiapart == $idAparta) {
+                 // Objeto encontrado
+                 $aparta = $apartamento;
+                 break;
+             }
+         }
+
+         if(is_null($aparta)) {
+             return response()->json(['message' => 'Apartamento não encontrado'], 404);
+         }
+
+         // Verificar se o apartamento está ocupado
+         if($aparta->n_codimorad != null) {
+             return response()->json(['message' => 'Apartamento ocupado'], 404);
+         }
+
+         // Dados do morador com novos campos
+         $dadosMorad = [
+             'c_nomemorad' => $req->nome,
+             'c_apelmorad' => $req->apelido,
+             'c_bilhmorad' => $req->bi,
+             'c_fotomorad' => $req->foto,
+             'c_telefone' => $req->telefone,
+             'd_datnmorad' => $req->data_nascimento,
+             'c_generomorad' => $req->genero,
+             'c_estcmorad' => $req->estado_civil,
+             'c_nacionalidademorad' => $req->nacionalidade,
+             'c_identificacaomorad' => $req->identificacao_pessoal,
+             'd_entrada' => $req->data_entrada
+         ];
+
+         // Criar o morador
+         $morador = Morador::create($dadosMorad);
+
+         if(!$morador) {
+             return response()->json(['message' => "Morador não criado"], 401);
+         }
+
+         // Criar usuário do morador
+         $usuario = UserController::criar($req->login, $req->password, $morador->n_codimorad, $req->email);
+         if(!$usuario) {
+             return response()->json(['message' => "Usuário não criado"], 401);
+         }
+
+         // Atribuir o apartamento ao morador
+         $aparta->n_codimorad = $morador->n_codimorad;
+         $aparta->save();
+
+         return response()->json(['message' => "Morador criado com sucesso!"], 201);
+
+     } catch (\Illuminate\Database\QueryException $e) {
+         return response()->json(['message' => $e->getMessage()], 500);
+     }
+ }
 
  /**
     * @OA\Delete(

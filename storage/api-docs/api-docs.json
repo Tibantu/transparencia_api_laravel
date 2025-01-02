@@ -1441,7 +1441,7 @@
                     {
                         "name": "idApartamento",
                         "in": "path",
-                        "description": "id do apartamento onde sera registrado o morador",
+                        "description": "ID do apartamento onde será registrado o morador",
                         "required": false,
                         "schema": {
                             "type": "int"
@@ -1449,27 +1449,101 @@
                     }
                 ],
                 "requestBody": {
-                    "required": true,
+                    "required": false,
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/Morador"
+                                "properties": {
+                                    "nome": {
+                                        "description": "Nome do morador",
+                                        "type": "string",
+                                        "example": "João"
+                                    },
+                                    "apelido": {
+                                        "description": "Apelido do morador",
+                                        "type": "string",
+                                        "example": "Silva"
+                                    },
+                                    "bi": {
+                                        "description": "BI do morador",
+                                        "type": "string",
+                                        "example": "123456789"
+                                    },
+                                    "foto": {
+                                        "description": "Foto do morador",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "telefone": {
+                                        "description": "Telefone do morador",
+                                        "type": "string",
+                                        "example": "+244922292854"
+                                    },
+                                    "data_nascimento": {
+                                        "description": "Data de nascimento do morador",
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "1990-05-20"
+                                    },
+                                    "genero": {
+                                        "description": "Gênero do morador",
+                                        "type": "string",
+                                        "example": "Masculino"
+                                    },
+                                    "estado_civil": {
+                                        "description": "Estado civil do morador",
+                                        "type": "string",
+                                        "example": "Solteiro"
+                                    },
+                                    "nacionalidade": {
+                                        "description": "Nacionalidade do morador",
+                                        "type": "string",
+                                        "example": "Angolana"
+                                    },
+                                    "identificacao_pessoal": {
+                                        "description": "Identificação pessoal do morador",
+                                        "type": "string",
+                                        "example": "123456789012"
+                                    },
+                                    "data_entrada": {
+                                        "description": "Data de entrada do morador",
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2022-01-15"
+                                    },
+                                    "login": {
+                                        "description": "Login do usuário",
+                                        "type": "string",
+                                        "example": "joao123"
+                                    },
+                                    "email": {
+                                        "description": "E-mail do usuário",
+                                        "type": "string",
+                                        "example": "joao.silva@exemplo.com"
+                                    },
+                                    "password": {
+                                        "description": "Senha do usuário",
+                                        "type": "string",
+                                        "example": "senha123"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "morador cadastrado com sucesso"
+                        "description": "Morador cadastrado com sucesso"
                     },
                     "412": {
                         "description": "Erro ao validar os dados"
                     },
                     "404": {
-                        "description": "apartamento não encontrado"
+                        "description": "Apartamento não encontrado"
                     },
                     "405": {
-                        "description": "apartamento oucupado"
+                        "description": "Apartamento ocupado"
                     },
                     "500": {
                         "description": "Erro no servidor"
