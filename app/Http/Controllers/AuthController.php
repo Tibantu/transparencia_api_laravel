@@ -149,6 +149,17 @@ class AuthController extends Controller
             'mensage' => 'sucesso',
         ], 200);
     }
+
+        /**
+    * @OA\Get(
+        *     tags={"Users"},
+        *     path="/auth/me",
+        *     summary="dados do usuario logado",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
     public function me(Request $request)
     {
 

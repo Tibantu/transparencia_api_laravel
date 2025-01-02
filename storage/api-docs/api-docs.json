@@ -317,6 +317,28 @@
                 ]
             }
         },
+        "/auth/me": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "dados do usuario logado",
+                "operationId": "a9c495788506b114956e3f509e5d90a2",
+                "responses": {
+                    "200": {
+                        "description": "sucesso"
+                    },
+                    "500": {
+                        "description": "Erro no servidor"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/bancos": {
             "get": {
                 "tags": [
@@ -794,19 +816,40 @@
                 "summary": "Cadastrar centralidade",
                 "operationId": "4f525a9329ee03f71439de4dea4f9222",
                 "requestBody": {
-                    "required": true,
+                    "required": false,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "properties": {
                                     "c_desccentr": {
-                                        "description": "denominação da centralidade",
+                                        "description": "Denominação da centralidade",
                                         "type": "string",
                                         "default": "Centralidade B"
                                     },
-                                    "n_codiender": {
-                                        "description": "id do endereço da centralidade",
-                                        "type": "int"
+                                    "c_paisender": {
+                                        "description": "País do endereço",
+                                        "type": "string",
+                                        "example": "Angola"
+                                    },
+                                    "c_descender": {
+                                        "description": "Descrição do endereço",
+                                        "type": "string",
+                                        "example": "Descrição detalhada do endereço"
+                                    },
+                                    "c_provender": {
+                                        "description": "Província do endereço",
+                                        "type": "string",
+                                        "example": "Luanda"
+                                    },
+                                    "c_muniender": {
+                                        "description": "Município do endereço",
+                                        "type": "string",
+                                        "example": "Viana"
+                                    },
+                                    "c_bairender": {
+                                        "description": "Bairro do endereço",
+                                        "type": "string",
+                                        "example": "Zango"
                                     }
                                 },
                                 "type": "object"
@@ -816,13 +859,13 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Centralidade cadastrada successfully"
+                        "description": "Centralidade cadastrada com sucesso"
                     },
                     "412": {
                         "description": "Erro ao validar os dados"
                     },
                     "500": {
-                        "description": "Validation errors"
+                        "description": "Erro interno no servidor"
                     }
                 },
                 "security": [
