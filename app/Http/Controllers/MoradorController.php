@@ -9,6 +9,7 @@ use App\Models\Predio;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class MoradorController extends Controller
@@ -269,5 +270,26 @@ class MoradorController extends Controller
         } catch (QueryException $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
+    }
+
+/**
+    * @OA\Get(
+        *     tags={"moradores"},
+        *     path="/moradores/me",
+        *     summary="dados do moradore logado",
+        *     security={{"bearerAuth": {} }},
+        *     @OA\Response(response="200", description="sucesso"),
+        *     @OA\Response(response="500", description="Erro no servidor")
+        * )
+*/
+    public function me(){
+      $morador = null;
+      $user = Auth::user();
+        if ($user->c_nomeentid == 'tramorad' && $user->n_codientid != null) {
+          $morador = Morador::where('n_codimorad', $user->n_codientid)->first();
+          if (!$morador)
+              return response()->json(['message' => "nao autorizado!"], 200);
+        }
+        return response()->json($morador, 200);
     }
 }

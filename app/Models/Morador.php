@@ -14,10 +14,19 @@ class Morador extends Model
         'n_codimorad',
         'c_nomemorad',
         'c_apelmorad',
-        'create_at',
-        'updated_at',
         'd_dacrmorad',
-        'c_bilhmorad'
+        'c_bilhmorad',
+        'd_datnmorad',            // Data de nascimento
+        'c_fotomorad',            // Foto do morador
+        'c_telefone',             // Telefone do morador
+        'c_generomorad',          // Gênero do morador
+        'c_estcmorad',            // Estado civil do morador
+        'c_nacionalidademorad',   // Nacionalidade do morador
+        'c_identificacaomorad',   // Identificação pessoal do morador
+        'c_emailmorad',           // E-mail do morador
+        'd_entrada',              // Data de entrada do morador
+        'created_at',             // Data de criação
+        'updated_at'
         ];
 
         public function apartamento()

@@ -19,7 +19,7 @@ class AuthController extends Controller
 
   /**
    * @OA\Post(
-   *     tags={"/login"},
+   *     tags={"login"},
    *     path="/auth/username",
    *     summary="confirmar a existencia do usuario, primeira etapa de acesso ao sistema",
    *     security={{"bearerAuth": {} }},
@@ -70,7 +70,7 @@ class AuthController extends Controller
     }
       /**
    * @OA\Post(
-   *     tags={"/login"},
+   *     tags={"login"},
    *     path="/auth/reset-senha",
    *     summary="Envia o link, para alterar a senha, no email de ususario cadastrado",
    *     security={{"bearerAuth": {} }},
@@ -103,7 +103,7 @@ class AuthController extends Controller
     }
       /**
    * @OA\Post(
-   *     tags={"/login"},
+   *     tags={"login"},
    *     path="/auth/senha",
    *     summary="login no sistema. Segunda etapa do login, passando a senha, o login da etapa 1 num campo oculto",
    *     security={{"bearerAuth": {} }},

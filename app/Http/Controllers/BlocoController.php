@@ -17,7 +17,7 @@ class BlocoController extends Controller
 {
 /**
  * @OA\Get(
- *     tags={"/blocos"},
+ *     tags={"blocos"},
  *     path="/blocos/centralidade/{idCentralidade}",
  *     summary="Obter todos os blocos por centralidade",
  *     security={{ "bearerAuth": {} }},
@@ -54,7 +54,7 @@ public function getAllByCentr($idCentralidade)
 
     /**
     * @OA\Post(
-        *     tags={"/blocos"},
+        *     tags={"blocos"},
         *     path="/blocos/centralidade/{centralidade}",
         *     summary="Cadastrar um bloco numa centralidade",
         *     security={{"bearerAuth": {} }},
@@ -119,7 +119,7 @@ public function getAllByCentr($idCentralidade)
     }
         /**
     * @OA\Delete(
-        *     tags={"/blocos"},
+        *     tags={"blocos"},
         *     path="/blocos/{bloco}",
         *     summary="apagar um bloco",
         *       security={{"bearerAuth": {} }},
@@ -152,7 +152,7 @@ public function getAllByCentr($idCentralidade)
     }
         /**
     * @OA\Put(
-        *     tags={"/blocos"},
+        *     tags={"blocos"},
         *     path="/blocos/{bloco}",
         *     summary="Atualizar um bloco de uma centralidade",
         *     security={{"bearerAuth": {} }},
@@ -193,7 +193,7 @@ public function getAllByCentr($idCentralidade)
     }
      /**
     * @OA\Get(
-        *     tags={"/blocos"},
+        *     tags={"blocos"},
         *     path="/blocos/{bloco}",
         *     summary="mostrar um bloco",
         *     security={{ "bearerAuth": {}}},

@@ -18,7 +18,7 @@ class CentralidadeController extends Controller
 
   /**
    * @OA\Get(
-   *     tags={"/centralidades"},
+   *     tags={"centralidades"},
    *     path="/centralidades",
    *     summary="listar centralidades",
    *     security={{"bearerAuth": {} }},
@@ -36,7 +36,7 @@ class CentralidadeController extends Controller
   }
 /**
  * @OA\Post(
- *     tags={"/centralidades"},
+ *     tags={"centralidades"},
  *     path="/centralidades",
  *     summary="Cadastrar centralidade",
  *     security={{"bearerAuth": {}}},
@@ -143,7 +143,7 @@ class CentralidadeController extends Controller
 
   /**
    * @OA\Delete(
-   *     tags={"/centralidades"},
+   *     tags={"centralidades"},
    *     path="/centralidades/{centralidade}",
    *     summary="apagar uma centralidade",
    *       security={{"bearerAuth": {} }},
@@ -175,7 +175,7 @@ class CentralidadeController extends Controller
   }
   /**
    * @OA\Put(
-   *     tags={"/centralidades"},
+   *     tags={"centralidades"},
    *     path="/centralidades",
    *     summary="Atualizar um objecto no banco de dado",
    *     description="atualizar os dados de uma centralidade",
@@ -213,7 +213,7 @@ class CentralidadeController extends Controller
   }
   /**
    * @OA\Get(
-   *     tags={"/centralidades"},
+   *     tags={"centralidades"},
    *     path="/centralidades/{centralidade}",
    *     summary="mostrar uma centralidade",
    *     security={{ "bearerAuth": {}}},

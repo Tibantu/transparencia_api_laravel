@@ -17,7 +17,7 @@ class PredioController extends Controller
 
 /**
     * @OA\Get(
-        *     tags={"/predios"},
+        *     tags={"predios"},
         *     path="/predios/bloco/{idBloco}",
         *     summary="listar predios de um bloco",
         *     security={{"bearerAuth": {} }},
@@ -47,7 +47,7 @@ class PredioController extends Controller
     }
         /**
     * @OA\Post(
-        *     tags={"/predios"},
+        *     tags={"predios"},
         *     path="/predios/bloco/{bloco}",
         *     summary="Cadastrar um predios numa bloco",
         *     security={{"bearerAuth": {} }},
@@ -137,7 +137,7 @@ class PredioController extends Controller
     }
             /**
     * @OA\Delete(
-        *     tags={"/predios"},
+        *     tags={"predios"},
         *     path="/predios/{predio}",
         *     summary="apagar um predio",
         *       security={{"bearerAuth": {} }},
@@ -169,7 +169,7 @@ class PredioController extends Controller
     }
             /**
     * @OA\Put(
-        *     tags={"/predios"},
+        *     tags={"predios"},
         *     path="/predios/{predio}",
         *     summary="atualizar os dados de um predios",
         *     security={{"bearerAuth": {} }},

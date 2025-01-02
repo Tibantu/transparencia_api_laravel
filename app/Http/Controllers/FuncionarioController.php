@@ -48,7 +48,7 @@ class FuncionarioController extends Controller
 }
         /**
     * @OA\Get(
-        *     tags={"/funcionarios"},
+        *     tags={"funcionarios"},
         *     path="/funcionarios",
         *     summary="listar funcionarios de um predio, morador ou cordenadores do predio tenhem acesso a esta rota",
         *     security={{ "bearerAuth": {}}},
@@ -91,7 +91,7 @@ class FuncionarioController extends Controller
 
       /**
     * @OA\Post(
-        *     tags={"/funcionarios"},
+        *     tags={"funcionarios"},
         *     path="/funcionarios",
         *     summary="Registrar funcionarios",
         *     security={{"bearerAuth": {} }},

@@ -114,6 +114,8 @@ Route::middleware('auth:sanctum')->group(function () {
       /**[cria] um morador */
       Route::post('/apartamento/{idApartamento}', [MoradorController::class, 'create']);
       Route::get('/', [MoradorController::class, 'getAllByMoradores']);
+      Route::get('/me', [MoradorController::class, 'me']);
+
       Route::get('/{id}', [MoradorController::class, 'getOne']);
       Route::put('/{id}', [MoradorController::class, 'update']);
       Route::delete('/{id}', [MoradorController::class, 'delete']);

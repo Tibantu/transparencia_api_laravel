@@ -18,7 +18,7 @@ class PDFController extends Controller
 
   /**
    * @OA\Get(
-   *     tags={"/documentos"},
+   *     tags={"documentos"},
    *     path="/documentos/coord/recibo/pagamento/{idPagamento}",
    *     summary="mostrar recibo do pagamento, apenas para Coordenadores",
    *     security={{ "bearerAuth": {}}},
@@ -101,7 +101,7 @@ class PDFController extends Controller
 
   /**
    * @OA\Get(
-   *     tags={"/documentos"},
+   *     tags={"documentos"},
    *     path="/documentos/pagamento/recibo/{idPagamento}",
    *     summary="mostrar recibo do pagamento, apenas para moradores",
    *     security={{ "bearerAuth": {}}},

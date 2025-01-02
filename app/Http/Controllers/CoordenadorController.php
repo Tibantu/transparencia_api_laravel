@@ -12,7 +12,7 @@ class CoordenadorController extends Controller
 {
     /**
     * @OA\Get(
-        *     tags={"/coordenadores"},
+        *     tags={"coordenadores"},
         *     path="/coordenadores",
         *     summary="listar coordenadores",
         *     security={{"bearerAuth": {} }},
